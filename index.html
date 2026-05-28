@@ -966,13 +966,13 @@ nav {
 
 .galeria-item:nth-child(3n) { margin-top: .75rem; }
 
-.galeria-item img, .galeria-item .galeria-placeholder {
+.galeria-item img, .galeria-item . {
   width: 100%;
   display: block;
   transition: transform .3s;
 }
 
-.galeria-placeholder {
+. {
   aspect-ratio: 1/1;
   background: linear-gradient(135deg, var(--t3), rgba(139,58,15,.4));
   display: flex;
@@ -982,10 +982,10 @@ nav {
   color: rgba(255,255,255,.1);
 }
 
-.galeria-item:nth-child(2n) .galeria-placeholder { aspect-ratio: 4/3; }
-.galeria-item:nth-child(5n) .galeria-placeholder { aspect-ratio: 3/4; }
+.galeria-item:nth-child(2n) . { aspect-ratio: 4/3; }
+.galeria-item:nth-child(5n) . { aspect-ratio: 3/4; }
 
-.galeria-item:hover img, .galeria-item:hover .galeria-placeholder { transform: scale(1.03); }
+.galeria-item:hover img, .galeria-item:hover . { transform: scale(1.03); }
 
 .galeria-overlay {
   position: absolute;
@@ -2457,19 +2457,19 @@ body.adm-ok .cac-del-btn { display: flex !important; }
     <div class="yt-panel ativo" id="gal-todos">
       <div class="galeria-masonry" id="gal-grid-todos">
         <div class="galeria-item rv">
-          <div class="galeria-placeholder">🏛️</div>
+          <div class="">🏛️</div>
           <div class="galeria-overlay"><div class="galeria-leg">Posse da 5ª Gestão · Esplanada Ferroviária<br><span style="font-size:.6rem;color:rgba(255,255,255,.45)">Adicione o link do Google Fotos via ADM</span></div></div>
         </div>
         <div class="galeria-item rv">
-          <div class="galeria-placeholder" style="aspect-ratio:4/3">🌿</div>
+          <div class="" style="aspect-ratio:4/3">🌿</div>
           <div class="galeria-overlay"><div class="galeria-leg">Dia dos Povos Originários · Campo Grande</div></div>
         </div>
         <div class="galeria-item rv">
-          <div class="galeria-placeholder" style="aspect-ratio:3/4">🪶</div>
+          <div class="" style="aspect-ratio:3/4">🪶</div>
           <div class="galeria-overlay"><div class="galeria-leg">Assembleia das Etnias Indígenas</div></div>
         </div>
         <div class="galeria-item rv">
-          <div class="galeria-placeholder">🤝</div>
+          <div class="">🤝</div>
           <div class="galeria-overlay"><div class="galeria-leg">Reunião com Ministério dos Povos Indígenas</div></div>
         </div>
       </div>
@@ -3117,7 +3117,7 @@ function pubGaleria() {
   var fileInput = document.getElementById('gal-file');
   if (!leg) { alert('Preencha a legenda.'); return; }
   var html = '<div class="galeria-item">' +
-    '<div class="galeria-placeholder">📷</div>' +
+    '<div class="">📷</div>' +
     '<div class="galeria-overlay"><div class="galeria-leg">'+leg+'</div></div></div>';
   document.getElementById('galeria-grid').insertAdjacentHTML('afterbegin', html);
   notif('✅ Foto adicionada à galeria!');
@@ -3486,7 +3486,7 @@ function pubGaleria() {
   if (isExterno) {
     // Link externo - abre no Google Fotos ao clicar
     itemHtml = '<a href="'+link+'" target="_blank" class="galeria-item" style="display:block;text-decoration:none;position:relative;overflow:hidden;break-inside:avoid;margin-bottom:.75rem">' +
-      '<img src="'+imgSrc+'" alt="'+leg+'" style="width:100%;display:block;object-fit:cover" onerror="this.parentElement.innerHTML='<div class=\'galeria-placeholder\' style=\'aspect-ratio:1\'>📷</div>'">' +
+      '<img src="'+imgSrc+'" alt="'+leg+'" style="width:100%;display:block;object-fit:cover" onerror="this.parentElement.innerHTML='<div class=\'\' style=\'aspect-ratio:1\'>📷</div>'">' +
       '<div class="galeria-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.8) 0%,transparent 50%);opacity:0;transition:.3s;display:flex;align-items:flex-end;padding:.8rem">' +
       '<div class="galeria-leg">'+legendaCompleta+'<br><span style="font-size:.6rem;color:rgba(255,255,255,.5)">🔗 Ver no Google Fotos</span></div></div>' +
       '<button class="adm-panel" onclick="event.preventDefault();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%;display:none;align-items:center;justify-content:center">✕</button>' +

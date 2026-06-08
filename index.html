@@ -2501,6 +2501,17 @@ body.adm-ok .galeria-leg:hover::after {
     <div class="yt-panel ativo" id="gal-todos">
       <div class="adm-panel adm-drag-hint">✥ Arraste as fotos para reordenar</div>
     <div class="galeria-masonry" id="gal-grid-todos">
+
+          <div class="galeria-overlay"><div class="galeria-leg">Dia dos Povos Originários · Campo Grande</div></div>
+        </div>
+        <div class="galeria-item rv">
+          <div class="" style="aspect-ratio:3/4">🪶</div>
+          <div class="galeria-overlay"><div class="galeria-leg">Assembleia das Etnias Indígenas</div></div>
+        </div>
+        <div class="galeria-item rv">
+          <div class="">🤝</div>
+          <div class="galeria-overlay"><div class="galeria-leg">Reunião com Ministério dos Povos Indígenas</div></div>
+        </div>
       </div>
     </div>
     <div class="yt-panel" id="gal-conselheiros">
@@ -3293,7 +3304,7 @@ function renderFotoGaleria(item, fbKey) {
   var finalSrc = src.includes('/upload/') ? src.replace('/upload/', '/upload/w_800,q_auto,f_auto/') : src;
 
   var itemHtml = `<div class="galeria-item lb-item" data-src="${src}" data-leg="${leg}" data-fbkey="${fbKey}" style="position:relative;overflow:hidden;break-inside:avoid;margin-bottom:.75rem;cursor:pointer" onclick="abrirLightbox(event,this)">` +
-    `<img src="${finalSrc}" alt="${leg}" style="width:100%;display:block;object-fit:cover" onerror="this.closest('.galeria-item').style.display='none'">` +
+    `<img src="${finalSrc}" alt="${leg}" style="width:100%;display:block;object-fit:cover" onerror="this.style.display='none'">` +
     `<div class="galeria-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.8) 0%,transparent 50%);opacity:0;transition:.3s;display:flex;align-items:flex-end;padding:.8rem">` +
     `<div class="galeria-leg" ondblclick="editarLegenda(event,this)">${leg}</div></div>` +
     `<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">✕</button>` +

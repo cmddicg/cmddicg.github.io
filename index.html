@@ -2552,6 +2552,12 @@ html { scroll-behavior: smooth; }
         <textarea class="adm-input" id="nc-resumo" rows="6" style="resize:vertical" placeholder="Texto integral. No site aparece um resumo; o texto completo abre ao clicar em Ler na &#237;ntegra."></textarea>
       </div>
       <div class="adm-form-group">
+        <label class="adm-label">&#128247; Foto da not&#237;cia (opcional)</label>
+        <input class="adm-input" id="nc-foto" type="file" accept="image/*" style="padding:.4rem" onchange="uploadFotoNoticia(this)">
+        <div id="nc-foto-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
+        <input type="hidden" id="nc-foto-url">
+      </div>
+      <div class="adm-form-group">
         <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
         <input class="adm-input" id="nc-arq" type="file" accept=".pdf,.doc,.docx,image/*" style="padding:.4rem" onchange="uploadAnexoNoticia(this)">
         <div id="nc-arq-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
@@ -3503,6 +3509,7 @@ function renderFotoGaleria(item, fbKey) {
     `<div class="galeria-leg" ondblclick="editarLegenda(event,this)">${leg}</div></div>` +
     `<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">✕</button>` +
     `<button class="adm-panel" onclick="event.stopPropagation();editarLegenda(event,this.closest('.galeria-item').querySelector('.galeria-leg'))" style="position:absolute;top:.4rem;left:.4rem;width:26px;height:26px;background:rgba(42,74,28,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%" title="Editar legenda">✏️</button>` +
+    `<button class="adm-panel" onclick="event.stopPropagation();substituirFotoGal(this)" style="position:absolute;top:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(27,58,92,.85);border:none;color:white;font-size:.7rem;cursor:pointer;border-radius:50%" title="Substituir foto">🔄</button>` +
     `</div>`;
 
   var gridTodos = document.getElementById('gal-grid-todos');
@@ -3531,7 +3538,10 @@ function renderNoticia(item, fbKey) {
   card.className = 'noticia-sec nc-custom';
   card.dataset.key = fbKey;
   card.style.marginBottom = '1rem';
-  card.innerHTML = '<div class="noticia-thumb"><div class="noticia-thumb-placeholder" style="font-size:2rem">\uD83D\uDCF0</div></div>' +
+  var thumbHtml = item.foto
+    ? '<div class="noticia-thumb"><img src="' + item.foto + '" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>'
+    : '<div class="noticia-thumb"><div class="noticia-thumb-placeholder" style="font-size:2rem">\uD83D\uDCF0</div></div>';
+  card.innerHTML = thumbHtml +
     '<div class="noticia-body">' +
     '<div class="noticia-cat" style="color:var(--vd)">' + (item.cat || 'Noticia') + '</div>' +
     '<div class="noticia-t">' + (item.titulo || '') + '</div>' +
@@ -3694,17 +3704,41 @@ function pubEvento() {
   ['ev-dia-in','ev-tit-in','ev-loc-in'].forEach(function(id){ document.getElementById(id).value=''; });
 }
 
+function uploadFotoNoticia(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  var status = document.getElementById('nc-foto-status');
+  if (status) { status.style.display='block'; status.style.background='rgba(212,149,74,.1)'; status.style.color='var(--am)'; status.textContent='\u23F3 Enviando foto...'; }
+  var fd = new FormData();
+  fd.append('file', input.files[0]);
+  fd.append('upload_preset', 'cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/image/upload', true);
+  xhr.onload = function() {
+    try {
+      var d = JSON.parse(xhr.responseText);
+      if (d.secure_url) {
+        document.getElementById('nc-foto-url').value = d.secure_url;
+        if (status) { status.style.background='rgba(42,74,28,.2)'; status.style.color='#7bc67e'; status.textContent='\u2705 Foto enviada!'; }
+      } else {
+        if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C Erro no envio'; }
+      }
+    } catch(e) { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro'; } }
+  };
+  xhr.onerror = function() { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro de conexao'; } };
+  xhr.send(fd);
+}
+
 function pubNoticia() {
   var tit = v('nc-tit'), res = v('nc-resumo'), meta = v('nc-meta'), link = v('nc-link'), cat = v('nc-cat');
   if (!tit || !res) { alert('Preencha titulo e texto.'); return; }
   var key = 'not_' + Date.now();
-  var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link,
+  var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link, foto: v('nc-foto-url'),
     arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now() };
   var db = dbLer(); if (!db.noticias) db.noticias = {};
   db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
   renderNoticia(item, key);
   notif('\u2705 Noticia publicada e salva!');
-  ['nc-tit','nc-resumo','nc-meta','nc-link','nc-arq-url','nc-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['nc-tit','nc-resumo','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
   var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
 }
@@ -3745,6 +3779,8 @@ function abrirNoticiaModal(key) {
   document.getElementById('mnc-meta').textContent = item.meta || '';
   document.getElementById('mnc-titulo').textContent = item.titulo || '';
   document.getElementById('mnc-texto').textContent = item.resumo || '';
+  var ft = document.getElementById('mnc-foto');
+  if (item.foto) { ft.src = item.foto; ft.style.display='block'; } else { ft.style.display='none'; }
   var lk = document.getElementById('mnc-link');
   if (item.link) { lk.href = item.link; lk.style.display='inline-block'; } else { lk.style.display='none'; }
   var aq = document.getElementById('mnc-arquivo');
@@ -3932,6 +3968,7 @@ function abrirReleaseModal(key) {
   document.getElementById('mnc-meta').textContent = ((item.dia || '') + ' ' + (item.mes || '')).trim();
   document.getElementById('mnc-titulo').textContent = item.tit || '';
   document.getElementById('mnc-texto').textContent = item.texto || '';
+  var ftr = document.getElementById('mnc-foto'); if (ftr) ftr.style.display='none';
   var lk = document.getElementById('mnc-link'); lk.style.display = 'none';
   var aq = document.getElementById('mnc-arquivo');
   if (item.arquivo) { aq.href = item.arquivo; aq.textContent = '\uD83D\uDCCE ' + (item.arquivoNome || 'Baixar anexo'); aq.style.display='inline-block'; } else { aq.style.display='none'; }
@@ -4258,6 +4295,46 @@ function prevGalFoto(input) {
 // Publicar foto na galeria
 
 
+
+function substituirFotoGal(btn) {
+  var item = btn.closest('.galeria-item');
+  if (!item) return;
+  var fbKey = item.dataset.fbkey;
+  if (!fbKey) { alert('Esta foto fixa nao pode ser substituida.'); return; }
+  var input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*';
+  input.onchange = function() {
+    if (!input.files || !input.files[0]) return;
+    notif('\u23F3 Enviando nova foto...');
+    var fd = new FormData();
+    fd.append('file', input.files[0]);
+    fd.append('upload_preset', 'cmddi_galeria');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/image/upload', true);
+    xhr.onload = function() {
+      try {
+        var d = JSON.parse(xhr.responseText);
+        if (d.secure_url) {
+          var novo = d.secure_url;
+          document.querySelectorAll('.galeria-item[data-fbkey="' + fbKey + '"]').forEach(function(el) {
+            el.dataset.src = novo;
+            var img = el.querySelector('img');
+            if (img) { img.src = novo.indexOf('/upload/') > -1 ? novo.replace('/upload/', '/upload/w_800,q_auto,f_auto/') : novo; img.style.display = 'block'; }
+          });
+          var db = dbLer();
+          if (db.galeria && db.galeria[fbKey]) { db.galeria[fbKey].src = novo; dbSalvar(db); salvarNoGitHub(); }
+          notif('\u2705 Foto substituida e salva!');
+        } else {
+          notif('\u274C ' + (d.error && d.error.message ? d.error.message : 'Erro no envio'));
+        }
+      } catch(e) { notif('\u274C Erro ao processar'); }
+    };
+    xhr.onerror = function() { notif('\u274C Erro de conexao'); };
+    xhr.send(fd);
+  };
+  input.click();
+}
+
 function excluirGalItem(btn) {
   if (!confirm('Remover esta foto da galeria?')) return;
   var item = btn.closest('.galeria-item') || btn.closest('a');
@@ -4265,7 +4342,8 @@ function excluirGalItem(btn) {
   if (fbKey) {
     fbDeletar('galeria/' + fbKey).catch(function(){});
   }
-  if (item) { item.style.opacity='0'; setTimeout(function(){item.remove();},250); }
+  var copias = fbKey ? document.querySelectorAll('.galeria-item[data-fbkey="' + fbKey + '"]') : (item ? [item] : []);
+  copias.forEach(function(el) { el.style.opacity='0'; setTimeout(function(){el.remove();},250); });
   salvarNoGitHub();
   notif('🗑 Foto removida da galeria.');
 }
@@ -4869,6 +4947,7 @@ document.addEventListener('keydown', function(e) {
   <img id="lb-img" src="" style="max-width:90vw;max-height:80vh;object-fit:contain;border-radius:4px">
   <div id="lb-leg" style="color:rgba(255,255,255,.8);margin-top:1rem;font-size:.9rem;text-align:center;max-width:600px;padding:0 1rem"></div>
   <div id="lb-count" style="color:rgba(255,255,255,.4);font-size:.75rem;margin-top:.4rem"></div>
+  <button onclick="event.stopPropagation();window.open(window._lbItems[window._lbIdx].src,'_blank')" style="margin-top:.6rem;background:rgba(212,149,74,.2);border:1px solid rgba(212,149,74,.5);color:#E8B86D;font-size:.75rem;font-weight:700;padding:.45rem 1.1rem;border-radius:4px;cursor:pointer">&#11015; Abrir / Baixar foto original</button>
 </div>
 
 <!-- MODAL EDITAR LEGENDA -->
@@ -4893,6 +4972,7 @@ document.addEventListener('keydown', function(e) {
         <span id="mnc-cat" style="background:var(--vd,#2a4a1c);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px"></span>
         <span id="mnc-meta" style="font-size:.78rem;color:var(--tx3,#8a8a7a)"></span>
       </div>
+      <img id="mnc-foto" src="" alt="" style="display:none;width:100%;max-height:340px;object-fit:cover;border-radius:8px;margin:0 0 1.1rem">
       <h2 id="mnc-titulo" style="font-size:1.4rem;line-height:1.3;color:var(--tx,#1d2415);margin:.4rem 0 1.2rem;font-weight:800"></h2>
       <div id="mnc-texto" style="font-size:.95rem;line-height:1.85;color:var(--tx2,#3a4030);text-align:justify;white-space:pre-wrap"></div>
       <div style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">

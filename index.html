@@ -2696,6 +2696,12 @@ body.adm-ok .mb-acoes { display:flex; }
         <label class="adm-label">Texto do Release</label>
         <textarea class="adm-textarea" id="rel-texto" placeholder="Corpo do release..." style="height:100px"></textarea>
       </div>
+      <div class="adm-form-group">
+        <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
+        <input class="adm-input" id="rel-arq" type="file" accept=".pdf,.doc,.docx,image/*" style="padding:.4rem" onchange="uploadAnexoRelease(this)">
+        <div id="rel-arq-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
+        <input type="hidden" id="rel-arq-url"><input type="hidden" id="rel-arq-nome">
+      </div>
       <button class="btn-primario" onclick="pubRelease()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">✅ Publicar Release</button>
     </div>
   </div>
@@ -3293,6 +3299,14 @@ function renderTodosDoStorage() {
   if (dados.membrosLista && dados.membrosLista.length) { MEMBROS = dados.membrosLista; }
   renderMembros();
   document.querySelectorAll('.nc-custom').forEach(function(el){ el.remove(); });
+  document.querySelectorAll('.rel-custom').forEach(function(el){ el.remove(); });
+  if (dados.releases) {
+    Object.keys(dados.releases).sort(function(a,b){
+      return (dados.releases[a].ts||0) - (dados.releases[b].ts||0);
+    }).forEach(function(key) {
+      renderRelease(dados.releases[key], key);
+    });
+  }
   if (dados.noticias) {
     Object.keys(dados.noticias).sort(function(a,b){
       return (dados.noticias[a].ts||0) - (dados.noticias[b].ts||0);
@@ -3461,7 +3475,32 @@ function renderEvento(item, fbKey) {
 }
 
 function renderRelease(item, fbKey) {
-  // Renderizar release
+  var lista = document.getElementById('lista-releases');
+  if (!lista || !item) return;
+  var catColors = {
+    'Direitos':'color:var(--vm);border-color:rgba(139,58,15,.3)',
+    'Institucional':'color:var(--vv);border-color:rgba(45,80,22,.3)',
+    'Cultural':'color:var(--ou);border-color:rgba(232,168,83,.3)',
+    'Homenagem':'color:var(--az);border-color:rgba(27,58,92,.3)',
+    'Educa\u00E7\u00E3o':'color:#3a8f6b;border-color:rgba(58,143,107,.3)',
+    'Sa\u00FAde':'color:#5a7abf;border-color:rgba(90,122,191,.3)'
+  };
+  var style = catColors[item.cat] || 'color:var(--tx2)';
+  var resumoCurto = (item.texto || '').length > 220 ? (item.texto || '').substring(0, 220) + '\u2026' : (item.texto || '');
+  var card = document.createElement('div');
+  card.className = 'release-item rel-custom';
+  card.dataset.key = fbKey;
+  card.innerHTML = '<div class="rel-data-col"><div class="rel-dia">' + (item.dia || '--') + '</div><div class="rel-mes-ano">' + (item.mes || '') + '</div></div>' +
+    '<div><div class="rel-t">' + (item.tit || '') + '</div>' +
+    '<div class="rel-resumo" style="text-align:justify">' + resumoCurto + '</div>' +
+    '<div style="margin-top:.55rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">' +
+    '<button class="nc-ler-btn rel-ler-btn">\uD83D\uDCF0 Ler na integra</button>' +
+    '<button class="adm-panel rel-del-btn" style="background:rgba(180,30,30,.15);border:1px solid rgba(180,30,30,.3);color:#f87171;font-size:.68rem;cursor:pointer;padding:.3rem .7rem;border-radius:3px">\u2715 Excluir</button>' +
+    '</div></div>' +
+    '<span class="rel-badge" style="' + style + '">' + (item.cat || '') + '</span>';
+  card.querySelector('.rel-ler-btn').addEventListener('click', function(){ abrirReleaseModal(fbKey); });
+  card.querySelector('.rel-del-btn').addEventListener('click', function(){ excluirRelease(fbKey, card); });
+  lista.insertBefore(card, lista.firstChild);
 }
 
 // Iniciar carregamento
@@ -3766,23 +3805,68 @@ function pubGaleria() {
 
 function pubRelease() {
   var dia = v('rel-dia'), mes = v('rel-mes'), tit = v('rel-tit'), texto = v('rel-texto'), cat = v('rel-cat');
-  if (!tit || !texto) { alert('Preencha título e texto.'); return; }
-  var catColors = {
-    'Direitos':'color:var(--vm);border-color:rgba(139,58,15,.3)',
-    'Institucional':'color:var(--vv);border-color:rgba(45,80,22,.3)',
-    'Cultural':'color:var(--ou);border-color:rgba(232,168,83,.3)',
-    'Homenagem':'color:var(--az);border-color:rgba(27,58,92,.3)',
-    'Educação':'color:#3a8f6b;border-color:rgba(58,143,107,.3)',
-    'Saúde':'color:#5a7abf;border-color:rgba(90,122,191,.3)',
+  if (!tit || !texto) { alert('Preencha titulo e texto.'); return; }
+  var key = 'rel_' + Date.now();
+  var item = { dia: dia, mes: mes, tit: tit, texto: texto, cat: cat,
+    arquivo: v('rel-arq-url'), arquivoNome: v('rel-arq-nome'), ts: Date.now() };
+  var db = dbLer(); if (!db.releases) db.releases = {};
+  db.releases[key] = item; dbSalvar(db); salvarNoGitHub();
+  renderRelease(item, key);
+  notif('\u2705 Release publicado e salvo!');
+  ['rel-dia','rel-mes','rel-tit','rel-texto','rel-arq-url','rel-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var st = document.getElementById('rel-arq-status'); if (st) st.style.display='none';
+  var fi = document.getElementById('rel-arq'); if (fi) fi.value='';
+}
+
+function uploadAnexoRelease(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var status = document.getElementById('rel-arq-status');
+  if (status) { status.style.display='block'; status.style.background='rgba(212,149,74,.1)'; status.style.color='var(--am)'; status.textContent='\u23F3 Enviando anexo...'; }
+  var isImg = /^image\//.test(file.type);
+  var fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', 'cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/' + (isImg ? 'image' : 'raw') + '/upload', true);
+  xhr.onload = function() {
+    try {
+      var d = JSON.parse(xhr.responseText);
+      if (d.secure_url) {
+        document.getElementById('rel-arq-url').value = d.secure_url;
+        document.getElementById('rel-arq-nome').value = file.name;
+        if (status) { status.style.background='rgba(42,74,28,.2)'; status.style.color='#7bc67e'; status.textContent='\u2705 Anexo enviado: ' + file.name; }
+      } else {
+        var msg = d.error && d.error.message ? d.error.message : 'Erro no envio';
+        if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C ' + msg; }
+      }
+    } catch(e) { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro ao processar'; } }
   };
-  var style = catColors[cat] || 'color:var(--tx2)';
-  var html = '<div class="release-item">' +
-    '<div class="rel-data-col"><div class="rel-dia">'+(dia||'--')+'</div><div class="rel-mes-ano">'+(mes||'')+'</div></div>' +
-    '<div><div class="rel-t">'+tit+'</div><div class="rel-resumo">'+texto+'</div></div>' +
-    '<span class="rel-badge" style="'+style+'">'+cat+'</span></div>';
-  document.getElementById('lista-releases').insertAdjacentHTML('afterbegin', html);
-  notif('✅ Release publicado!');
-  ['rel-dia','rel-mes','rel-tit','rel-texto'].forEach(function(id){document.getElementById(id).value='';});
+  xhr.onerror = function() { if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C Erro de conexao'; } };
+  xhr.send(fd);
+}
+
+function abrirReleaseModal(key) {
+  var db = dbLer();
+  var item = db.releases && db.releases[key];
+  if (!item) return;
+  document.getElementById('mnc-cat').textContent = item.cat || 'Release';
+  document.getElementById('mnc-meta').textContent = ((item.dia || '') + ' ' + (item.mes || '')).trim();
+  document.getElementById('mnc-titulo').textContent = item.tit || '';
+  document.getElementById('mnc-texto').textContent = item.texto || '';
+  var lk = document.getElementById('mnc-link'); lk.style.display = 'none';
+  var aq = document.getElementById('mnc-arquivo');
+  if (item.arquivo) { aq.href = item.arquivo; aq.textContent = '\uD83D\uDCCE ' + (item.arquivoNome || 'Baixar anexo'); aq.style.display='inline-block'; } else { aq.style.display='none'; }
+  document.getElementById('modal-noticia-cm').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function excluirRelease(key, el) {
+  if (!confirm('Excluir este release?')) return;
+  var db = dbLer();
+  if (db.releases && db.releases[key]) { delete db.releases[key]; dbSalvar(db); salvarNoGitHub(); }
+  if (el) { el.style.opacity='0'; setTimeout(function(){ el.remove(); }, 250); }
+  notif('\uD83D\uDDD1 Release excluido.');
 }
 
 function enviarMsg() {

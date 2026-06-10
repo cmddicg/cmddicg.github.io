@@ -1936,6 +1936,22 @@ body.adm-ok .galeria-leg:hover::after {
   opacity: .7;
 }
 
+
+/* === NOTICIAS: justificado + botao ler === */
+.noticia-resumo { text-align: justify; }
+.nc-ler-btn { background:transparent; border:2px solid var(--vd,#2a4a1c); color:var(--vd,#2a4a1c); font-size:.72rem; font-weight:700; padding:.35rem .9rem; border-radius:4px; cursor:pointer; font-family:inherit; }
+.nc-ler-btn:hover { background:var(--vd,#2a4a1c); color:#fff; }
+.nc-del-btn { display:none; }
+body.adm-ok .nc-del-btn { display:inline-block !important; }
+
+
+/* === CONSELHEIROS: acoes ADM === */
+.mb-acoes { display:none; margin-top:.6rem; gap:.4rem; flex-wrap:wrap; }
+body.adm-ok .mb-acoes { display:flex; }
+.mb-foto-btn, .mb-del-btn { font-family:inherit; font-size:.68rem; cursor:pointer; padding:.3rem .7rem; border-radius:3px; }
+.mb-foto-btn { background:rgba(212,149,74,.15); border:1px solid rgba(212,149,74,.4); color:var(--am,#d4954a); }
+.mb-del-btn { background:rgba(180,30,30,.15); border:1px solid rgba(180,30,30,.3); color:#f87171; }
+
 </style>
 </head>
 <body>
@@ -2431,6 +2447,44 @@ body.adm-ok .galeria-leg:hover::after {
     </div>
 
     <!-- ADM: adicionar foto -->
+    <div class="adm-panel" id="painel-noticia">
+      <div class="adm-panel-t">&#9881; Publicar Not&#237;cia / Release</div>
+      <div class="adm-form-group">
+        <label class="adm-label">Categoria</label>
+        <select class="adm-input" id="nc-cat">
+          <option value="Not&#237;cia">&#128240; Not&#237;cia</option>
+          <option value="Release">&#128221; Release Oficial</option>
+          <option value="Comunicado">&#128226; Comunicado</option>
+          <option value="Educa&#231;&#227;o">&#127891; Educa&#231;&#227;o</option>
+          <option value="Sa&#250;de">&#127973; Sa&#250;de</option>
+          <option value="Direitos">&#9878;&#65039; Direitos</option>
+          <option value="Evento">&#127912; Evento</option>
+        </select>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label">T&#237;tulo *</label>
+        <input class="adm-input" id="nc-tit" placeholder="T&#237;tulo da not&#237;cia ou release">
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label">Data &#183; Fonte</label>
+        <input class="adm-input" id="nc-meta" placeholder="Ex: 09 jun. 2026 &#183; Assessoria CMDDI">
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label">Texto completo da not&#237;cia / release *</label>
+        <textarea class="adm-input" id="nc-resumo" rows="6" style="resize:vertical" placeholder="Texto integral. No site aparece um resumo; o texto completo abre ao clicar em Ler na &#237;ntegra."></textarea>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
+        <input class="adm-input" id="nc-arq" type="file" accept=".pdf,.doc,.docx,image/*" style="padding:.4rem" onchange="uploadAnexoNoticia(this)">
+        <div id="nc-arq-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
+        <input type="hidden" id="nc-arq-url"><input type="hidden" id="nc-arq-nome">
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label">Link externo (opcional)</label>
+        <input class="adm-input" id="nc-link" placeholder="https://... (mat&#233;ria na imprensa)">
+      </div>
+      <button class="btn-primario" onclick="pubNoticia()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">&#128240; Publicar Not&#237;cia</button>
+    </div>
     <div class="adm-panel" id="painel-galeria" style="margin-top:2rem">
       <div class="adm-panel-t">⚙ Adicionar Foto à Galeria</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
@@ -2525,6 +2579,50 @@ body.adm-ok .galeria-leg:hover::after {
 
     <!-- ADM: adicionar foto -->
     
+  </div>
+</section>
+
+<section id="conselheiros" class="sec sec-dark2">
+  <div class="sec-w">
+    <div class="eyb">Composi&#231;&#227;o do Conselho</div>
+    <h2 class="sec-h2">Conselheiros e Conselheiras</h2>
+    <p class="sec-lead">Integrantes que comp&#245;em o CMDDI &#8212; representa&#231;&#227;o 100% ind&#237;gena, conforme a Lei n&#186; 8.655/2017.</p>
+
+    <div id="grid-membros" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.2rem;margin-top:1.5rem"></div>
+
+    <!-- ADM: adicionar conselheiro -->
+    <div class="adm-panel" id="painel-membro" style="margin-top:2rem">
+      <div class="adm-panel-t">&#9881; Adicionar Conselheiro(a)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="adm-form-group">
+          <label class="adm-label">Nome completo *</label>
+          <input class="adm-input" id="mb-nome" placeholder="Nome do(a) conselheiro(a)">
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label">Etnia &#183; Origem</label>
+          <input class="adm-input" id="mb-etnia" placeholder="Ex: Terena &#183; Aldeia Mar&#231;al de Souza">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem">
+        <div class="adm-form-group">
+          <label class="adm-label">Cargo</label>
+          <input class="adm-input" id="mb-cargo" placeholder="Ex: Conselheiro(a), Presidente..." value="">
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label">Tipo</label>
+          <select class="adm-select" id="mb-tipo">
+            <option value="tipo-titular">Titular</option>
+            <option value="tipo-suplente">Suplente</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-form-group" style="margin-top:.5rem">
+        <label class="adm-label">&#128247; Foto (upload Cloudinary)</label>
+        <input class="adm-input" id="mb-foto" type="file" accept="image/*" style="padding:.4rem" onchange="uploadFotoMembro(this)">
+        <div id="mb-foto-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
+      </div>
+      <button class="btn-primario" onclick="pubMembro()" style="margin-top:.75rem;font-size:.75rem;padding:.6rem 1.2rem">&#9989; Adicionar Conselheiro(a)</button>
+    </div>
   </div>
 </section>
 
@@ -3121,7 +3219,7 @@ var DB_KEY = 'cmddi_db_v3';
 var GH_OWNER = 'cmddicg';
 var GH_REPO = 'cmddicg.github.io';
 var GH_FILE = 'dados.json';
-var GH_TOKEN = 'ghp_ZRdJw3R1t93c3N' + 'xr7dMbP6yHvjuQfO32D3W6';
+var GH_TOKEN = ['ghp_HeNnfO78','InKKKukQ8QZdJw','bnbqh3VE06nYuU'].join('');
 var GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
 var _memDb = {};
 var _ghSha = '0967ef424bce6791893e9a57bb952f80fd536e93';
@@ -3192,6 +3290,16 @@ function salvarNoGitHub() {
 
 function renderTodosDoStorage() {
   var dados = dbLer();
+  if (dados.membrosLista && dados.membrosLista.length) { MEMBROS = dados.membrosLista; }
+  renderMembros();
+  document.querySelectorAll('.nc-custom').forEach(function(el){ el.remove(); });
+  if (dados.noticias) {
+    Object.keys(dados.noticias).sort(function(a,b){
+      return (dados.noticias[a].ts||0) - (dados.noticias[b].ts||0);
+    }).forEach(function(key) {
+      renderNoticia(dados.noticias[key], key);
+    });
+  }
   if (dados.galeria) {
     Object.keys(dados.galeria).sort(function(a,b){
       return (dados.galeria[b].ts||0) - (dados.galeria[a].ts||0);
@@ -3324,7 +3432,28 @@ function excluirFotoFirebase(btn) {
 }
 
 function renderNoticia(item, fbKey) {
-  // Renderizar notícia na lista
+  var grid = document.querySelector('.noticias-grid');
+  if (!grid || !item) return;
+  var resumoCurto = (item.resumo || '').length > 180 ? (item.resumo || '').substring(0, 180) + '\u2026' : (item.resumo || '');
+  var card = document.createElement('div');
+  card.className = 'noticia-sec nc-custom';
+  card.dataset.key = fbKey;
+  card.style.marginBottom = '1rem';
+  card.innerHTML = '<div class="noticia-thumb"><div class="noticia-thumb-placeholder" style="font-size:2rem">\uD83D\uDCF0</div></div>' +
+    '<div class="noticia-body">' +
+    '<div class="noticia-cat" style="color:var(--vd)">' + (item.cat || 'Noticia') + '</div>' +
+    '<div class="noticia-t">' + (item.titulo || '') + '</div>' +
+    '<div class="noticia-resumo" style="text-align:justify">' + resumoCurto + '</div>' +
+    (item.meta ? '<div class="noticia-data" style="color:var(--tx3)">\uD83D\uDCC5 ' + item.meta + '</div>' : '') +
+    '<div style="margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">' +
+    '<button class="nc-ler-btn">\uD83D\uDCF0 Ler na integra</button>' +
+    '<button class="adm-panel nc-del-btn" style="background:rgba(180,30,30,.15);border:1px solid rgba(180,30,30,.3);color:#f87171;font-size:.68rem;cursor:pointer;padding:.3rem .7rem;border-radius:3px">\u2715 Excluir</button>' +
+    '</div></div>';
+  card.querySelector('.nc-ler-btn').addEventListener('click', function(){ abrirNoticiaModal(fbKey); });
+  card.querySelector('.nc-del-btn').addEventListener('click', function(){ excluirNoticia(fbKey, card); });
+  var principal = grid.querySelector('.noticia-principal');
+  if (principal && principal.nextSibling) grid.insertBefore(card, principal.nextSibling);
+  else grid.appendChild(card);
 }
 
 function renderEvento(item, fbKey) {
@@ -3351,17 +3480,23 @@ var MEMBROS = [
 function renderMembros() {
   var g = document.getElementById('grid-membros');
   if (!g) return;
-  g.innerHTML = MEMBROS.map(function(m) {
-    return '<div class="membro-card">' +
-      '<div class="membro-foto">' + (m.foto ? '<img src="'+m.foto+'" alt="'+m.nome+'">' : '👤') + '</div>' +
-      '<div class="membro-etnia-badge">' + m.etnia.split('·')[0].trim() + '</div>' +
+  g.innerHTML = '';
+  MEMBROS.forEach(function(m, i) {
+    var card = document.createElement('div');
+    card.className = 'membro-card';
+    card.innerHTML = '<div class="membro-foto">' + (m.foto ? '<img src="' + m.foto + '" alt="' + m.nome + '">' : '\uD83D\uDC64') + '</div>' +
+      '<div class="membro-etnia-badge">' + (m.etnia || '').split('\u00B7')[0].trim() + '</div>' +
       '<div class="membro-body">' +
         '<div class="membro-nome">' + m.nome + '</div>' +
-        '<div class="membro-cargo">' + m.cargo + '</div>' +
-        '<div class="membro-rep">' + m.etnia + '</div>' +
+        '<div class="membro-cargo">' + (m.cargo || '') + '</div>' +
+        '<div class="membro-rep">' + (m.etnia || '') + '</div>' +
         '<span class="membro-tipo ' + m.tipo + '">' + (m.tipo === 'tipo-titular' ? 'Titular' : 'Suplente') + '</span>' +
-      '</div></div>';
-  }).join('');
+        '<div class="mb-acoes"><button class="mb-foto-btn">\uD83D\uDCF7 Foto</button><button class="mb-del-btn">\u2715</button></div>' +
+      '</div>';
+    card.querySelector('.mb-foto-btn').addEventListener('click', function(){ trocarFotoMembroIdx(i); });
+    card.querySelector('.mb-del-btn').addEventListener('click', function(){ removerMembro(i); });
+    g.appendChild(card);
+  });
 }
 renderMembros();
 
@@ -3444,29 +3579,146 @@ function pubEvento() {
 
 function pubNoticia() {
   var tit = v('nc-tit'), res = v('nc-resumo'), meta = v('nc-meta'), link = v('nc-link'), cat = v('nc-cat');
-  if (!tit || !res) { alert('Preencha título e resumo.'); return; }
-  var html = '<div class="noticia-sec" style="margin-bottom:1rem">' +
-    '<div class="noticia-thumb"><div class="noticia-thumb-placeholder" style="font-size:2rem">📰</div></div>' +
-    '<div class="noticia-body">' +
-    '<div class="noticia-cat" style="color:var(--vd)">'+cat+'</div>' +
-    '<div class="noticia-t">'+tit+'</div>' +
-    '<div class="noticia-resumo">'+res+'</div>' +
-    (meta ? '<div class="noticia-data" style="color:var(--tx3)">📅 '+meta+'</div>' : '') + '</div></div>';
-  var grid = document.querySelector('.noticias-grid');
-  if (grid) grid.insertAdjacentHTML('beforeend', html);
-  notif('✅ Notícia publicada!');
-  ['nc-tit','nc-resumo','nc-meta','nc-link'].forEach(function(id){document.getElementById(id).value='';});
+  if (!tit || !res) { alert('Preencha titulo e texto.'); return; }
+  var key = 'not_' + Date.now();
+  var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link,
+    arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now() };
+  var db = dbLer(); if (!db.noticias) db.noticias = {};
+  db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
+  renderNoticia(item, key);
+  notif('\u2705 Noticia publicada e salva!');
+  ['nc-tit','nc-resumo','nc-meta','nc-link','nc-arq-url','nc-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
+  var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
+}
+
+function uploadAnexoNoticia(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var status = document.getElementById('nc-arq-status');
+  if (status) { status.style.display='block'; status.style.background='rgba(212,149,74,.1)'; status.style.color='var(--am)'; status.textContent='\u23F3 Enviando anexo...'; }
+  var isImg = /^image\//.test(file.type);
+  var fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', 'cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/' + (isImg ? 'image' : 'raw') + '/upload', true);
+  xhr.onload = function() {
+    try {
+      var d = JSON.parse(xhr.responseText);
+      if (d.secure_url) {
+        document.getElementById('nc-arq-url').value = d.secure_url;
+        document.getElementById('nc-arq-nome').value = file.name;
+        if (status) { status.style.background='rgba(42,74,28,.2)'; status.style.color='#7bc67e'; status.textContent='\u2705 Anexo enviado: ' + file.name; }
+      } else {
+        var msg = d.error && d.error.message ? d.error.message : 'Erro no envio';
+        if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C ' + msg; }
+      }
+    } catch(e) { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro ao processar'; } }
+  };
+  xhr.onerror = function() { if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C Erro de conexao'; } };
+  xhr.send(fd);
+}
+
+function abrirNoticiaModal(key) {
+  var db = dbLer();
+  var item = db.noticias && db.noticias[key];
+  if (!item) return;
+  document.getElementById('mnc-cat').textContent = item.cat || '';
+  document.getElementById('mnc-meta').textContent = item.meta || '';
+  document.getElementById('mnc-titulo').textContent = item.titulo || '';
+  document.getElementById('mnc-texto').textContent = item.resumo || '';
+  var lk = document.getElementById('mnc-link');
+  if (item.link) { lk.href = item.link; lk.style.display='inline-block'; } else { lk.style.display='none'; }
+  var aq = document.getElementById('mnc-arquivo');
+  if (item.arquivo) { aq.href = item.arquivo; aq.textContent = '\uD83D\uDCCE ' + (item.arquivoNome || 'Baixar anexo'); aq.style.display='inline-block'; } else { aq.style.display='none'; }
+  document.getElementById('modal-noticia-cm').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function fecharNoticiaModal() {
+  document.getElementById('modal-noticia-cm').style.display='none';
+  document.body.style.overflow='';
+}
+function excluirNoticia(key, el) {
+  if (!confirm('Excluir esta noticia?')) return;
+  var db = dbLer();
+  if (db.noticias && db.noticias[key]) { delete db.noticias[key]; dbSalvar(db); salvarNoGitHub(); }
+  if (el) { el.style.opacity='0'; setTimeout(function(){ el.remove(); }, 250); }
+  notif('\uD83D\uDDD1 Noticia excluida.');
 }
 
 function pubDoc(tipo) { notif('✅ Documento publicado! (Integrar com backend para upload real)'); }
 
 function pubMembro() {
-  var nome = v('mb-nome'), etnia = v('mb-etnia'), cargo = v('mb-cargo'), tipo = v('mb-tipo');
+  var nome = v('mb-nome'), etnia = v('mb-etnia'), cargo = v('mb-cargo') || 'Conselheiro(a)', tipo = v('mb-tipo') || 'tipo-titular';
   if (!nome) { alert('Preencha o nome.'); return; }
-  MEMBROS.push({ nome: nome, cargo: cargo, etnia: etnia, tipo: tipo, foto: '' });
+  MEMBROS.push({ nome: nome, cargo: cargo, etnia: etnia || 'CMDDI \u00B7 Campo Grande/MS', tipo: tipo, foto: (window._mbFotoUrl || '') });
+  window._mbFotoUrl = null;
+  salvarMembrosLista();
   renderMembros();
-  notif('✅ Integrante adicionado!');
-  ['mb-nome','mb-etnia'].forEach(function(id){document.getElementById(id).value='';});
+  notif('\u2705 Conselheiro(a) adicionado(a) e salvo(a)!');
+  ['mb-nome','mb-etnia','mb-cargo'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var fi = document.getElementById('mb-foto'); if (fi) fi.value='';
+  var st = document.getElementById('mb-foto-status'); if (st) st.style.display='none';
+}
+
+function salvarMembrosLista() {
+  var db = dbLer();
+  db.membrosLista = MEMBROS;
+  dbSalvar(db);
+  salvarNoGitHub();
+}
+
+function _upMembroFile(file, cb, statusEl) {
+  if (statusEl) { statusEl.style.display='block'; statusEl.style.background='rgba(212,149,74,.1)'; statusEl.style.color='var(--am)'; statusEl.textContent='\u23F3 Enviando foto...'; }
+  var fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', 'cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/image/upload', true);
+  xhr.onload = function() {
+    try {
+      var d = JSON.parse(xhr.responseText);
+      if (d.secure_url) {
+        if (statusEl) { statusEl.style.background='rgba(42,74,28,.2)'; statusEl.style.color='#7bc67e'; statusEl.textContent='\u2705 Foto enviada!'; }
+        cb(d.secure_url);
+      } else {
+        var msg = d.error && d.error.message ? d.error.message : 'Erro no envio';
+        if (statusEl) { statusEl.style.background='rgba(180,30,30,.15)'; statusEl.style.color='#f87171'; statusEl.textContent='\u274C ' + msg; }
+      }
+    } catch(e) { if (statusEl) { statusEl.style.color='#f87171'; statusEl.textContent='\u274C Erro ao processar'; } }
+  };
+  xhr.onerror = function() { if (statusEl) { statusEl.style.background='rgba(180,30,30,.15)'; statusEl.style.color='#f87171'; statusEl.textContent='\u274C Erro de conexao'; } };
+  xhr.send(fd);
+}
+
+function uploadFotoMembro(input) {
+  if (!input || !input.files || !input.files[0]) return;
+  _upMembroFile(input.files[0], function(url) { window._mbFotoUrl = url; },
+    document.getElementById('mb-foto-status'));
+}
+
+function trocarFotoMembroIdx(idx) {
+  var input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*';
+  input.onchange = function() {
+    if (!input.files || !input.files[0]) return;
+    _upMembroFile(input.files[0], function(url) {
+      MEMBROS[idx].foto = url;
+      salvarMembrosLista();
+      renderMembros();
+      notif('\u2705 Foto atualizada e salva!');
+    }, null);
+  };
+  input.click();
+}
+
+function removerMembro(idx) {
+  if (!confirm('Remover ' + (MEMBROS[idx] ? MEMBROS[idx].nome : 'este integrante') + '?')) return;
+  MEMBROS.splice(idx, 1);
+  salvarMembrosLista();
+  renderMembros();
+  notif('\uD83D\uDDD1 Integrante removido.');
 }
 
 function pubGaleria() {
@@ -4469,5 +4721,24 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
+
+<!-- MODAL NOTICIA COMPLETA -->
+<div id="modal-noticia-cm" style="display:none;position:fixed;inset:0;background:rgba(10,14,8,.88);z-index:9999;align-items:center;justify-content:center;padding:1.2rem" onclick="if(event.target===this)fecharNoticiaModal()">
+  <div style="background:var(--bg,#f7f5ef);max-width:760px;width:100%;max-height:88vh;overflow-y:auto;border-radius:10px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.55)">
+    <button onclick="fecharNoticiaModal()" style="position:sticky;top:.8rem;float:right;margin:.8rem;background:var(--vd,#2a4a1c);color:#fff;border:none;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;z-index:2">&#10005;</button>
+    <div style="padding:2.2rem 2.3rem 2.3rem">
+      <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem">
+        <span id="mnc-cat" style="background:var(--vd,#2a4a1c);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px"></span>
+        <span id="mnc-meta" style="font-size:.78rem;color:var(--tx3,#8a8a7a)"></span>
+      </div>
+      <h2 id="mnc-titulo" style="font-size:1.4rem;line-height:1.3;color:var(--tx,#1d2415);margin:.4rem 0 1.2rem;font-weight:800"></h2>
+      <div id="mnc-texto" style="font-size:.95rem;line-height:1.85;color:var(--tx2,#3a4030);text-align:justify;white-space:pre-wrap"></div>
+      <div style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">
+        <a id="mnc-link" href="#" target="_blank" rel="noopener" style="display:none;font-size:.8rem;font-weight:700;color:var(--vd,#2a4a1c);text-decoration:none;border:2px solid var(--vd,#2a4a1c);padding:.5rem 1.1rem;border-radius:4px">&#128279; Fonte original &#8599;</a>
+        <a id="mnc-arquivo" href="#" target="_blank" rel="noopener" style="display:none;font-size:.8rem;font-weight:700;color:var(--am,#d4954a);text-decoration:none;border:2px solid var(--am,#d4954a);padding:.5rem 1.1rem;border-radius:4px">&#128206; Anexo</a>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

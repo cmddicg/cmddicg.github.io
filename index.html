@@ -4497,12 +4497,33 @@ function renderAlbunsOcasiao() {
       '<div style="font-size:.7rem;color:rgba(255,255,255,.65);margin-top:.2rem">' + g.itens.length + ' foto(s) \u2014 clique para abrir</div>' +
       '</div>' +
       '<div style="position:absolute;top:.55rem;right:.55rem;background:rgba(212,149,74,.92);color:#0A0F08;font-size:.68rem;font-weight:800;padding:.2rem .55rem;border-radius:12px">' + g.itens.length + ' \uD83D\uDCF7</div>' +
+      '<button class="adm-panel" onclick="event.stopPropagation();renomearAlbum(this.closest(\'.album-card\').dataset.ocasiao)" style="position:absolute;top:.55rem;left:.55rem;background:rgba(42,74,28,.9);border:none;color:#fff;font-size:.66rem;font-weight:700;padding:.3rem .6rem;border-radius:4px;cursor:pointer" title="Corrigir o nome do \u00E1lbum">\u270F\uFE0F Renomear</button>' +
       '</div>';
     var gridTodos = document.getElementById('gal-grid-todos');
     if (gridTodos) gridTodos.insertAdjacentHTML('afterbegin', cardHtml);
     var gridAlbum = document.getElementById('gal-grid-' + g.album);
     if (gridAlbum && gridAlbum !== gridTodos) gridAlbum.insertAdjacentHTML('afterbegin', cardHtml);
   });
+}
+
+
+function renomearAlbum(ocasiaoAtual) {
+  if (!ocasiaoAtual) return;
+  var novo = prompt('Novo nome do \u00E1lbum (corrige em todas as fotos do grupo):', ocasiaoAtual);
+  if (novo === null || !novo.trim() || novo.trim() === ocasiaoAtual) return;
+  novo = novo.trim();
+  var db = dbLer();
+  if (!db.galeria) return;
+  var n = 0;
+  Object.keys(db.galeria).forEach(function(k) {
+    if (db.galeria[k] && db.galeria[k].ocasiao === ocasiaoAtual) { db.galeria[k].ocasiao = novo; n++; }
+  });
+  if (!n) { notif('\u26A0\uFE0F \u00C1lbum n\u00E3o encontrado.'); return; }
+  dbSalvar(db); salvarNoGitHub();
+  renderAlbunsOcasiao();
+  var mt = document.getElementById('modal-album-titulo');
+  if (mt && document.getElementById('modal-album').style.display === 'flex') mt.textContent = novo;
+  notif('\u2705 \u00C1lbum renomeado em ' + n + ' foto(s) e salvo!');
 }
 
 function abrirAlbum(ocasiao) {
@@ -5163,6 +5184,7 @@ document.addEventListener('keydown', function(e) {
     <div style="padding:1.8rem 2rem 2rem">
       <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8B86D">&#128193; &#193;lbum do CMDDI</div>
       <h3 id="modal-album-titulo" style="font-family:'Cinzel',serif;font-size:1.35rem;color:#EDE5CF;margin:.3rem 0 .2rem"></h3>
+      <button class="adm-panel" onclick="renomearAlbum(document.getElementById('modal-album-titulo').textContent)" style="background:rgba(42,74,28,.9);border:none;color:#fff;font-size:.68rem;font-weight:700;padding:.35rem .7rem;border-radius:4px;cursor:pointer;margin-bottom:.5rem">&#9999;&#65039; Renomear este &#225;lbum</button>
       <div id="modal-album-sub" style="font-size:.78rem;color:rgba(237,229,207,.55);margin-bottom:1.2rem"></div>
       <div id="modal-album-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem"></div>
     </div>

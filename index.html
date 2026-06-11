@@ -2525,6 +2525,7 @@ html { scroll-behavior: smooth; }
     </div>
 
     <!-- ADM: adicionar foto -->
+    
     <div class="adm-panel" id="painel-noticia">
       <div class="adm-panel-t">&#9881; Publicar Not&#237;cia / Release</div>
       <div class="adm-form-group">
@@ -2569,6 +2570,47 @@ html { scroll-behavior: smooth; }
       </div>
       <button class="btn-primario" onclick="pubNoticia()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">&#128240; Publicar Not&#237;cia</button>
     </div>
+    
+  </div>
+</section>
+
+<!-- RELEASES -->
+<!-- GALERIA -->
+<section id="galeria" class="sec sec-dark2">
+  <div class="sec-w">
+    <div class="eyb">Memória visual</div>
+    <h2 class="sec-h2">Galeria de Fotos</h2>
+    <p class="sec-lead">Registros de eventos, assembleias, cerimônias e ações do CMDDI. Escolha um álbum abaixo para abrir as fotos.</p>
+
+
+    <!-- Abas por álbum -->
+    <div class="yt-tabs" id="gal-tabs-bar">
+      <button class="yt-tab" onclick="trocarGal(this,'gal-conselheiros')">👥 Conselheiros</button>
+      <button class="yt-tab" onclick="trocarGal(this,'gal-caciques')">🪶 Caciques</button>
+      <button class="yt-tab" onclick="trocarGal(this,'gal-eventos')">🎨 Eventos</button>
+      <button class="yt-tab" onclick="trocarGal(this,'gal-reunioes')">📋 Reuniões</button>
+      <button class="yt-tab" onclick="trocarGal(this,'gal-aldeia')">🏡 Aldeias</button>
+    </div>
+
+    <div class="yt-panel" id="gal-conselheiros">
+      <p style="color:rgba(249,245,237,.4);font-size:.82rem;padding:1rem 0 .5rem">
+      </p>
+      <div class="galeria-masonry" id="gal-grid-conselheiros"></div>
+    </div>
+    <div class="yt-panel" id="gal-caciques">
+      <p style="color:rgba(249,245,237,.4);font-size:.82rem;padding:1rem 0 .5rem">
+        📌 Primeiro carregamento: fotos dos caciques e suas aldeias.
+      </p>
+      <div class="galeria-masonry" id="gal-grid-caciques"></div>
+    </div>
+    <div class="yt-panel" id="gal-eventos"><div class="galeria-masonry" id="gal-grid-eventos"></div></div>
+    <div class="yt-panel" id="gal-reunioes"><div class="galeria-masonry" id="gal-grid-reunioes"></div></div>
+    <div class="yt-panel" id="gal-aldeia"><div class="galeria-masonry" id="gal-grid-aldeia"></div></div>
+
+    <!-- ADM: adicionar foto -->
+    
+  </div>
+
     <div class="adm-panel" id="painel-galeria" style="margin-top:2rem">
       <div class="adm-panel-t">⚙ Adicionar Foto à Galeria</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
@@ -2628,57 +2670,7 @@ html { scroll-behavior: smooth; }
       </div>
       <button class="btn-primario" onclick="pubGaleria()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">📸 Adicionar à Galeria</button>
     </div>
-  </div>
-</section>
-
-<!-- RELEASES -->
-<!-- GALERIA -->
-<section id="galeria" class="sec sec-dark2">
-  <div class="sec-w">
-    <div class="eyb">Memória visual</div>
-    <h2 class="sec-h2">Galeria de Fotos</h2>
-    <p class="sec-lead">Registros de eventos, assembleias, cerimônias e ações do CMDDI. Clique em qualquer foto para ampliar.</p>
-
-
-    <!-- Abas por álbum -->
-    <div class="yt-tabs" id="gal-tabs-bar">
-      <button class="yt-tab ativo" onclick="trocarGal(this,'gal-todos')">📸 Todas</button>
-      <button class="yt-tab" onclick="trocarGal(this,'gal-conselheiros')">👥 Conselheiros</button>
-      <button class="yt-tab" onclick="trocarGal(this,'gal-caciques')">🪶 Caciques</button>
-      <button class="yt-tab" onclick="trocarGal(this,'gal-eventos')">🎨 Eventos</button>
-      <button class="yt-tab" onclick="trocarGal(this,'gal-reunioes')">📋 Reuniões</button>
-      <button class="yt-tab" onclick="trocarGal(this,'gal-aldeia')">🏡 Aldeias</button>
-    </div>
-
-    <div class="yt-panel ativo" id="gal-todos">
-      <div class="adm-panel adm-drag-hint">✥ Arraste as fotos para reordenar</div>
-    <div class="galeria-masonry" id="gal-grid-todos">
-
-          <div class="galeria-overlay"><div class="galeria-leg">Dia dos Povos Originários · Campo Grande</div></div>
-        </div>
-        
-        
-      </div>
-    </div>
-    <div class="yt-panel" id="gal-conselheiros">
-      <p style="color:rgba(249,245,237,.4);font-size:.82rem;padding:1rem 0 .5rem">
-      </p>
-      <div class="galeria-masonry" id="gal-grid-conselheiros"></div>
-    </div>
-    <div class="yt-panel" id="gal-caciques">
-      <p style="color:rgba(249,245,237,.4);font-size:.82rem;padding:1rem 0 .5rem">
-        📌 Primeiro carregamento: fotos dos caciques e suas aldeias.
-      </p>
-      <div class="galeria-masonry" id="gal-grid-caciques"></div>
-    </div>
-    <div class="yt-panel" id="gal-eventos"><div class="galeria-masonry" id="gal-grid-eventos"></div></div>
-    <div class="yt-panel" id="gal-reunioes"><div class="galeria-masonry" id="gal-grid-reunioes"></div></div>
-    <div class="yt-panel" id="gal-aldeia"><div class="galeria-masonry" id="gal-grid-aldeia"></div></div>
-
-    <!-- ADM: adicionar foto -->
-    
-  </div>
-</section>
+  </section>
 
 <section id="conselheiros" class="sec sec-dark2">
   <div class="sec-w">
@@ -3525,6 +3517,8 @@ function renderFotoGaleria(item, fbKey) {
     `<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">✕</button>` +
     `<button class="adm-panel" onclick="event.stopPropagation();editarLegenda(event,this.closest('.galeria-item').querySelector('.galeria-leg'))" style="position:absolute;top:.4rem;left:.4rem;width:26px;height:26px;background:rgba(42,74,28,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%" title="Editar legenda">✏️</button>` +
     `<button class="adm-panel" onclick="event.stopPropagation();substituirFotoGal(this)" style="position:absolute;top:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(27,58,92,.85);border:none;color:white;font-size:.7rem;cursor:pointer;border-radius:50%" title="Substituir foto">🔄</button>` +
+    `<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,-1)" style="position:absolute;bottom:.4rem;left:.4rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para trás">◀</button>` +
+    `<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,1)" style="position:absolute;bottom:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para frente">▶</button>` +
     `</div>`;
 
   var gridTodos = document.getElementById('gal-grid-todos');
@@ -3610,14 +3604,7 @@ function renderRelease(item, fbKey) {
 document.addEventListener('DOMContentLoaded', carregarDoGitHub);
 
 // === DADOS INICIAIS DOS MEMBROS ===
-var MEMBROS = [
-  { nome: 'Conselheiro(a) Terena 1', cargo: 'Conselheiro(a)', etnia: 'Terena · Aldeia Marçal de Souza', tipo: 'tipo-titular', foto: '' },
-  { nome: 'Conselheiro(a) Guarani', cargo: 'Conselheiro(a)', etnia: 'Guarani-Kaiowá · Campo Grande', tipo: 'tipo-titular', foto: '' },
-  { nome: 'Conselheiro(a) Kadiwéu', cargo: 'Conselheiro(a)', etnia: 'Kadiwéu · Campo Grande', tipo: 'tipo-titular', foto: '' },
-  { nome: 'Conselheiro(a) Terena 2', cargo: 'Conselheiro(a)', etnia: 'Terena · Comunidade Índio Forte', tipo: 'tipo-titular', foto: '' },
-  { nome: 'Conselheiro(a) Guató', cargo: 'Conselheiro(a)', etnia: 'Guató · Campo Grande', tipo: 'tipo-titular', foto: '' },
-  { nome: 'Representante Prefeitura', cargo: 'Conselheiro(a)', etnia: 'Representante Municipal · Indígena', tipo: 'tipo-titular', foto: '' },
-];
+var MEMBROS = [];
 
 function renderMembros() {
   var g = document.getElementById('grid-membros');
@@ -4311,6 +4298,27 @@ function prevGalFoto(input) {
 
 
 
+
+// ══ REORDENAR FOTOS (troca de posição persistente) ══
+function moverFotoGal(btn, dir) {
+  var el = btn.closest('.galeria-item');
+  if (!el || !el.dataset.fbkey) return;
+  var viz = dir < 0 ? el.previousElementSibling : el.nextElementSibling;
+  while (viz && !(viz.classList && viz.classList.contains('lb-item') && viz.dataset.fbkey)) {
+    viz = dir < 0 ? viz.previousElementSibling : viz.nextElementSibling;
+  }
+  if (!viz) { notif('\u26A0\uFE0F A foto j\u00E1 est\u00E1 na ponta.'); return; }
+  var db = dbLer();
+  var a = el.dataset.fbkey, b = viz.dataset.fbkey;
+  if (db.galeria && db.galeria[a] && db.galeria[b]) {
+    var t = db.galeria[a].ts; db.galeria[a].ts = db.galeria[b].ts; db.galeria[b].ts = t;
+    dbSalvar(db); salvarNoGitHub();
+  }
+  var pai = el.parentNode;
+  if (dir < 0) pai.insertBefore(el, viz); else pai.insertBefore(viz, el);
+  notif('\u2195\uFE0F Ordem das fotos atualizada e salva!');
+}
+
 function substituirFotoGal(btn) {
   var item = btn.closest('.galeria-item');
   if (!item) return;
@@ -4459,6 +4467,8 @@ function _galItemHtmlAlbum(item, fbKey) {
     '<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">\u2715</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();editarLegenda(event,this.closest(\'.galeria-item\').querySelector(\'.galeria-leg\'))" style="position:absolute;top:.4rem;left:.4rem;width:26px;height:26px;background:rgba(42,74,28,.85);border:none;color:white;font-size:.72rem;cursor:pointer;border-radius:50%" title="Editar legenda">\u270F\uFE0F</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();substituirFotoGal(this)" style="position:absolute;top:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(27,58,92,.85);border:none;color:white;font-size:.68rem;cursor:pointer;border-radius:50%" title="Substituir foto">\uD83D\uDD04</button>' +
+    '<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,-1)" style="position:absolute;bottom:.4rem;left:.4rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para tras">\u25C0</button>' +
+    '<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,1)" style="position:absolute;bottom:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para frente">\u25B6</button>' +
     '</div>';
 }
 

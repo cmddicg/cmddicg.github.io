@@ -2826,7 +2826,15 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       <button class="btn-primario" onclick="pubMembro()" style="margin-top:.75rem;font-size:.75rem;padding:.6rem 1.2rem">&#9989; Adicionar Conselheiro(a)</button>
     </div>
   </div>
-</section>
+
+    <div style="text-align:center;margin-top:2.5rem">
+      <button onclick="abrirGaleriaConselheiros()" style="background:linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18));border:1px solid rgba(212,149,74,.5);color:var(--am);font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;padding:.9rem 1.8rem;border-radius:6px;cursor:pointer;transition:.3s"
+        onmouseover="this.style.background='rgba(212,149,74,.3)';this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.background='linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18))';this.style.transform='none'">
+        📸 Ver as fotos dos Conselheiros e Conselheiras na Galeria
+      </button>
+    </div>
+  </section>
 
 <section id="releases" class="sec sec-palha">
   <div class="sec-w">
@@ -4381,6 +4389,14 @@ function converterLinkGF(url) {
 }
 
 // Abas de galeria
+
+function abrirGaleriaConselheiros() {
+  var btn = document.querySelector(".yt-tab[onclick*=\'gal-conselheiros\']");
+  if (btn) trocarGal(btn, 'gal-conselheiros');
+  var sec = document.getElementById('galeria');
+  if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+}
+
 function trocarGal(btn, panelId) {
   document.querySelectorAll('#gal-tabs-bar .yt-tab').forEach(function(t){ t.classList.remove('ativo'); });
   document.querySelectorAll('#galeria .yt-panel').forEach(function(p){ p.style.display='none'; p.classList.remove('ativo'); });

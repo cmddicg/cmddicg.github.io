@@ -2087,6 +2087,39 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 @media (max-width:1100px){#fx-margens{display:none}}
 @media (prefers-reduced-motion: reduce){.fx-marca{transition:none}}
 
+
+/* ═══ ACERVO HISTÓRICO — moldura de museu ═══ */
+.fx-historica{
+  border:none !important;
+  padding:10px;background:linear-gradient(135deg,#2b1d10,#1a120a);
+  box-shadow:inset 0 0 0 1px rgba(232,184,109,.55), inset 0 0 0 4px #1a120a, inset 0 0 0 5px rgba(212,149,74,.4), 0 10px 36px rgba(0,0,0,.5) !important;
+  border-radius:4px !important;
+}
+.fx-historica img{
+  filter:sepia(.32) contrast(1.04) saturate(.85);
+  transition:filter .6s ease;
+}
+.fx-historica:hover img{filter:sepia(.12) contrast(1.05) saturate(.96)}
+.fx-historica .galeria-leg, .fx-historica .gal-ind-leg{
+  font-family:'Cinzel',serif !important;
+  letter-spacing:.04em;
+  font-size:.68rem !important;
+}
+.fx-placa{
+  position:absolute;top:14px;left:14px;z-index:3;
+  background:linear-gradient(135deg,#D4954A,#E8B86D);
+  color:#1a120a;font-size:.56rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  padding:.22rem .55rem;border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.4);
+  pointer-events:none;
+}
+
+/* ═══ FRISOS ORNAMENTAIS TERENA entre as seções ═══ */
+.fx-friso{
+  height:26px;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:.5;margin:0;overflow:hidden;
+}
+.fx-friso svg{height:14px;width:min(520px,80%);display:block}
+
 </style>
 </head>
 <body>
@@ -5382,6 +5415,46 @@ document.addEventListener('keydown', function(e) {
       new MutationObserver(function(){
         if(el.style.display==='flex')soproCurto();
       }).observe(el,{attributes:true,attributeFilter:['style']});
+    });
+
+
+    // 🖼 ACERVO HISTÓRICO: álbuns/fotos com "histór" ou "memória" no nome ganham moldura de museu
+    function aplicarMolduraHistorica(){
+      var alvo=/hist|mem[óo]ria|memoria|acervo|antig/i;
+      document.querySelectorAll('.album-card').forEach(function(card){
+        if(!alvo.test(card.dataset.ocasiao||''))return;
+        if(!card.classList.contains('fx-historica')){
+          card.classList.add('fx-historica');
+          var p=document.createElement('div');p.className='fx-placa';p.textContent='✦ Acervo Histórico';
+          card.appendChild(p);
+        }
+      });
+      document.querySelectorAll('.galeria-item[data-fbkey]').forEach(function(it){
+        if(!alvo.test(it.dataset.leg||''))return;
+        it.classList.add('fx-historica');
+      });
+      var grid=document.getElementById('modal-album-grid');
+      var tit=document.getElementById('modal-album-titulo');
+      if(grid&&tit&&alvo.test(tit.textContent||'')){
+        grid.querySelectorAll('.galeria-item').forEach(function(it){it.classList.add('fx-historica');});
+      }
+    }
+    aplicarMolduraHistorica();
+    new MutationObserver(function(){aplicarMolduraHistorica();})
+      .observe(document.getElementById('galeria')||document.body,{childList:true,subtree:true});
+
+    // 🪢 FRISOS ORNAMENTAIS entre as seções (trama geométrica Terena em vetor)
+    var FRISO='<svg viewBox="0 0 520 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'
+      +'<path d="M0 7h70" stroke="#C45A28" stroke-width="1" opacity=".6"/>'
+      +'<path d="M450 7h70" stroke="#C45A28" stroke-width="1" opacity=".6"/>'
+      +'<path d="M80 7 95 2l15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5" fill="none" stroke="#E8A853" stroke-width="1.4"/>'
+      +'<path d="M80 7 95 12l15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5 15 5 15-5" fill="none" stroke="#6B3D1E" stroke-width="1.2" opacity=".8"/>'
+      +'<rect x="256" y="3" width="8" height="8" transform="rotate(45 260 7)" fill="#E8A853"/>'
+      +'</svg>';
+    document.querySelectorAll('section[id]').forEach(function(sec,i){
+      if(i===0)return;
+      var f=document.createElement('div');f.className='fx-friso';f.innerHTML=FRISO;
+      sec.parentNode.insertBefore(f,sec);
     });
 
   }catch(e){/* efeitos nunca devem quebrar o site */}

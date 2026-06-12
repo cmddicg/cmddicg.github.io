@@ -2030,6 +2030,54 @@ html { scroll-behavior: smooth; }
   .hero-h1, .sec-h2, .sec-h2-dark, .hero-escudo img, .escudo-svg, .sec-h2::after { animation: none !important; }
 }
 
+
+/* ═══════════ A TERRA QUE RESPIRA — efeitos Terena ═══════════ */
+
+/* 🔆 Sol do cerrado: luz adaptativa ao horário (véu suave por cima de tudo) */
+#fx-luz{position:fixed;inset:0;pointer-events:none;z-index:9970;mix-blend-mode:soft-light;opacity:0;transition:opacity 2s ease}
+html.fx-manha #fx-luz{background:linear-gradient(160deg,rgba(255,214,140,.55),rgba(255,170,80,.2) 60%,transparent);opacity:.5}
+html.fx-tarde #fx-luz{background:linear-gradient(200deg,rgba(232,168,83,.5),rgba(196,90,40,.25) 55%,transparent);opacity:.5}
+html.fx-noite #fx-luz{background:linear-gradient(180deg,rgba(20,38,72,.55),rgba(10,18,40,.3) 60%,transparent);opacity:.55}
+
+/* 🌿 Terra viva: micropadrões de jenipapo e urucum revelados pelo cursor */
+#fx-terra{position:fixed;inset:0;pointer-events:none;z-index:9965;opacity:.16;
+  background:
+    repeating-linear-gradient(45deg, rgba(107,61,30,.9) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(-45deg, rgba(196,90,40,.7) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(90deg, rgba(42,74,28,.5) 0 1px, transparent 1px 22px);
+  -webkit-mask-image:radial-gradient(circle 200px at var(--fx-mx,-500px) var(--fx-my,-500px), rgba(0,0,0,.9), transparent 70%);
+  mask-image:radial-gradient(circle 200px at var(--fx-mx,-500px) var(--fx-my,-500px), rgba(0,0,0,.9), transparent 70%);
+}
+@media (pointer:coarse){#fx-terra{display:none}}
+
+/* 🌀 Espírito do vento: ondulação suave nos itens do menu */
+@keyframes fxVento{0%,100%{transform:translateY(0)}30%{transform:translateY(-2.5px)}60%{transform:translateY(1.2px)}}
+nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
+
+/* 🪶 Trama de palha viva: textura trançada no hero e no rodapé, reage à rolagem */
+.fx-palha{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.10;
+  background:
+    repeating-linear-gradient(0deg, rgba(232,184,109,.85) 0 3px, transparent 3px 12px),
+    repeating-linear-gradient(90deg, rgba(212,149,74,.6) 0 3px, transparent 3px 12px);
+  background-size:var(--fx-palha,26px) var(--fx-palha,26px);
+  transition:background-size .6s ease;
+}
+
+/* 🪔 Memória viva: respiração luminosa nas fotos da galeria */
+@keyframes fxMemoria{0%,100%{box-shadow:0 0 0 rgba(232,184,109,0)}50%{box-shadow:0 0 18px rgba(232,184,109,.22)}}
+.galeria-item, .album-card{animation:fxMemoria 7s ease-in-out infinite}
+.galeria-item:nth-child(odd), .album-card:nth-child(odd){animation-delay:3.2s}
+
+/* 🪶 Sopro ancestral: partículas de urucum e jenipapo na entrada */
+#fx-sopro{position:fixed;inset:0;pointer-events:none;z-index:9980}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce){
+  nav a:hover{animation:none}
+  .galeria-item,.album-card{animation:none}
+  #fx-sopro,#fx-terra{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -5210,5 +5258,65 @@ document.addEventListener('keydown', function(e) {
     </div>
   </div>
 </div>
+
+<script>
+/* ═══ A TERRA QUE RESPIRA — camada independente, não toca em nada existente ═══ */
+(function(){
+  try{
+    // 🔆 Sol do cerrado
+    var luz=document.createElement('div');luz.id='fx-luz';document.body.appendChild(luz);
+    var h=new Date().getHours();
+    document.documentElement.classList.add(h>=5&&h<12?'fx-manha':h>=12&&h<18?'fx-tarde':'fx-noite');
+
+    // 🌿 Terra viva (cursor)
+    var terra=document.createElement('div');terra.id='fx-terra';document.body.appendChild(terra);
+    document.addEventListener('pointermove',function(e){
+      terra.style.setProperty('--fx-mx',e.clientX+'px');
+      terra.style.setProperty('--fx-my',e.clientY+'px');
+    },{passive:true});
+
+    // 🪶 Trama de palha no hero e rodapé, reagindo à rolagem
+    ['#hero','footer'].forEach(function(sel){
+      var alvo=document.querySelector(sel);
+      if(!alvo)return;
+      if(getComputedStyle(alvo).position==='static')alvo.style.position='relative';
+      var p=document.createElement('div');p.className='fx-palha';alvo.appendChild(p);
+    });
+    var ticking=false;
+    window.addEventListener('scroll',function(){
+      if(ticking)return;ticking=true;
+      requestAnimationFrame(function(){
+        var s=26+Math.min(22,window.scrollY/60);
+        document.querySelectorAll('.fx-palha').forEach(function(p){p.style.setProperty('--fx-palha',s+'px');});
+        ticking=false;
+      });
+    },{passive:true});
+
+    // 🪶 Sopro ancestral: partículas finas de urucum/jenipapo na entrada (8s, depois some)
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var cv=document.createElement('canvas');cv.id='fx-sopro';document.body.appendChild(cv);
+      var ctx=cv.getContext('2d');
+      function dim(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+      dim();window.addEventListener('resize',dim,{passive:true});
+      var cores=['rgba(196,90,40,','rgba(232,168,83,','rgba(58,42,24,','rgba(42,74,28,'];
+      var pts=[];for(var i=0;i<46;i++){pts.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:.8+Math.random()*1.8,vx:.25+Math.random()*.6,vy:(Math.random()-.5)*.25,c:cores[i%4],a:.25+Math.random()*.35});}
+      var t0=Date.now(),dur=8000;
+      (function anima(){
+        var dt=Date.now()-t0;
+        if(dt>dur){cv.remove();return;}
+        var fade=dt>dur-2000?(dur-dt)/2000:1;
+        ctx.clearRect(0,0,cv.width,cv.height);
+        pts.forEach(function(p){
+          p.x+=p.vx;p.y+=p.vy+Math.sin((p.x+dt/14)/60)*.18;
+          if(p.x>cv.width+10){p.x=-10;p.y=Math.random()*cv.height;}
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.2832);
+          ctx.fillStyle=p.c+(p.a*fade)+')';ctx.fill();
+        });
+        requestAnimationFrame(anima);
+      })();
+    }
+  }catch(e){/* efeitos nunca devem quebrar o site */}
+})();
+</script>
 </body>
 </html>

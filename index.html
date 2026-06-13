@@ -4588,9 +4588,16 @@ function publicarLote() {
 function _galItemHtmlAlbum(item, fbKey) {
   var leg = item.leg || '';
   var src = item.src || '';
-  var finalSrc = src.indexOf('/upload/') > -1 ? src.replace('/upload/', '/upload/w_800,q_auto,f_auto/') : src;
-  return '<div class="galeria-item lb-item" data-src="' + src + '" data-leg="' + leg.replace(/"/g, '&quot;') + '" data-fbkey="' + fbKey + '" style="position:relative;overflow:hidden;border-radius:6px;cursor:pointer" onclick="abrirLightbox(event,this)">' +
-    '<img src="' + finalSrc + '" alt="" style="width:100%;height:170px;object-fit:cover;display:block" onerror="this.style.display=&quot;none&quot;">' +
+  var ehVideo = item.tipo === 'video';
+  var poster = item.poster || (ehVideo && src.indexOf('/upload/') > -1 ? src.replace('/upload/', '/upload/w_800,so_0,q_auto/').replace(/\.(mp4|mov|webm|ogg)$/i, '.jpg') : '');
+  var finalSrc = (!ehVideo && src.indexOf('/upload/') > -1) ? src.replace('/upload/', '/upload/w_800,q_auto,f_auto/') : src;
+  var midia = ehVideo
+    ? '<div style="width:100%;height:170px;background:#000 center/cover no-repeat' + (poster ? " url(\'" + poster + "\')" : '') + ';display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:48px;height:48px;border-radius:50%;background:rgba(212,149,74,.92);display:flex;align-items:center;justify-content:center;color:#0A0F08;font-size:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,.5)">\u25B6</div></div>' +
+      '<div style="position:absolute;top:.4rem;left:50%;transform:translateX(-50%);background:rgba(180,30,30,.92);color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.12em;padding:.15rem .5rem;border-radius:10px;z-index:2">\uD83C\uDFAC V\u00CDDEO</div>'
+    : '<img src="' + finalSrc + '" alt="" style="width:100%;height:170px;object-fit:cover;display:block" onerror="this.style.display=&quot;none&quot;">';
+  return '<div class="galeria-item lb-item" data-src="' + src + '" data-leg="' + leg.replace(/"/g, '&quot;') + '" data-fbkey="' + fbKey + '" data-tipo="' + (ehVideo ? 'video' : 'foto') + '" style="position:relative;overflow:hidden;border-radius:6px;cursor:pointer" onclick="abrirLightbox(event,this)">' +
+    midia +
     '<div class="galeria-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.85) 0%,transparent 55%);display:flex;align-items:flex-end;padding:.6rem"><div class="galeria-leg" style="font-size:.7rem;color:rgba(255,255,255,.85)" ondblclick="editarLegenda(event,this)">' + leg + '</div></div>' +
     '<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">\u2715</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();editarLegenda(event,this.closest(\'.galeria-item\').querySelector(\'.galeria-leg\'))" style="position:absolute;top:.4rem;left:.4rem;width:26px;height:26px;background:rgba(42,74,28,.85);border:none;color:white;font-size:.72rem;cursor:pointer;border-radius:50%" title="Editar legenda">\u270F\uFE0F</button>' +
@@ -4615,8 +4622,14 @@ function renderAlbunsOcasiao() {
   Object.keys(grupos).forEach(function(oc) {
     var g = grupos[oc];
     g.itens.sort(function(a, b) { return (a.item.ts || 0) - (b.item.ts || 0); });
-    var capa = g.itens[0].item.src;
-    var capaSrc = capa.indexOf('/upload/') > -1 ? capa.replace('/upload/', '/upload/w_600,q_auto,f_auto/') : capa;
+    var capaItem = g.itens.filter(function(x){return x.item.tipo!=='video';})[0] || g.itens[0];
+    var capa = capaItem.item.src;
+    var capaSrc;
+    if (capaItem.item.tipo === 'video') {
+      capaSrc = capa.indexOf('/upload/') > -1 ? capa.replace('/upload/', '/upload/w_600,so_0,q_auto/').replace(/\.(mp4|mov|webm|ogg)$/i, '.jpg') : capa;
+    } else {
+      capaSrc = capa.indexOf('/upload/') > -1 ? capa.replace('/upload/', '/upload/w_600,q_auto,f_auto/') : capa;
+    }
     var cardHtml = '<div class="album-card" data-ocasiao="' + oc.replace(/"/g, '&quot;') + '" onclick="abrirAlbum(this.dataset.ocasiao)" style="position:relative;overflow:hidden;break-inside:avoid;margin-bottom:.75rem;cursor:pointer;border-radius:8px;border:2px solid rgba(212,149,74,.45)">' +
       '<img src="' + capaSrc + '" alt="" style="width:100%;display:block;object-fit:cover;min-height:160px">' +
       '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.92) 0%,rgba(13,11,7,.25) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:.9rem">' +
@@ -4665,11 +4678,72 @@ function abrirAlbum(ocasiao) {
   if (!itens.length) return;
   itens.sort(function(a, b) { return (a.item.ts || 0) - (b.item.ts || 0); });
   document.getElementById('modal-album-titulo').textContent = ocasiao;
-  document.getElementById('modal-album-sub').textContent = itens.length + ' foto(s) \u2014 clique em uma foto para ampliar';
+  var nF = itens.filter(function(x){return x.item.tipo!=='video';}).length;
+  var nV = itens.length - nF;
+  document.getElementById('modal-album-sub').textContent = nF + ' foto(s)' + (nV ? ' e ' + nV + ' v\u00EDdeo(s)' : '') + ' \u2014 clique para ampliar';
+  window._albumAtual = ocasiao;
   var grid = document.getElementById('modal-album-grid');
   grid.innerHTML = itens.map(function(x) { return _galItemHtmlAlbum(x.item, x.key); }).join('');
+  var add = document.getElementById('album-add-zone');
+  if (add) {
+    add.innerHTML =
+      '<button class="adm-panel" onclick="addAoAlbum(\'foto\')" style="background:rgba(42,74,28,.9);border:none;color:#fff;font-size:.72rem;font-weight:700;padding:.55rem 1.1rem;border-radius:5px;cursor:pointer;margin:.3rem">\u2795 Adicionar fotos a este \u00E1lbum</button>' +
+      '<button class="adm-panel" onclick="addAoAlbum(\'video\')" style="background:rgba(27,58,92,.9);border:none;color:#fff;font-size:.72rem;font-weight:700;padding:.55rem 1.1rem;border-radius:5px;cursor:pointer;margin:.3rem">\uD83C\uDFAC Adicionar v\u00EDdeo a este \u00E1lbum</button>' +
+      '<div id="album-add-status" style="font-size:.78rem;margin-top:.5rem;color:var(--am)"></div>';
+  }
   document.getElementById('modal-album').style.display = 'flex';
   document.body.style.overflow = 'hidden';
+}
+
+// ══ ADICIONAR FOTOS OU VÍDEOS A UM ÁLBUM EXISTENTE ══
+function addAoAlbum(tipo) {
+  var ocasiao = window._albumAtual;
+  if (!ocasiao) return;
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = tipo === 'video' ? 'video/*' : 'image/*';
+  if (tipo !== 'video') input.multiple = true;
+  input.onchange = function() {
+    if (!input.files || !input.files.length) return;
+    var arquivos = Array.prototype.slice.call(input.files);
+    var st = document.getElementById('album-add-status');
+    var album = 'eventos';
+    var db0 = dbLer();
+    if (db0.galeria) Object.keys(db0.galeria).forEach(function(k){ if(db0.galeria[k].ocasiao===ocasiao && db0.galeria[k].album) album=db0.galeria[k].album; });
+    var resultados = [], idx = 0;
+    function proximo() {
+      if (idx >= arquivos.length) { finalizar(); return; }
+      if (st) st.textContent = '\u23F3 Enviando ' + (tipo==='video'?'v\u00EDdeo ':'foto ') + (idx+1) + ' de ' + arquivos.length + '...';
+      var fd = new FormData();
+      fd.append('file', arquivos[idx]);
+      fd.append('upload_preset', 'cmddi_galeria');
+      var xhr = new XMLHttpRequest();
+      var endpoint = tipo === 'video' ? 'video' : 'image';
+      xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/' + endpoint + '/upload', true);
+      xhr.onload = function() {
+        try {
+          var d = JSON.parse(xhr.responseText);
+          if (d.secure_url) resultados.push({ src: d.secure_url, leg: ocasiao, album: album, ocasiao: ocasiao, tipo: (tipo==='video'?'video':'foto'), ts: Date.now() + idx });
+        } catch(e) {}
+        idx++; proximo();
+      };
+      xhr.onerror = function() { idx++; proximo(); };
+      xhr.send(fd);
+    }
+    function finalizar() {
+      if (!resultados.length) { if (st) st.textContent = '\u274C Nada foi enviado. Verifique a conex\u00E3o.'; return; }
+      var db = dbLer();
+      if (!db.galeria) db.galeria = {};
+      resultados.forEach(function(r, i) { db.galeria['k' + r.ts + '_' + i] = r; });
+      dbSalvar(db); salvarNoGitHub();
+      renderAlbunsOcasiao();
+      abrirAlbum(ocasiao);
+      if (st) st.textContent = '\u2705 ' + resultados.length + ' item(ns) adicionado(s) ao \u00E1lbum e salvo(s)!';
+      notif('\u2705 ' + resultados.length + ' item(ns) adicionado(s) ao \u00E1lbum!');
+    }
+    proximo();
+  };
+  input.click();
 }
 
 function fecharAlbum() {
@@ -5092,7 +5166,7 @@ function abrirLightbox(e,el){
   if(e)e.preventDefault();
   var grid=el.closest('.galeria-masonry')||el.parentElement;
   var items=Array.from(grid.querySelectorAll('.lb-item'));
-  window._lbItems=items.map(function(it){return{src:it.dataset.src,leg:it.dataset.leg||''};});
+  window._lbItems=items.map(function(it){return{src:it.dataset.src,leg:it.dataset.leg||'',tipo:it.dataset.tipo||'foto'};});
   window._lbIdx=items.indexOf(el);if(window._lbIdx<0)window._lbIdx=0;
   _renderLightbox();
   var lb=document.getElementById('lightbox');
@@ -5101,7 +5175,20 @@ function abrirLightbox(e,el){
 function _renderLightbox(){
   var item=window._lbItems[window._lbIdx];if(!item)return;
   var img=document.getElementById('lb-img');var leg=document.getElementById('lb-leg');var cnt=document.getElementById('lb-count');
-  if(img)img.src=item.src;if(leg)leg.textContent=item.leg;
+  var vid=document.getElementById('lb-video');
+  if(!vid){
+    vid=document.createElement('video');vid.id='lb-video';vid.controls=true;vid.playsInline=true;
+    vid.style.cssText='max-width:90vw;max-height:80vh;display:none;border-radius:6px;background:#000';
+    if(img&&img.parentNode)img.parentNode.insertBefore(vid,img.nextSibling);
+  }
+  if(item.tipo==='video'){
+    if(img)img.style.display='none';
+    vid.src=item.src;vid.style.display='block';
+  }else{
+    try{vid.pause();}catch(e){} vid.removeAttribute('src');vid.style.display='none';
+    if(img){img.style.display='';img.src=item.src;}
+  }
+  if(leg)leg.textContent=item.leg;
   if(cnt)cnt.textContent=(window._lbIdx+1)+' / '+window._lbItems.length;
 }
 function navLightbox(dir){window._lbIdx=(window._lbIdx+dir+window._lbItems.length)%window._lbItems.length;_renderLightbox();}
@@ -5314,6 +5401,7 @@ document.addEventListener('keydown', function(e) {
       <h3 id="modal-album-titulo" style="font-family:'Cinzel',serif;font-size:1.35rem;color:#EDE5CF;margin:.3rem 0 .2rem"></h3>
       <button class="adm-panel" onclick="renomearAlbum(document.getElementById('modal-album-titulo').textContent)" style="background:rgba(42,74,28,.9);border:none;color:#fff;font-size:.68rem;font-weight:700;padding:.35rem .7rem;border-radius:4px;cursor:pointer;margin-bottom:.5rem">&#9999;&#65039; Renomear este &#225;lbum</button>
       <div id="modal-album-sub" style="font-size:.78rem;color:rgba(237,229,207,.55);margin-bottom:1.2rem"></div>
+      <div class="adm-panel" id="album-add-zone" style="text-align:center;margin-bottom:1.2rem;padding:.8rem;border:1px dashed rgba(212,149,74,.4);border-radius:8px"></div>
       <div id="modal-album-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem"></div>
     </div>
   </div>

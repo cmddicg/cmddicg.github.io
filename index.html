@@ -2242,7 +2242,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
     </div>
     <div class="hist-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
-      <div>
+      <div data-i18n="hist.p3">
         <p class="sec-lead" data-i18n="hist.p1">
           O Conselho Municipal dos Direitos e Defesa dos Povos Indígenas de Campo Grande foi criado em 2005, sendo o primeiro órgão deliberativo municipal do Brasil dedicado exclusivamente à defesa dos direitos dos povos indígenas em contexto urbano.
         </p>
@@ -2288,7 +2288,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <div class="htl-item">
           <div class="htl-ano">2025</div>
           <div class="htl-t" data-i18n="hist.t6.tit">6ª Gestão · Plano Municipal Primeira Infância</div>
-          <div class="htl-p">CMDDI integra o Comitê do Plano Municipal pela Primeira Infância (Decreto nº 16.278/2025), reafirmando papel deliberativo no planejamento municipal.</div>
+          <div class="htl-p" data-i18n="hist.t6.txt">CMDDI integra o Comitê do Plano Municipal pela Primeira Infância (Decreto nº 16.278/2025), reafirmando papel deliberativo no planejamento municipal.</div>
         </div>
       </div>
     </div>
@@ -2336,7 +2336,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 <!-- AGENDA -->
 <section id="agenda" class="sec sec-dark2">
   <div class="sec-w">
-    <div class="eyb">Próximos encontros</div>
+    <div class="eyb" data-i18n="agenda.proximos">Próximos encontros</div>
     <h2 class="sec-h2" data-i18n="agenda.titulo">Agenda do Conselho</h2>
     <p class="sec-lead" data-i18n="agenda.desc">Reuniões ordinárias, extraordinárias, audiências públicas e eventos culturais do CMDDI e de seus integrantes.</p>
 
@@ -2522,7 +2522,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
     <!-- YOUTUBE -->
     <div style="margin-top:3.5rem" id="videos">
-      <div class="eyb eyb-verde">Canal CMDDI no YouTube</div>
+      <div class="eyb eyb-verde" data-i18n="yt.canalTitulo">Canal CMDDI no YouTube</div>
       <h3 style="font-family:'Cinzel',serif;font-size:1.25rem;color:var(--tx);margin-bottom:1.5rem" data-i18n="noticias.videos">Vídeos Institucionais e Reportagens</h3>
 
       <!-- Banner do canal -->
@@ -2539,12 +2539,12 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
       <!-- Abas por categoria -->
       <div class="yt-tabs" id="yt-tabs-bar">
-        <button class="yt-tab ativo" onclick="trocarYT(this,'yt-todos')">🎬 Todos</button>
+        <button class="yt-tab ativo" onclick="trocarYT(this,'yt-todos')" data-i18n="ytF.todos">🎬 Todos</button>
         <button class="yt-tab" onclick="trocarYT(this,'yt-reunioes')" data-i18n="ytF.reunioes">📋 Reuniões</button>
-        <button class="yt-tab" onclick="trocarYT(this,'yt-audiencias')">🏛️ Audiências Públicas</button>
+        <button class="yt-tab" onclick="trocarYT(this,'yt-audiencias')" data-i18n="ytF.audiencias">🏛️ Audiências Públicas</button>
         <button class="yt-tab" onclick="trocarYT(this,'yt-eventos')" data-i18n="ytF.eventos">🎨 Eventos Culturais</button>
-        <button class="yt-tab" onclick="trocarYT(this,'yt-reportagens')">📺 Reportagens</button>
-        <button class="yt-tab" onclick="trocarYT(this,'yt-ao-vivo')">🔴 Ao Vivo</button>
+        <button class="yt-tab" onclick="trocarYT(this,'yt-reportagens')" data-i18n="ytF.reportagens">📺 Reportagens</button>
+        <button class="yt-tab" onclick="trocarYT(this,'yt-ao-vivo')" data-i18n="ytF.aovivo">🔴 Ao Vivo</button>
       </div>
 
       <!-- Painéis -->
@@ -2702,7 +2702,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 <!-- GALERIA -->
 <section id="galeria" class="sec sec-dark2">
   <div class="sec-w">
-    <div class="eyb">Memória visual</div>
+    <div class="eyb" data-i18n="galeria.memoria">Memória visual</div>
     <h2 class="sec-h2" data-i18n="galeria.titulo">Galeria de Fotos</h2>
     <p class="sec-lead" data-i18n="galeria.desc">Registros de eventos, assembleias, cerimônias e ações do CMDDI. Escolha um álbum abaixo para abrir as fotos.</p>
 
@@ -2798,7 +2798,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
 <section id="conselheiros" class="sec sec-dark2">
   <div class="sec-w">
-    <div class="eyb">Composi&#231;&#227;o do Conselho</div>
+    <div class="eyb" data-i18n="eyb.composicao">Composi&#231;&#227;o do Conselho</div>
     <h2 class="sec-h2" data-i18n="cons.titulo">Conselheiros e Conselheiras</h2>
     <p class="sec-lead" data-i18n="cons.descP">Integrantes que comp&#245;em o CMDDI &#8212; representa&#231;&#227;o 100% ind&#237;gena, conforme a Lei n&#186; 8.655/2017.</p>
 
@@ -2842,9 +2842,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
     <div style="text-align:center;margin-top:2.5rem">
       <button onclick="abrirGaleriaConselheiros()" style="background:linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18));border:1px solid rgba(212,149,74,.5);color:var(--am);font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;padding:.9rem 1.8rem;border-radius:6px;cursor:pointer;transition:.3s"
         onmouseover="this.style.background='rgba(212,149,74,.3)';this.style.transform='translateY(-2px)'"
-        onmouseout="this.style.background='linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18))';this.style.transform='none'">
-        📸 Ver as fotos dos Conselheiros e Conselheiras na Galeria
-      </button>
+        onmouseout="this.style.background='linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18))';this.style.transform='none'" data-i18n="cons.verFotos">📸 Ver as fotos dos Conselheiros e Conselheiras na Galeria</button>
     </div>
   </section>
 
@@ -6074,6 +6072,13 @@ I18N["gal.legenda"] = {pt:"Legenda", en:"Caption", es:"Leyenda", fr:"Légende"};
 I18N["galeria.eventosF"] = {pt:"🎨 Eventos", en:"🎨 Events", es:"🎨 Eventos", fr:"🎨 Événements"};
 I18N["foot.epelo"] = {pt:"e pelo", en:"and by the", es:"y por el", fr:"et par l'"};
 I18N["foot.gestao"] = {pt:"Gestão", en:"Term", es:"Gestión", fr:"Mandat"};
+I18N["agenda.proximos"] = {pt:"Próximos encontros", en:"Upcoming meetings", es:"Próximos encuentros", fr:"Prochaines rencontres"};
+I18N["yt.canalTitulo"] = {pt:"Canal CMDDI no YouTube", en:"CMDDI Channel on YouTube", es:"Canal CMDDI en YouTube", fr:"Chaîne CMDDI sur YouTube"};
+I18N["ytF.todos"] = {pt:"🎬 Todos", en:"🎬 All", es:"🎬 Todos", fr:"🎬 Tous"};
+I18N["ytF.audiencias"] = {pt:"🏛️ Audiências Públicas", en:"🏛️ Public Hearings", es:"🏛️ Audiencias Públicas", fr:"🏛️ Audiences Publiques"};
+I18N["ytF.reportagens"] = {pt:"📺 Reportagens", en:"📺 Reports", es:"📺 Reportajes", fr:"📺 Reportages"};
+I18N["ytF.aovivo"] = {pt:"🔴 Ao Vivo", en:"🔴 Live", es:"🔴 En Vivo", fr:"🔴 En Direct"};
+I18N["galeria.memoria"] = {pt:"Memória visual", en:"Visual memory", es:"Memoria visual", fr:"Mémoire visuelle"};
 
 
 

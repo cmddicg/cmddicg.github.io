@@ -2665,16 +2665,22 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </select>
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">T&#237;tulo *</label>
-        <input class="adm-input" id="nc-tit" placeholder="T&#237;tulo da not&#237;cia ou release">
+        <label class="adm-label">T&#237;tulo * <span style="font-weight:400;opacity:.7">(preencha nos 4 idiomas)</span></label>
+        <input class="adm-input" id="nc-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 T\u00edtulo" style="margin-bottom:.4rem">
+        <input class="adm-input" id="nc-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 Title" style="margin-bottom:.4rem">
+        <input class="adm-input" id="nc-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 T\u00edtulo" style="margin-bottom:.4rem">
+        <input class="adm-input" id="nc-tit-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Fran\u00e7ais \u2014 Titre">
       </div>
       <div class="adm-form-group">
         <label class="adm-label">Data &#183; Fonte</label>
         <input class="adm-input" id="nc-meta" placeholder="Ex: 09 jun. 2026 &#183; Assessoria CMDDI">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Texto completo da not&#237;cia / release *</label>
-        <textarea class="adm-input" id="nc-resumo" rows="6" style="resize:vertical" placeholder="Texto integral. No site aparece um resumo; o texto completo abre ao clicar em Ler na &#237;ntegra."></textarea>
+        <label class="adm-label">Texto completo * <span style="font-weight:400;opacity:.7">(preencha nos 4 idiomas)</span></label>
+        <textarea class="adm-input" id="nc-resumo" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 texto integral"></textarea>
+        <textarea class="adm-input" id="nc-resumo-en" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 full text"></textarea>
+        <textarea class="adm-input" id="nc-resumo-es" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 texto integral"></textarea>
+        <textarea class="adm-input" id="nc-resumo-fr" rows="4" style="resize:vertical" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Fran\u00e7ais \u2014 texte int\u00e9gral"></textarea>
       </div>
       <div class="adm-form-group">
         <label class="adm-label">&#128247; Foto da not&#237;cia (opcional)</label>
@@ -2909,12 +2915,18 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </div>
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Título do Release</label>
-        <input class="adm-input" id="rel-tit" placeholder="Título do comunicado">
+        <label class="adm-label">Título do Release <span style="font-weight:400;opacity:.7">(4 idiomas)</span></label>
+        <input class="adm-input" id="rel-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="margin-bottom:.4rem">
+        <input class="adm-input" id="rel-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="margin-bottom:.4rem">
+        <input class="adm-input" id="rel-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="margin-bottom:.4rem">
+        <input class="adm-input" id="rel-tit-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Français">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Texto do Release</label>
-        <textarea class="adm-textarea" id="rel-texto" placeholder="Corpo do release..." style="height:100px"></textarea>
+        <label class="adm-label">Texto do Release <span style="font-weight:400;opacity:.7">(4 idiomas)</span></label>
+        <textarea class="adm-textarea" id="rel-texto" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="height:70px;margin-bottom:.4rem"></textarea>
+        <textarea class="adm-textarea" id="rel-texto-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="height:70px;margin-bottom:.4rem"></textarea>
+        <textarea class="adm-textarea" id="rel-texto-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="height:70px;margin-bottom:.4rem"></textarea>
+        <textarea class="adm-textarea" id="rel-texto-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Français" style="height:70px"></textarea>
       </div>
       <div class="adm-form-group">
         <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
@@ -3672,10 +3684,15 @@ function excluirFotoFirebase(btn) {
 function renderNoticia(item, fbKey) {
   var grid = document.querySelector('.noticias-grid');
   if (!grid || !item) return;
-  var resumoCurto = (item.resumo || '').length > 180 ? (item.resumo || '').substring(0, 180) + '\u2026' : (item.resumo || '');
+  var _lang = 'pt';
+  try { _lang = localStorage.getItem('cmddi_lang') || 'pt'; } catch(e) {}
+  var _tit = (item.i18n && item.i18n.titulo && item.i18n.titulo[_lang]) ? item.i18n.titulo[_lang] : (item.titulo || '');
+  var _res = (item.i18n && item.i18n.resumo && item.i18n.resumo[_lang]) ? item.i18n.resumo[_lang] : (item.resumo || '');
+  var resumoCurto = _res.length > 180 ? _res.substring(0, 180) + '\u2026' : _res;
   var card = document.createElement('div');
   card.className = 'noticia-sec nc-custom';
   card.dataset.key = fbKey;
+  try { card.dataset.i18n = JSON.stringify(item.i18n || {}); } catch(e) {}
   card.style.marginBottom = '1rem';
   var thumbHtml = item.foto
     ? '<div class="noticia-thumb"><img src="' + item.foto + '" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>'
@@ -3683,7 +3700,7 @@ function renderNoticia(item, fbKey) {
   card.innerHTML = thumbHtml +
     '<div class="noticia-body">' +
     '<div class="noticia-cat" style="color:var(--vd)">' + (item.cat || 'Noticia') + '</div>' +
-    '<div class="noticia-t">' + (item.titulo || '') + '</div>' +
+    '<div class="noticia-t">' + _tit + '</div>' +
     '<div class="noticia-resumo" style="text-align:justify">' + resumoCurto + '</div>' +
     (item.meta ? '<div class="noticia-data" style="color:var(--tx3)">\uD83D\uDCC5 ' + item.meta + '</div>' : '') +
     '<div style="margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">' +
@@ -3713,12 +3730,17 @@ function renderRelease(item, fbKey) {
     'Sa\u00FAde':'color:#5a7abf;border-color:rgba(90,122,191,.3)'
   };
   var style = catColors[item.cat] || 'color:var(--tx2)';
-  var resumoCurto = (item.texto || '').length > 220 ? (item.texto || '').substring(0, 220) + '\u2026' : (item.texto || '');
+  var _lang = 'pt';
+  try { _lang = localStorage.getItem('cmddi_lang') || 'pt'; } catch(e) {}
+  var _tit = (item.i18n && item.i18n.tit && item.i18n.tit[_lang]) ? item.i18n.tit[_lang] : (item.tit || '');
+  var _txt = (item.i18n && item.i18n.texto && item.i18n.texto[_lang]) ? item.i18n.texto[_lang] : (item.texto || '');
+  var resumoCurto = _txt.length > 220 ? _txt.substring(0, 220) + '\u2026' : _txt;
   var card = document.createElement('div');
   card.className = 'release-item rel-custom';
   card.dataset.key = fbKey;
+  try { card.dataset.i18n = JSON.stringify(item.i18n || {}); } catch(e) {}
   card.innerHTML = '<div class="rel-data-col"><div class="rel-dia">' + (item.dia || '--') + '</div><div class="rel-mes-ano">' + (item.mes || '') + '</div></div>' +
-    '<div><div class="rel-t">' + (item.tit || '') + '</div>' +
+    '<div><div class="rel-t">' + _tit + '</div>' +
     '<div class="rel-resumo" style="text-align:justify">' + resumoCurto + '</div>' +
     '<div style="margin-top:.55rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">' +
     '<button class="nc-ler-btn rel-ler-btn">\uD83D\uDCF0 Ler na integra</button>' +
@@ -3862,15 +3884,19 @@ function uploadFotoNoticia(input) {
 
 function pubNoticia() {
   var tit = v('nc-tit'), res = v('nc-resumo'), meta = v('nc-meta'), link = v('nc-link'), cat = v('nc-cat');
-  if (!tit || !res) { alert('Preencha titulo e texto.'); return; }
+  if (!tit || !res) { alert('Preencha pelo menos o titulo e o texto em portugues.'); return; }
   var key = 'not_' + Date.now();
   var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link, foto: v('nc-foto-url'),
-    arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now() };
+    arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now(),
+    i18n: {
+      titulo: { pt: tit, en: v('nc-tit-en')||tit, es: v('nc-tit-es')||tit, fr: v('nc-tit-fr')||tit },
+      resumo: { pt: res, en: v('nc-resumo-en')||res, es: v('nc-resumo-es')||res, fr: v('nc-resumo-fr')||res }
+    } };
   var db = dbLer(); if (!db.noticias) db.noticias = {};
   db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
   renderNoticia(item, key);
   notif('\u2705 Noticia publicada e salva!');
-  ['nc-tit','nc-resumo','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['nc-tit','nc-tit-en','nc-tit-es','nc-tit-fr','nc-resumo','nc-resumo-en','nc-resumo-es','nc-resumo-fr','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
   var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
 }
@@ -4054,12 +4080,16 @@ function pubRelease() {
   if (!tit || !texto) { alert('Preencha titulo e texto.'); return; }
   var key = 'rel_' + Date.now();
   var item = { dia: dia, mes: mes, tit: tit, texto: texto, cat: cat,
-    arquivo: v('rel-arq-url'), arquivoNome: v('rel-arq-nome'), ts: Date.now() };
+    arquivo: v('rel-arq-url'), arquivoNome: v('rel-arq-nome'), ts: Date.now(),
+    i18n: {
+      tit: { pt: tit, en: v('rel-tit-en')||tit, es: v('rel-tit-es')||tit, fr: v('rel-tit-fr')||tit },
+      texto: { pt: texto, en: v('rel-texto-en')||texto, es: v('rel-texto-es')||texto, fr: v('rel-texto-fr')||texto }
+    } };
   var db = dbLer(); if (!db.releases) db.releases = {};
   db.releases[key] = item; dbSalvar(db); salvarNoGitHub();
   renderRelease(item, key);
   notif('\u2705 Release publicado e salvo!');
-  ['rel-dia','rel-mes','rel-tit','rel-texto','rel-arq-url','rel-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['rel-dia','rel-mes','rel-tit','rel-tit-en','rel-tit-es','rel-tit-fr','rel-texto','rel-texto-en','rel-texto-es','rel-texto-fr','rel-arq-url','rel-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var st = document.getElementById('rel-arq-status'); if (st) st.style.display='none';
   var fi = document.getElementById('rel-arq'); if (fi) fi.value='';
 }
@@ -6106,6 +6136,35 @@ I18N["galeria.memoria"] = {pt:"Memória visual", en:"Visual memory", es:"Memoria
     });
     document.documentElement.setAttribute('lang', lang==='pt'?'pt-BR':lang);
     try{ localStorage.setItem('cmddi_lang', lang); }catch(e){}
+    // Re-traduzir conteúdo dinâmico (notícias criadas pelo painel)
+    document.querySelectorAll('.nc-custom').forEach(function(card){
+      try {
+        var i18n = card.dataset.i18n ? JSON.parse(card.dataset.i18n) : null;
+        if(i18n){
+          var tEl = card.querySelector('.noticia-t');
+          var rEl = card.querySelector('.noticia-resumo');
+          if(tEl && i18n.titulo && i18n.titulo[lang]) tEl.textContent = i18n.titulo[lang];
+          if(rEl && i18n.resumo && i18n.resumo[lang]){
+            var r = i18n.resumo[lang];
+            rEl.textContent = r.length>180 ? r.substring(0,180)+'\u2026' : r;
+          }
+        }
+      } catch(e) {}
+    });
+    document.querySelectorAll('.rel-custom').forEach(function(card){
+      try {
+        var i18n = card.dataset.i18n ? JSON.parse(card.dataset.i18n) : null;
+        if(i18n){
+          var tEl = card.querySelector('.rel-t');
+          var rEl = card.querySelector('.rel-resumo');
+          if(tEl && i18n.tit && i18n.tit[lang]) tEl.textContent = i18n.tit[lang];
+          if(rEl && i18n.texto && i18n.texto[lang]){
+            var r = i18n.texto[lang];
+            rEl.textContent = r.length>220 ? r.substring(0,220)+'\u2026' : r;
+          }
+        }
+      } catch(e) {}
+    });
   }
   window.setLang = aplicar;
   // idioma inicial: salvo > navegador > pt

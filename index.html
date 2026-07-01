@@ -1892,6 +1892,55 @@ body.adm-ok .cac-del-btn { display: flex !important; }
   background: rgba(255,255,255,.06) !important;
   border-color: rgba(212,149,74,.18) !important;
 }
+/* ===== BOTÃO TRADUÇÃO AUTOMÁTICA (global ADM) ===== */
+.adm-autotrad-btn{display:inline-flex;align-items:center;gap:.35rem;background:linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18));border:1px solid rgba(212,149,74,.4);color:var(--am);font-size:.72rem;font-weight:700;padding:.35rem .85rem;border-radius:20px;cursor:pointer;transition:.2s;letter-spacing:.03em;margin-bottom:.5rem}
+.adm-autotrad-btn:hover{background:rgba(212,149,74,.25);border-color:var(--am)}
+.adm-autotrad-btn .spin{display:none;width:11px;height:11px;border:2px solid rgba(212,149,74,.3);border-top-color:var(--am);border-radius:50%;animation:spin .7s linear infinite}
+.adm-autotrad-btn.carregando .spin{display:inline-block}
+.adm-autotrad-btn.carregando .ico{display:none}
+.adm-autotrad-feito{font-size:.7rem;color:#7bc67e;margin-left:.5rem;display:none}
+/* ===== SALA DE IMPRENSA ADM ===== */
+.si-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.si-tab{background:rgba(212,149,74,.12);border:1px solid rgba(212,149,74,.3);color:var(--am);padding:.45rem 1rem;border-radius:4px;cursor:pointer;font-size:.78rem;font-weight:600;letter-spacing:.04em;transition:.2s}
+.si-tab.ativo{background:var(--am);color:#1a1a1a}
+.si-pane{display:none}.si-pane.ativo{display:block}
+.si-card{background:rgba(255,255,255,.05);border:1px solid rgba(212,149,74,.2);border-radius:6px;padding:.9rem 1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:flex-start;gap:.7rem}
+.si-card-info{flex:1;min-width:0}
+.si-card-nome{font-weight:600;font-size:.9rem;color:var(--am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-card-meta{font-size:.78rem;color:rgba(249,245,237,.6);margin-top:.2rem}
+.si-card-acoes{display:flex;gap:.4rem;flex-shrink:0}
+.si-btn{background:none;border:1px solid rgba(212,149,74,.3);color:var(--am);padding:.3rem .6rem;border-radius:4px;cursor:pointer;font-size:.72rem;transition:.15s}
+.si-btn:hover{background:rgba(212,149,74,.15)}
+.si-btn.del{border-color:rgba(248,113,113,.3);color:#f87171}
+.si-btn.del:hover{background:rgba(248,113,113,.1)}
+.si-btn.pri{background:var(--am);color:#1a1a1a;border-color:var(--am);font-weight:700}
+.si-btn.pri:hover{opacity:.85}
+.si-grupo-tag{display:inline-block;background:rgba(42,74,28,.35);color:#7bc67e;font-size:.68rem;padding:.15rem .5rem;border-radius:10px;margin-right:.3rem;margin-top:.2rem}
+.si-check-label{display:flex;align-items:center;gap:.5rem;font-size:.82rem;padding:.3rem .2rem;cursor:pointer;border-radius:4px;transition:.1s}
+.si-check-label:hover{background:rgba(212,149,74,.08)}
+.si-check-label input{accent-color:var(--am);width:15px;height:15px;cursor:pointer}
+.si-lang-badge{display:inline-block;font-size:.7rem;padding:.15rem .5rem;border-radius:10px;margin:.15rem .2rem;font-weight:600;cursor:pointer;border:1px solid transparent;transition:.15s}
+.si-lang-badge.sel{border-color:var(--am);color:var(--am)}
+.si-lang-badge.nsel{opacity:.4}
+.si-lang-badge:hover{opacity:.9}
+.si-editor-tabs{display:flex;gap:.3rem;margin-bottom:.5rem}
+.si-editor-tab{font-size:.75rem;padding:.3rem .7rem;border-radius:3px;cursor:pointer;border:1px solid rgba(212,149,74,.2);color:rgba(249,245,237,.6);background:none;transition:.15s}
+.si-editor-tab.ativo{background:rgba(212,149,74,.2);color:var(--am);border-color:var(--am)}
+.si-editor-pane{display:none}.si-editor-pane.ativo{display:block}
+.si-traduzindo{display:none;align-items:center;gap:.5rem;font-size:.78rem;color:var(--am);padding:.4rem 0}
+.si-traduzindo.vis{display:flex}
+.si-spinner{width:14px;height:14px;border:2px solid rgba(212,149,74,.3);border-top-color:var(--am);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.si-env-lista{max-height:280px;overflow-y:auto;border:1px solid rgba(212,149,74,.15);border-radius:5px;padding:.4rem .5rem;margin:.5rem 0}
+.si-historico-item{display:flex;justify-content:space-between;align-items:flex-start;padding:.5rem .2rem;border-bottom:1px solid rgba(212,149,74,.08);gap:.5rem}
+.si-historico-item:last-child{border-bottom:none}
+.si-hist-titulo{font-size:.82rem;font-weight:600;color:var(--am)}
+.si-hist-meta{font-size:.72rem;color:rgba(249,245,237,.5);margin-top:.15rem}
+.si-prog{background:rgba(212,149,74,.1);border-radius:4px;height:6px;overflow:hidden;margin-top:.6rem}
+.si-prog-bar{height:100%;background:var(--am);border-radius:4px;width:0;transition:width .3s}
+.si-stat{text-align:center;padding:.5rem}
+.si-stat-n{font-size:1.6rem;font-weight:900;color:var(--am)}
+.si-stat-l{font-size:.72rem;color:rgba(249,245,237,.55);margin-top:.1rem}
 /* Seções claras — adm-panel */
 .sec-clara .adm-panel, .sec-palha .adm-panel {
   background: rgba(107,61,30,.07) !important;
@@ -2435,11 +2484,14 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           </div>
           <div class="adm-form-group">
             <label class="adm-label">Título</label>
+            <button class="adm-autotrad-btn" onclick="admTraduzir('evento')" id="btn-trad-evento"><span class="ico">✨</span><span class="spin"></span> Traduzir Título+Local PT → EN/ES/FR</button><span class="adm-autotrad-feito" id="ok-trad-evento">✅ Traduzido!</span>
             <input class="adm-input" id="ev-tit-in" placeholder="Título do evento">
+            <input type="hidden" id="ev-tit-in-en"><input type="hidden" id="ev-tit-in-es"><input type="hidden" id="ev-tit-in-fr">
           </div>
           <div class="adm-form-group">
             <label class="adm-label">Local e horário</label>
             <input class="adm-input" id="ev-loc-in" placeholder="Ex: Aldeia Marçal de Souza · 14h">
+            <input type="hidden" id="ev-loc-in-en"><input type="hidden" id="ev-loc-in-es"><input type="hidden" id="ev-loc-in-fr">
           </div>
           <button class="btn-primario" onclick="pubEvento()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">✅ Publicar Evento</button>
         </div>
@@ -2665,7 +2717,8 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </select>
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">T&#237;tulo * <span style="font-weight:400;opacity:.7">(preencha nos 4 idiomas)</span></label>
+        <label class="adm-label">Título *</label>
+        <button class="adm-autotrad-btn" onclick="admTraduzir('noticia')" id="btn-trad-noticia"><span class="ico">✨</span><span class="spin"></span> Traduzir PT → EN / ES / FR</button><span class="adm-autotrad-feito" id="ok-trad-noticia"> ✅ Traduzido!</span>
         <input class="adm-input" id="nc-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 T\u00edtulo" style="margin-bottom:.4rem">
         <input class="adm-input" id="nc-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 Title" style="margin-bottom:.4rem">
         <input class="adm-input" id="nc-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 T\u00edtulo" style="margin-bottom:.4rem">
@@ -2676,7 +2729,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <input class="adm-input" id="nc-meta" placeholder="Ex: 09 jun. 2026 &#183; Assessoria CMDDI">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Texto completo * <span style="font-weight:400;opacity:.7">(preencha nos 4 idiomas)</span></label>
+        <label class="adm-label">Texto completo * <span style="font-weight:400;opacity:.6;font-size:.75rem">(EN/ES/FR são preenchidos automaticamente)</span></label>
         <textarea class="adm-input" id="nc-resumo" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 texto integral"></textarea>
         <textarea class="adm-input" id="nc-resumo-en" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 full text"></textarea>
         <textarea class="adm-input" id="nc-resumo-es" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 texto integral"></textarea>
@@ -2915,14 +2968,15 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </div>
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Título do Release <span style="font-weight:400;opacity:.7">(4 idiomas)</span></label>
+        <label class="adm-label">Título do Release</label>
+        <button class="adm-autotrad-btn" onclick="admTraduzir('release')" id="btn-trad-release"><span class="ico">✨</span><span class="spin"></span> Traduzir PT → EN / ES / FR</button><span class="adm-autotrad-feito" id="ok-trad-release">✅ Traduzido!</span>
         <input class="adm-input" id="rel-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="margin-bottom:.4rem">
         <input class="adm-input" id="rel-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="margin-bottom:.4rem">
         <input class="adm-input" id="rel-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="margin-bottom:.4rem">
         <input class="adm-input" id="rel-tit-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Français">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Texto do Release <span style="font-weight:400;opacity:.7">(4 idiomas)</span></label>
+        <label class="adm-label">Texto do Release <span style="font-weight:400;opacity:.6;font-size:.75rem">(EN/ES/FR preenchidos automaticamente)</span></label>
         <textarea class="adm-textarea" id="rel-texto" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="height:70px;margin-bottom:.4rem"></textarea>
         <textarea class="adm-textarea" id="rel-texto-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="height:70px;margin-bottom:.4rem"></textarea>
         <textarea class="adm-textarea" id="rel-texto-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="height:70px;margin-bottom:.4rem"></textarea>
@@ -2936,8 +2990,333 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
       <button class="btn-primario" onclick="pubRelease()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">✅ Publicar Release</button>
     </div>
-  </div>
-</section>
+
+    <!-- ===== SALA DE IMPRENSA ADM ===== -->
+    <div class="adm-panel" id="painel-sala-imprensa" style="margin-top:2rem">
+      <div class="adm-panel-t">📡 Sala de Imprensa — Agência de Notícias CMDDI</div>
+
+      <!-- Configuração de APIs (oculta após salvar) -->
+      <div id="si-config-area" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:.9rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.8rem;font-weight:700;color:#f87171;margin-bottom:.6rem">⚙ Configuração inicial (apenas uma vez)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Chave Brevo (API v3)</label>
+            <input class="adm-input" id="si-brevo-key" type="password" placeholder="xkeysib-...">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Remetente (email autenticado)</label>
+            <input class="adm-input" id="si-from-email" placeholder="imprensa@cmddi.org.br">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Nome do remetente</label>
+            <input class="adm-input" id="si-from-name" placeholder="CMDDI — Sala de Imprensa">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Chave Claude (Anthropic)</label>
+            <input class="adm-input" id="si-claude-key" type="password" placeholder="sk-ant-...">
+          </div>
+        </div>
+        <button class="si-btn pri" onclick="siSalvarConfig()" style="margin-top:.7rem">💾 Salvar Configuração</button>
+      </div>
+
+      <!-- Abas principais -->
+      <div class="si-tabs">
+        <button class="si-tab ativo" onclick="siAba(this,'si-banco')">👥 Banco de Mídia</button>
+        <button class="si-tab" onclick="siAba(this,'si-compose')">✍️ Redigir Release</button>
+        <button class="si-tab" onclick="siAba(this,'si-enviar')">📤 Enviar</button>
+        <button class="si-tab" onclick="siAba(this,'si-historico')">📋 Histórico</button>
+        <button class="si-tab" onclick="siAba(this,'si-stats')">📊 Estatísticas</button>
+      </div>
+
+      <!-- ABA: BANCO DE MÍDIA -->
+      <div class="si-pane ativo" id="si-banco">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem">
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Nome / Veículo</label>
+            <input class="adm-input" id="si-m-nome" placeholder="ex: Campo Grande News">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">E-mail</label>
+            <input class="adm-input" id="si-m-email" type="email" placeholder="redacao@jornal.com.br">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Tipo</label>
+            <select class="adm-select" id="si-m-tipo">
+              <option value="tv">📺 TV</option>
+              <option value="radio">📻 Rádio</option>
+              <option value="digital" selected>🌐 Digital</option>
+              <option value="impresso">📰 Impresso</option>
+              <option value="agencia">📡 Agência</option>
+              <option value="internacional">🌍 Internacional</option>
+              <option value="podcast">🎙 Podcast</option>
+            </select>
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Grupo / Editoria</label>
+            <input class="adm-input" id="si-m-grupo" placeholder="ex: Geral, Indígena, Direitos">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Idioma preferido</label>
+            <select class="adm-select" id="si-m-lang">
+              <option value="pt">🇧🇷 Português</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="fr">🇫🇷 Français</option>
+            </select>
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Contato / Repórter</label>
+            <input class="adm-input" id="si-m-contato" placeholder="ex: Maria Silva (editora)">
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
+          <button class="si-btn pri" onclick="siAdicionarMidia()">➕ Adicionar Contato</button>
+          <button class="si-btn" onclick="siImportarCSV()">📤 Importar CSV</button>
+          <button class="si-btn" onclick="siExportarCSV()">📥 Exportar CSV</button>
+          <label class="si-btn" for="si-csv-file" style="cursor:pointer">📂 Carregar arquivo CSV</label>
+          <input type="file" id="si-csv-file" accept=".csv" style="display:none" onchange="siCarregarCSV(this)">
+        </div>
+
+        <!-- Filtros -->
+        <div style="display:flex;gap:.5rem;margin-bottom:.7rem;align-items:center;flex-wrap:wrap">
+          <input class="adm-input" id="si-busca" style="flex:1;min-width:160px;font-size:.8rem;padding:.35rem .7rem" placeholder="🔍 Buscar por nome, veículo ou e-mail..." oninput="siRenderBanco()">
+          <select class="adm-select" id="si-filtro-tipo" style="font-size:.78rem;padding:.35rem .6rem" onchange="siRenderBanco()">
+            <option value="">Todos os tipos</option>
+            <option value="tv">📺 TV</option><option value="radio">📻 Rádio</option>
+            <option value="digital">🌐 Digital</option><option value="impresso">📰 Impresso</option>
+            <option value="agencia">📡 Agência</option><option value="internacional">🌍 Internacional</option>
+            <option value="podcast">🎙 Podcast</option>
+          </select>
+        </div>
+        <div id="si-banco-lista" style="max-height:340px;overflow-y:auto">
+          <div style="text-align:center;color:rgba(249,245,237,.35);font-size:.82rem;padding:1.5rem">Nenhum contato cadastrado ainda.</div>
+        </div>
+      </div>
+
+      <!-- ABA: REDIGIR RELEASE -->
+      <div class="si-pane" id="si-compose">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.7rem">
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Data</label>
+            <input class="adm-input" id="si-r-data" type="date">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Categoria</label>
+            <select class="adm-select" id="si-r-cat">
+              <option>Direitos Indígenas</option><option>Saúde</option><option>Educação</option>
+              <option>Cultura</option><option>Institucional</option><option>Nota Oficial</option>
+              <option>Comunicado</option>
+            </select>
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Embargo até (opcional)</label>
+            <input class="adm-input" id="si-r-embargo" type="datetime-local" placeholder="Sem embargo">
+          </div>
+        </div>
+
+        <!-- Editor multilíngue por abas -->
+        <div style="margin-bottom:.5rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
+            <label class="adm-label" style="margin:0">Conteúdo do Release</label>
+            <button class="si-btn pri" onclick="siTraduzirTudo()" style="font-size:.72rem;padding:.3rem .8rem">✨ Traduzir automaticamente (PT → EN/ES/FR)</button>
+          </div>
+          <div class="si-traduzindo" id="si-trad-status">
+            <div class="si-spinner"></div>
+            <span id="si-trad-msg">Traduzindo com IA...</span>
+          </div>
+          <div class="si-editor-tabs">
+            <button class="si-editor-tab ativo" onclick="siEditorAba(this,'pt')">🇧🇷 PT</button>
+            <button class="si-editor-tab" onclick="siEditorAba(this,'en')">🇬🇧 EN</button>
+            <button class="si-editor-tab" onclick="siEditorAba(this,'es')">🇪🇸 ES</button>
+            <button class="si-editor-tab" onclick="siEditorAba(this,'fr')">🇫🇷 FR</button>
+          </div>
+          <!-- PT -->
+          <div class="si-editor-pane ativo" id="si-ep-pt">
+            <input class="adm-input" id="si-r-tit-pt" placeholder="Título em Português" style="margin-bottom:.4rem">
+            <input class="adm-input" id="si-r-sub-pt" placeholder="Subtítulo / linha de apoio (opcional)" style="margin-bottom:.4rem">
+            <textarea class="adm-textarea" id="si-r-txt-pt" style="height:140px" placeholder="Corpo do release em Português..."></textarea>
+          </div>
+          <!-- EN -->
+          <div class="si-editor-pane" id="si-ep-en">
+            <input class="adm-input" id="si-r-tit-en" placeholder="Title in English" style="margin-bottom:.4rem">
+            <input class="adm-input" id="si-r-sub-en" placeholder="Subtitle / deck (optional)" style="margin-bottom:.4rem">
+            <textarea class="adm-textarea" id="si-r-txt-en" style="height:140px" placeholder="Release body in English..."></textarea>
+          </div>
+          <!-- ES -->
+          <div class="si-editor-pane" id="si-ep-es">
+            <input class="adm-input" id="si-r-tit-es" placeholder="Título en Español" style="margin-bottom:.4rem">
+            <input class="adm-input" id="si-r-sub-es" placeholder="Subtítulo / apoyo (opcional)" style="margin-bottom:.4rem">
+            <textarea class="adm-textarea" id="si-r-txt-es" style="height:140px" placeholder="Cuerpo del release en Español..."></textarea>
+          </div>
+          <!-- FR -->
+          <div class="si-editor-pane" id="si-ep-fr">
+            <input class="adm-input" id="si-r-tit-fr" placeholder="Titre en Français" style="margin-bottom:.4rem">
+            <input class="adm-input" id="si-r-sub-fr" placeholder="Sous-titre / deck (optionnel)" style="margin-bottom:.4rem">
+            <textarea class="adm-textarea" id="si-r-txt-fr" style="height:140px" placeholder="Corps du communiqué en Français..."></textarea>
+          </div>
+        </div>
+
+        <!-- Informações de contato e hashtags -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.7rem">
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Contato para imprensa (email)</label>
+            <input class="adm-input" id="si-r-contato-email" placeholder="aguinaldo@cmddi.org.br">
+          </div>
+          <div class="adm-form-group" style="margin:0">
+            <label class="adm-label">Telefone / WhatsApp</label>
+            <input class="adm-input" id="si-r-contato-tel" placeholder="(67) 9 8XXX-XXXX">
+          </div>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label">Hashtags</label>
+          <input class="adm-input" id="si-r-tags" placeholder="#SaúdeIndígena #CMDDI #PovosIndígenas" value="#PovosIndígenas #CMDDI #CampoGrande #MatoGrossoDoSul">
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label">Arquivo anexo (opcional)</label>
+          <input type="file" class="adm-input" id="si-r-arquivo" accept=".pdf,.doc,.docx,image/*" onchange="siUploadAnexo(this)" style="padding:.4rem">
+          <div id="si-r-arq-status" style="font-size:.78rem;margin-top:.3rem;display:none"></div>
+          <input type="hidden" id="si-r-arq-url"><input type="hidden" id="si-r-arq-nome">
+        </div>
+
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+          <button class="si-btn pri" onclick="siSalvarRascunho()">💾 Salvar Rascunho</button>
+          <button class="si-btn" onclick="siPreviewEmail()">👁 Pré-visualizar</button>
+          <button class="si-btn" onclick="siAba(document.querySelector('[onclick*=si-enviar]'),'si-enviar')">→ Ir para Envio</button>
+        </div>
+
+        <!-- Rascunhos salvos -->
+        <div style="margin-top:1.2rem">
+          <div style="font-size:.78rem;font-weight:600;color:var(--am);margin-bottom:.5rem">📝 Rascunhos salvos</div>
+          <div id="si-rascunhos-lista"></div>
+        </div>
+      </div>
+
+      <!-- ABA: ENVIAR -->
+      <div class="si-pane" id="si-enviar">
+        <div style="margin-bottom:.9rem">
+          <label class="adm-label">Release a enviar</label>
+          <select class="adm-select" id="si-env-release" style="width:100%">
+            <option value="">— Selecione um release —</option>
+          </select>
+        </div>
+
+        <!-- Seleção de destinatários -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+          <label class="adm-label" style="margin:0">Destinatários</label>
+          <div style="display:flex;gap:.4rem">
+            <button class="si-btn" onclick="siSelecionarTodos(true)">Todos</button>
+            <button class="si-btn" onclick="siSelecionarTodos(false)">Nenhum</button>
+            <button class="si-btn" onclick="siSelecionarPorTipo()">Por tipo…</button>
+          </div>
+        </div>
+
+        <!-- Filtro rápido -->
+        <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+          <input class="adm-input" id="si-env-busca" style="flex:1;font-size:.78rem;padding:.3rem .6rem" placeholder="🔍 Filtrar destinatários..." oninput="siRenderEnvLista()">
+          <select class="adm-select" id="si-env-filtro-tipo" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
+            <option value="">Todos</option>
+            <option value="tv">TV</option><option value="radio">Rádio</option>
+            <option value="digital">Digital</option><option value="impresso">Impresso</option>
+            <option value="agencia">Agência</option><option value="internacional">Internacional</option>
+          </select>
+        </div>
+
+        <div class="si-env-lista" id="si-env-destinatarios">
+          <div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1rem">Nenhum contato no banco de mídia.</div>
+        </div>
+
+        <div style="font-size:.78rem;color:rgba(249,245,237,.5);margin:.4rem 0">
+          <span id="si-env-count">0</span> destinatário(s) selecionado(s) · idioma enviado conforme preferência de cada contato
+        </div>
+
+        <!-- Opções de envio -->
+        <div style="background:rgba(212,149,74,.07);border-radius:5px;padding:.7rem .9rem;margin:.6rem 0">
+          <div style="font-size:.8rem;font-weight:600;color:var(--am);margin-bottom:.5rem">⚙ Opções de envio</div>
+          <label class="si-check-label"><input type="checkbox" id="si-opt-teste" checked> Enviar e-mail de teste para o remetente antes de disparar para a lista</label>
+          <label class="si-check-label"><input type="checkbox" id="si-opt-delay"> Agendar envio (respeitar horário de embargo)</label>
+          <label class="si-check-label"><input type="checkbox" id="si-opt-cc"> Adicionar destinatário em CC</label>
+          <div id="si-opt-cc-area" style="display:none;margin-top:.4rem">
+            <input class="adm-input" id="si-opt-cc-email" placeholder="cc@email.com" style="font-size:.8rem">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem;align-items:center">
+          <button class="si-btn pri" onclick="siEnviarRelease()" style="padding:.55rem 1.2rem">📨 Enviar Release</button>
+          <button class="si-btn" onclick="siTesteEmail()">🧪 Teste (só para mim)</button>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div id="si-prog-area" style="display:none;margin-top:.8rem">
+          <div style="font-size:.78rem;color:var(--am);margin-bottom:.3rem" id="si-prog-msg">Enviando...</div>
+          <div class="si-prog"><div class="si-prog-bar" id="si-prog-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- ABA: HISTÓRICO -->
+      <div class="si-pane" id="si-historico">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem">
+          <label class="adm-label" style="margin:0">Histórico de envios</label>
+          <button class="si-btn" onclick="siLimparHistorico()">🗑 Limpar histórico</button>
+        </div>
+        <div id="si-historico-lista">
+          <div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1.5rem">Nenhum envio registrado ainda.</div>
+        </div>
+      </div>
+
+      <!-- ABA: ESTATÍSTICAS -->
+      <div class="si-pane" id="si-stats">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.2rem">
+          <div class="si-stat">
+            <div class="si-stat-n" id="si-st-contatos">0</div>
+            <div class="si-stat-l">Contatos na mídia</div>
+          </div>
+          <div class="si-stat">
+            <div class="si-stat-n" id="si-st-envios">0</div>
+            <div class="si-stat-l">Releases enviados</div>
+          </div>
+          <div class="si-stat">
+            <div class="si-stat-n" id="si-st-emails">0</div>
+            <div class="si-stat-l">E-mails disparados</div>
+          </div>
+          <div class="si-stat">
+            <div class="si-stat-n" id="si-st-idiomas">4</div>
+            <div class="si-stat-l">Idiomas ativos</div>
+          </div>
+        </div>
+        <div style="font-size:.78rem;font-weight:600;color:var(--am);margin-bottom:.5rem">Contatos por tipo de mídia</div>
+        <div id="si-stats-tipos" style="display:flex;flex-wrap:wrap;gap:.4rem"></div>
+        <div style="font-size:.78rem;font-weight:600;color:var(--am);margin:1rem 0 .5rem">Contatos por idioma preferido</div>
+        <div id="si-stats-langs" style="display:flex;flex-wrap:wrap;gap:.4rem"></div>
+      </div>
+
+    </div><!-- /painel-sala-imprensa -->
+
+    <!-- Modal de pré-visualização -->
+    <div id="si-preview-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto;padding:2rem">
+      <div style="max-width:680px;margin:0 auto;background:#1a1a1a;border:1px solid rgba(212,149,74,.3);border-radius:8px;padding:1.5rem;position:relative">
+        <button onclick="document.getElementById('si-preview-modal').style.display='none'" style="position:absolute;top:.8rem;right:1rem;background:none;border:none;color:var(--am);font-size:1.3rem;cursor:pointer">✕</button>
+        <div style="font-size:.75rem;color:var(--am);font-weight:700;letter-spacing:.06em;margin-bottom:.5rem">PRÉ-VISUALIZAÇÃO DO E-MAIL</div>
+        <div style="display:flex;gap:.4rem;margin-bottom:.8rem" id="si-prev-lang-tabs">
+          <button class="si-lang-badge sel" onclick="siPrevLang(this,'pt')">🇧🇷 PT</button>
+          <button class="si-lang-badge nsel" onclick="siPrevLang(this,'en')">🇬🇧 EN</button>
+          <button class="si-lang-badge nsel" onclick="siPrevLang(this,'es')">🇪🇸 ES</button>
+          <button class="si-lang-badge nsel" onclick="siPrevLang(this,'fr')">🇫🇷 FR</button>
+        </div>
+        <div id="si-preview-content" style="font-family:Georgia,serif;line-height:1.7;font-size:.9rem;color:#e8e0d0"></div>
+      </div>
+    </div>
+
+    <!-- Modal: selecionar por tipo -->
+    <div id="si-tipo-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center">
+      <div style="background:#1a1a1a;border:1px solid rgba(212,149,74,.3);border-radius:8px;padding:1.2rem;min-width:260px">
+        <div style="font-size:.8rem;font-weight:700;color:var(--am);margin-bottom:.7rem">Selecionar por tipo</div>
+        <div id="si-tipo-opcoes"></div>
+        <div style="display:flex;gap:.5rem;margin-top:.8rem">
+          <button class="si-btn pri" onclick="siAplicarTipo()">Aplicar</button>
+          <button class="si-btn" onclick="document.getElementById('si-tipo-modal').style.display='none'">Cancelar</button>
+        </div>
+      </div>
+    </div>
 
 
 <!-- ARTIGOS CIENTÍFICOS -->
@@ -3847,6 +4226,16 @@ function pubEvento() {
   var dia = v('ev-dia-in'), mes = v('ev-mes-in'), tipo = v('ev-tipo-in'), tit = v('ev-tit-in'), loc = v('ev-loc-in');
   if (!dia || !tit) { alert('Preencha dia e título.'); return; }
   var tipoLabel = {'tipo-reuniao':'Reunião Ordinária','tipo-evento':'Evento Cultural','tipo-audiencia':'Audiência Pública','tipo-assembleia':'Assembleia'}[tipo] || tipo;
+  // Capturar traduções (se admTraduzir foi chamado)
+  var titEn = v('ev-tit-in-en')||tit, titEs = v('ev-tit-in-es')||tit, titFr = v('ev-tit-in-fr')||tit;
+  var locEn = v('ev-loc-in-en')||loc, locEs = v('ev-loc-in-es')||loc, locFr = v('ev-loc-in-fr')||loc;
+  // Labels do tipo traduzidos
+  var tipoLabels = {
+    pt: tipoLabel,
+    en: {'tipo-reuniao':'Ordinary Meeting','tipo-evento':'Cultural Event','tipo-audiencia':'Public Hearing','tipo-assembleia':'Assembly'}[tipo]||tipoLabel,
+    es: {'tipo-reuniao':'Reunión Ordinaria','tipo-evento':'Evento Cultural','tipo-audiencia':'Audiencia Pública','tipo-assembleia':'Asamblea'}[tipo]||tipoLabel,
+    fr: {'tipo-reuniao':'Réunion Ordinaire','tipo-evento':'Événement Culturel','tipo-audiencia':'Audience Publique','tipo-assembleia':'Assemblée'}[tipo]||tipoLabel
+  };
   var html = '<div class="evento-item">' +
     '<div class="evento-data"><div class="ev-dia">'+dia+'</div><div class="ev-mes">'+mes+'</div></div>' +
     '<div><span class="ev-tipo '+tipo+'">'+tipoLabel+'</span>' +
@@ -3854,8 +4243,17 @@ function pubEvento() {
     '<div class="ev-local">📍 '+loc+'</div></div></div>';
   var painel = document.getElementById('painel-evento');
   painel.insertAdjacentHTML('beforebegin', html);
-  notif('✅ Evento publicado!');
-  ['ev-dia-in','ev-tit-in','ev-loc-in'].forEach(function(id){ document.getElementById(id).value=''; });
+  // Salvar no banco com traduções
+  var key = 'ev_'+Date.now();
+  var db = dbLer(); if (!db.eventos) db.eventos = {};
+  db.eventos[key] = { dia, mes, tipo, tipoLabels,
+    tit: { pt:tit, en:titEn, es:titEs, fr:titFr },
+    loc: { pt:loc, en:locEn, es:locEs, fr:locFr },
+    ts: Date.now()
+  };
+  dbSalvar(db); salvarNoGitHub();
+  notif('✅ Evento publicado com traduções!');
+  ['ev-dia-in','ev-tit-in','ev-loc-in','ev-tit-in-en','ev-tit-in-es','ev-tit-in-fr','ev-loc-in-en','ev-loc-in-es','ev-loc-in-fr'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
 }
 
 function uploadFotoNoticia(input) {
@@ -4232,6 +4630,790 @@ trocarArtTab = function(btn, panelId) {
 };
 
 // === PUBLICAR ARTIGO ===
+
+
+// ============================================================
+// TRADUÇÃO AUTOMÁTICA GLOBAL — ADM CMDDI
+// Motor único que serve todos os painéis de publicação
+// ============================================================
+
+var TRAD_CONFIGS = {
+  noticia: {
+    campos: [
+      { pt:'nc-tit',    en:'nc-tit-en',    es:'nc-tit-es',    fr:'nc-tit-fr',    tipo:'titulo'  },
+      { pt:'nc-resumo', en:'nc-resumo-en', es:'nc-resumo-es', fr:'nc-resumo-fr', tipo:'texto'   }
+    ],
+    contexto: 'notícia/comunicado institucional do CMDDI (Conselho Municipal dos Direitos e Defesa dos Povos Indígenas de Campo Grande, MS, Brasil)'
+  },
+  release: {
+    campos: [
+      { pt:'rel-tit',   en:'rel-tit-en',   es:'rel-tit-es',   fr:'rel-tit-fr',   tipo:'titulo' },
+      { pt:'rel-texto', en:'rel-texto-en', es:'rel-texto-es', fr:'rel-texto-fr', tipo:'texto'  }
+    ],
+    contexto: 'release oficial de imprensa do CMDDI para veículos de comunicação nacionais e internacionais'
+  },
+  evento: {
+    campos: [
+      { pt:'ev-tit-in', en:'ev-tit-in-en', es:'ev-tit-in-es', fr:'ev-tit-in-fr', tipo:'titulo' },
+      { pt:'ev-loc-in', en:'ev-loc-in-en', es:'ev-loc-in-es', fr:'ev-loc-in-fr', tipo:'local'  }
+    ],
+    contexto: 'evento/reunião do CMDDI (agenda pública do conselho indígena municipal)'
+  }
+};
+
+// Mapa de idioma → nome por extenso para o prompt
+var TRAD_LANG_NOME = { en:'inglês', es:'espanhol', fr:'francês' };
+
+async function admTraduzir(painel) {
+  var cfg = TRAD_CONFIGS[painel];
+  if (!cfg) { notif('⚠ Painel não configurado para tradução.'); return; }
+
+  // Verificar se há conteúdo em PT
+  var temConteudo = cfg.campos.some(function(c){
+    var el = document.getElementById(c.pt); return el && el.value.trim().length > 0;
+  });
+  if (!temConteudo) { notif('⚠ Escreva o conteúdo em Português primeiro.'); return; }
+
+  // UI: ativar spinner
+  var btn = document.getElementById('btn-trad-'+painel);
+  var ok  = document.getElementById('ok-trad-'+painel);
+  if (btn) btn.classList.add('carregando');
+  if (ok)  ok.style.display = 'none';
+
+  // Obter chave Claude (da Sala de Imprensa ou do objeto global)
+  var cfgSI = (function(){ try { return JSON.parse(localStorage.getItem('cmddi_si_cfg')||'{}'); } catch(e){ return {}; } })();
+  var claudeKey = cfgSI.claude || '';
+
+  // Montar campos para traduzir
+  var blocos = cfg.campos.map(function(c){
+    var el = document.getElementById(c.pt);
+    return { tipo: c.tipo, texto: el ? el.value.trim() : '' };
+  }).filter(function(b){ return b.texto; });
+
+  var prompt = 'Você é um tradutor especializado em comunicações institucionais sobre direitos humanos, povos indígenas e políticas públicas no Brasil.\n'+
+    'Contexto: '+cfg.contexto+'.\n'+
+    'Regras obrigatórias:\n'+
+    '1. Traduza do Português para inglês, espanhol e francês.\n'+
+    '2. Preserve INTACTOS: nomes próprios, siglas (CMDDI, SESAI, FUNAI, DSEI, INPI, MPI, SUS, MS, ICET, UFMS), hashtags, nomes de lugares (Campo Grande, Mato Grosso do Sul, Aldeia Marçal de Souza, etc.).\n'+
+    '3. Mantenha tom formal, respeitoso e institucional em todos os idiomas.\n'+
+    '4. Para espanhol, use terminologia latino-americana (não espanha).\n'+
+    '5. Responda APENAS com JSON válido, sem texto antes ou depois, sem markdown.\n'+
+    '6. Formato da resposta: um objeto onde cada chave é o tipo do bloco ('+blocos.map(function(b){return b.tipo;}).join(', ')+') e cada valor tem as chaves "en", "es", "fr".\n\n'+
+    'Conteúdo a traduzir:\n'+
+    blocos.map(function(b){ return b.tipo.toUpperCase()+': '+b.texto; }).join('\n\n');
+
+  var idiomas = ['en','es','fr'];
+  try {
+    var headers = { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' };
+    if (claudeKey) headers['x-api-key'] = claudeKey;
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    var data = await resp.json();
+    if (!resp.ok) throw new Error(data.error && data.error.message || 'Erro na API');
+    var raw = (data.content && data.content[0] && data.content[0].text) || '';
+    var clean = raw.replace(/```json?|```/g,'').trim();
+    var parsed = JSON.parse(clean);
+
+    // Preencher os campos de cada idioma
+    cfg.campos.forEach(function(c){
+      var bloco = parsed[c.tipo];
+      if (!bloco) return;
+      idiomas.forEach(function(lang){
+        var val = bloco[lang];
+        if (!val) return;
+        var idCampo = c[lang];
+        if (!idCampo) return;
+        // Se o campo não existe no HTML, criá-lo silenciosamente (evento tem campos extras)
+        var el = document.getElementById(idCampo);
+        if (!el) {
+          // Para eventos, os campos EN/ES/FR ainda não existem — guardar em dataset do campo PT
+          var elPt = document.getElementById(c.pt);
+          if (elPt) {
+            elPt.dataset['trad_'+lang] = val;
+          }
+        } else {
+          el.value = val;
+          // Pequena animação de destaque
+          el.style.borderColor = 'var(--am)';
+          setTimeout(function(){ el.style.borderColor = ''; }, 1500);
+        }
+      });
+    });
+
+    if (btn) btn.classList.remove('carregando');
+    if (ok) { ok.style.display = 'inline'; setTimeout(function(){ if(ok) ok.style.display='none'; }, 4000); }
+    notif('✅ Tradução concluída automaticamente em EN, ES e FR!');
+
+  } catch(e) {
+    if (btn) btn.classList.remove('carregando');
+    console.error('Erro tradução ADM', e);
+    // Fallback: tentar tradução offline básica com dicionário de frases comuns
+    admTraduzirFallback(painel, cfg, e.message);
+  }
+}
+
+// Fallback leve para quando não há chave de API configurada
+function admTraduzirFallback(painel, cfg, erroMsg) {
+  var aviso = erroMsg && erroMsg.includes('api-key') ? 'Configure a chave Claude na Sala de Imprensa para tradução automática.' :
+               erroMsg ? 'Erro: '+erroMsg : 'Tradução indisponível.';
+  notif('⚠ '+aviso);
+  // Mesmo sem tradução, copiar o PT nos campos en/es/fr para não bloquear a publicação
+  cfg.campos.forEach(function(c){
+    var ptEl = document.getElementById(c.pt);
+    var ptVal = ptEl ? ptEl.value : '';
+    ['en','es','fr'].forEach(function(lang){
+      var el = document.getElementById(c[lang]);
+      if (el && !el.value) el.value = ptVal;
+    });
+  });
+}
+
+// Ao publicar, garantir que os dados das traduções de eventos salvos em dataset
+// sejam recuperados e incluídos no objeto do evento
+var _origPubEvento = typeof pubEvento === 'function' ? pubEvento : null;
+
+// ============================================================
+// SALA DE IMPRENSA — AGÊNCIA DE NOTÍCIAS CMDDI
+// ============================================================
+var SI = {
+  CFG_KEY: 'cmddi_si_cfg',
+  DB_KEY_MIDIA: 'cmddi_si_midia',
+  DB_KEY_HIST: 'cmddi_si_hist',
+  DB_KEY_RASCUNHO: 'cmddi_si_rascunhos',
+  tiposTrad: {
+    pt: { tv:'TV',radio:'Rádio',digital:'Digital',impresso:'Impresso',agencia:'Agência',internacional:'Internacional',podcast:'Podcast' },
+    en: { tv:'TV',radio:'Radio',digital:'Digital',impresso:'Print',agencia:'Agency',internacional:'International',podcast:'Podcast' },
+    es: { tv:'TV',radio:'Radio',digital:'Digital',impresso:'Impreso',agencia:'Agencia',internacional:'Internacional',podcast:'Podcast' },
+    fr: { tv:'Télévision',radio:'Radio',digital:'Numérique',impresso:'Presse écrite',agencia:'Agence',internacional:'International',podcast:'Podcast' }
+  },
+  hdrs: function(lang) {
+    var m = {
+      pt:{ from:'CMDDI — Sala de Imprensa', subj:'Release para Imprensa', embargo:'🔒 EMBARGO — NÃO PUBLICAR ANTES DE:', contact:'Contato para a Imprensa', hashtags:'Hashtags', footer:'Este release foi enviado pela Sala de Imprensa do CMDDI — Campo Grande/MS — Brasil.\nPara ser removido desta lista de distribuição, responda com "DESCADASTRAR".' },
+      en:{ from:'CMDDI — Press Room', subj:'Press Release', embargo:'🔒 EMBARGO — DO NOT PUBLISH BEFORE:', contact:'Press Contact', hashtags:'Hashtags', footer:'This release was sent by the CMDDI Press Room — Campo Grande/MS — Brazil.\nTo unsubscribe, reply with "UNSUBSCRIBE".' },
+      es:{ from:'CMDDI — Sala de Prensa', subj:'Comunicado de Prensa', embargo:'🔒 EMBARGO — NO PUBLICAR ANTES DE:', contact:'Contacto de Prensa', hashtags:'Hashtags', footer:'Este comunicado fue enviado por la Sala de Prensa del CMDDI — Campo Grande/MS — Brasil.\nPara darse de baja, responda con "DESCADASTRAR".' },
+      fr:{ from:'CMDDI — Salle de Presse', subj:'Communiqué de Presse', embargo:'🔒 EMBARGO — NE PAS PUBLIER AVANT LE:', contact:'Contact Presse', hashtags:'Hashtags', footer:'Ce communiqué a été envoyé par la Salle de Presse du CMDDI — Campo Grande/MS — Brésil.\nPour vous désabonner, répondez "SE DÉSABONNER".' }
+    };
+    return m[lang] || m.pt;
+  }
+};
+
+function siCfg() { try { return JSON.parse(localStorage.getItem(SI.CFG_KEY)||'{}'); } catch(e){ return {}; } }
+function siMidia() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_MIDIA)||'[]'); } catch(e){ return []; } }
+function siSalvarMidia(arr) { localStorage.setItem(SI.DB_KEY_MIDIA, JSON.stringify(arr)); }
+function siHist() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_HIST)||'[]'); } catch(e){ return []; } }
+function siSalvarHist(arr) { localStorage.setItem(SI.DB_KEY_HIST, JSON.stringify(arr)); }
+function siRascunhos() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_RASCUNHO)||'[]'); } catch(e){ return []; } }
+function siSalvarRascunhos(arr) { localStorage.setItem(SI.DB_KEY_RASCUNHO, JSON.stringify(arr)); }
+
+// --- Inicialização ---
+function siInit() {
+  // Preencher data padrão
+  var di = document.getElementById('si-r-data');
+  if (di && !di.value) di.value = new Date().toISOString().split('T')[0];
+  // Verificar config
+  var cfg = siCfg();
+  var configArea = document.getElementById('si-config-area');
+  if (cfg.brevo && configArea) configArea.style.display = 'none';
+  siRenderBanco();
+  siRenderEnvLista();
+  siRenderHistorico();
+  siRenderRascunhos();
+  siRenderStats();
+  siCarregarReleasesNoSelect();
+  // CC checkbox
+  var ccChk = document.getElementById('si-opt-cc');
+  if (ccChk) ccChk.addEventListener('change', function() {
+    var ar = document.getElementById('si-opt-cc-area');
+    if (ar) ar.style.display = this.checked ? 'block' : 'none';
+  });
+}
+
+// --- Config ---
+function siSalvarConfig() {
+  var brevo = (document.getElementById('si-brevo-key')||{}).value||'';
+  var from = (document.getElementById('si-from-email')||{}).value||'';
+  var fromName = (document.getElementById('si-from-name')||{}).value||'CMDDI — Sala de Imprensa';
+  var claude = (document.getElementById('si-claude-key')||{}).value||'';
+  if (!brevo || !from) { notif('⚠ Informe a chave Brevo e o e-mail remetente.'); return; }
+  var cfg = { brevo, from, fromName, claude };
+  localStorage.setItem(SI.CFG_KEY, JSON.stringify(cfg));
+  var ar = document.getElementById('si-config-area');
+  if (ar) ar.style.display = 'none';
+  notif('✅ Configuração salva com sucesso!');
+}
+
+// --- Abas ---
+function siAba(el, pane) {
+  document.querySelectorAll('.si-tab').forEach(function(t){ t.classList.remove('ativo'); });
+  document.querySelectorAll('.si-pane').forEach(function(p){ p.classList.remove('ativo'); });
+  if (el && el.classList) el.classList.add('ativo');
+  var p = document.getElementById(pane);
+  if (p) p.classList.add('ativo');
+  if (pane === 'si-enviar') siCarregarReleasesNoSelect();
+  if (pane === 'si-stats') siRenderStats();
+}
+
+function siEditorAba(el, lang) {
+  document.querySelectorAll('.si-editor-tab').forEach(function(t){ t.classList.remove('ativo'); });
+  document.querySelectorAll('.si-editor-pane').forEach(function(p){ p.classList.remove('ativo'); });
+  if (el) el.classList.add('ativo');
+  var p = document.getElementById('si-ep-'+lang);
+  if (p) p.classList.add('ativo');
+}
+
+// --- Banco de Mídia ---
+function siAdicionarMidia() {
+  var nome = (document.getElementById('si-m-nome')||{}).value||'';
+  var email = (document.getElementById('si-m-email')||{}).value||'';
+  var tipo = (document.getElementById('si-m-tipo')||{}).value||'digital';
+  var grupo = (document.getElementById('si-m-grupo')||{}).value||'Geral';
+  var lang = (document.getElementById('si-m-lang')||{}).value||'pt';
+  var contato = (document.getElementById('si-m-contato')||{}).value||'';
+  if (!nome || !email) { notif('⚠ Nome e e-mail são obrigatórios.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { notif('⚠ E-mail inválido.'); return; }
+  var arr = siMidia();
+  // Verificar duplicata
+  if (arr.some(function(c){ return c.email.toLowerCase() === email.toLowerCase(); })) {
+    notif('⚠ Este e-mail já está cadastrado.'); return;
+  }
+  arr.push({ id: 'mid_'+Date.now(), nome, email, tipo, grupo, lang, contato, ts: Date.now() });
+  siSalvarMidia(arr);
+  siRenderBanco();
+  siRenderEnvLista();
+  siRenderStats();
+  // Limpar campos
+  ['si-m-nome','si-m-email','si-m-grupo','si-m-contato'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  notif('✅ Contato adicionado ao banco de mídia!');
+}
+
+function siRemoverMidia(id) {
+  if (!confirm('Remover este contato do banco de mídia?')) return;
+  var arr = siMidia().filter(function(c){ return c.id !== id; });
+  siSalvarMidia(arr);
+  siRenderBanco();
+  siRenderEnvLista();
+  siRenderStats();
+  notif('🗑 Contato removido.');
+}
+
+function siEditarMidia(id) {
+  var c = siMidia().find(function(x){ return x.id === id; });
+  if (!c) return;
+  document.getElementById('si-m-nome').value = c.nome||'';
+  document.getElementById('si-m-email').value = c.email||'';
+  document.getElementById('si-m-tipo').value = c.tipo||'digital';
+  document.getElementById('si-m-grupo').value = c.grupo||'';
+  document.getElementById('si-m-lang').value = c.lang||'pt';
+  document.getElementById('si-m-contato').value = c.contato||'';
+  // Remover e deixar usuário re-adicionar (simples e seguro)
+  var arr = siMidia().filter(function(x){ return x.id !== id; });
+  siSalvarMidia(arr);
+  siRenderBanco();
+  notif('✏ Dados carregados — edite e clique em Adicionar.');
+}
+
+var _tipoIco = { tv:'📺',radio:'📻',digital:'🌐',impresso:'📰',agencia:'📡',internacional:'🌍',podcast:'🎙' };
+var _langIco = { pt:'🇧🇷',en:'🇬🇧',es:'🇪🇸',fr:'🇫🇷' };
+
+function siRenderBanco() {
+  var el = document.getElementById('si-banco-lista'); if (!el) return;
+  var busca = ((document.getElementById('si-busca')||{}).value||'').toLowerCase();
+  var filtroTipo = (document.getElementById('si-filtro-tipo')||{}).value||'';
+  var arr = siMidia().filter(function(c){
+    if (filtroTipo && c.tipo !== filtroTipo) return false;
+    if (busca && !c.nome.toLowerCase().includes(busca) && !c.email.toLowerCase().includes(busca) && !(c.grupo||'').toLowerCase().includes(busca)) return false;
+    return true;
+  });
+  if (!arr.length) {
+    el.innerHTML = '<div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1.2rem">'+(siMidia().length?'Nenhum resultado para esta busca.':'Nenhum contato cadastrado ainda.')+'</div>';
+    return;
+  }
+  el.innerHTML = arr.map(function(c){
+    return '<div class="si-card">'+
+      '<div class="si-card-info">'+
+        '<div class="si-card-nome">'+(_tipoIco[c.tipo]||'📄')+' '+escH(c.nome)+'</div>'+
+        '<div class="si-card-meta">'+escH(c.email)+' · '+(_langIco[c.lang]||'')+'</div>'+
+        '<div style="margin-top:.25rem">'+
+          '<span class="si-grupo-tag">'+escH(c.grupo||'Geral')+'</span>'+
+          (c.contato?'<span style="font-size:.72rem;color:rgba(249,245,237,.45)">'+escH(c.contato)+'</span>':'')+'</div>'+
+      '</div>'+
+      '<div class="si-card-acoes">'+
+        '<button class="si-btn" onclick="siEditarMidia(\''+c.id+'\')">✏</button>'+
+        '<button class="si-btn del" onclick="siRemoverMidia(\''+c.id+'\')">🗑</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+// --- CSV Import/Export ---
+function siExportarCSV() {
+  var arr = siMidia();
+  if (!arr.length) { notif('⚠ Nenhum contato para exportar.'); return; }
+  var rows = [['Nome','Email','Tipo','Grupo','Idioma','Contato']];
+  arr.forEach(function(c){ rows.push([c.nome,c.email,c.tipo,c.grupo||'',c.lang,c.contato||'']); });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href=url; a.download='midia_cmddi.csv'; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+}
+
+function siCarregarCSV(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var lines = e.target.result.replace(/\r/g,'').split('\n').filter(Boolean);
+    if (!lines.length) return;
+    var arr = siMidia();
+    var added = 0, dup = 0;
+    // Pular cabeçalho se for text
+    var start = /nome|email|name/i.test(lines[0]) ? 1 : 0;
+    for (var i = start; i < lines.length; i++) {
+      var cols = lines[i].match(/("([^"]*(?:""[^"]*)*)"|([^,]+))/g) || [];
+      var clean = cols.map(function(v){ return v.replace(/^"|"$/g,'').replace(/""/g,'"').trim(); });
+      var nome=clean[0]||'', email=clean[1]||'', tipo=clean[2]||'digital', grupo=clean[3]||'Geral', lang=clean[4]||'pt', contato=clean[5]||'';
+      if (!nome || !email || !/\S+@\S+\.\S+/.test(email)) continue;
+      if (arr.some(function(c){ return c.email.toLowerCase()===email.toLowerCase(); })) { dup++; continue; }
+      arr.push({id:'mid_'+Date.now()+'_'+i,nome,email,tipo,grupo,lang,contato,ts:Date.now()});
+      added++;
+    }
+    siSalvarMidia(arr);
+    siRenderBanco(); siRenderEnvLista(); siRenderStats();
+    notif('✅ CSV importado: '+added+' adicionados, '+dup+' duplicatas ignoradas.');
+  };
+  reader.readAsText(input.files[0], 'UTF-8');
+  input.value='';
+}
+function siImportarCSV() { document.getElementById('si-csv-file').click(); }
+
+// --- Tradução automática ---
+async function siTraduzirTudo() {
+  var cfg = siCfg();
+  var tit = (document.getElementById('si-r-tit-pt')||{}).value||'';
+  var sub = (document.getElementById('si-r-sub-pt')||{}).value||'';
+  var txt = (document.getElementById('si-r-txt-pt')||{}).value||'';
+  if (!tit && !txt) { notif('⚠ Escreva o conteúdo em Português primeiro.'); return; }
+  var st = document.getElementById('si-trad-status');
+  var msg = document.getElementById('si-trad-msg');
+  if (st) st.classList.add('vis');
+  var idiomas = [{code:'en',nome:'inglês'},{code:'es',nome:'espanhol'},{code:'fr',nome:'francês'}];
+  for (var ii=0; ii<idiomas.length; ii++) {
+    var idi = idiomas[ii];
+    if (msg) msg.textContent = 'Traduzindo para '+idi.nome+'...';
+    try {
+      var prompt = 'Você é um tradutor especializado em comunicados institucionais de direitos humanos e povos indígenas.\n'+
+        'Traduza o conteúdo abaixo do Português para o '+idi.nome+'.\n'+
+        'Mantenha o tom institucional, formal e respeitoso. Preserve nomes próprios, siglas (CMDDI, SESAI, DSEI, FUNAI, SUS, MS) e hashtags sem tradução.\n'+
+        'Responda APENAS com JSON no formato: {"titulo":"...","subtitulo":"...","texto":"..."}\n\n'+
+        'TÍTULO: '+tit+'\nSUBTÍTULO: '+sub+'\nTEXTO:\n'+txt;
+      var body = { model:'claude-sonnet-4-6', max_tokens:2000, messages:[{role:'user',content:prompt}] };
+      var key = cfg.claude||'';
+      var headers = {'Content-Type':'application/json'};
+      if (key) headers['x-api-key'] = key;
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST', headers, body: JSON.stringify(body)
+      });
+      var data = await resp.json();
+      var raw = (data.content&&data.content[0]&&data.content[0].text)||'';
+      var clean = raw.replace(/```json?|```/g,'').trim();
+      var parsed = JSON.parse(clean);
+      if (parsed.titulo) document.getElementById('si-r-tit-'+idi.code).value = parsed.titulo;
+      if (parsed.subtitulo) document.getElementById('si-r-sub-'+idi.code).value = parsed.subtitulo;
+      if (parsed.texto) document.getElementById('si-r-txt-'+idi.code).value = parsed.texto;
+    } catch(e) {
+      console.warn('Erro ao traduzir para '+idi.nome, e);
+      notif('⚠ Erro ao traduzir para '+idi.nome+'. Verifique a chave da API Claude.');
+    }
+  }
+  if (st) st.classList.remove('vis');
+  notif('✅ Tradução concluída — EN, ES e FR preenchidos automaticamente!');
+}
+
+// --- Upload de Anexo ---
+function siUploadAnexo(input) {
+  if (!input||!input.files||!input.files[0]) return;
+  var file = input.files[0];
+  var st = document.getElementById('si-r-arq-status');
+  if (st) { st.style.display='block'; st.style.color='var(--am)'; st.textContent='⏳ Enviando anexo...'; }
+  var isImg = /^image\//.test(file.type);
+  var fd = new FormData(); fd.append('file',file); fd.append('upload_preset','cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST','https://api.cloudinary.com/v1_1/dn1ubybc0/'+(isImg?'image':'raw')+'/upload',true);
+  xhr.onload = function() {
+    try {
+      var d = JSON.parse(xhr.responseText);
+      if (d.secure_url) {
+        document.getElementById('si-r-arq-url').value = d.secure_url;
+        document.getElementById('si-r-arq-nome').value = file.name;
+        if (st) { st.style.color='#7bc67e'; st.textContent='✅ Anexo: '+file.name; }
+      } else { if (st) { st.style.color='#f87171'; st.textContent='❌ Erro no upload'; } }
+    } catch(e) { if (st) { st.style.color='#f87171'; st.textContent='❌ Erro'; } }
+  };
+  xhr.onerror = function(){ if(st){ st.style.color='#f87171'; st.textContent='❌ Falha de conexão'; } };
+  xhr.send(fd);
+}
+
+// --- Rascunhos ---
+function siSalvarRascunho() {
+  var r = siCapturarRelease();
+  if (!r.titulos.pt && !r.textos.pt) { notif('⚠ Nada para salvar.'); return; }
+  r.rascunhoId = 'r_'+Date.now();
+  r.ts = Date.now();
+  var arr = siRascunhos();
+  arr.unshift(r);
+  if (arr.length > 20) arr = arr.slice(0,20);
+  siSalvarRascunhos(arr);
+  siRenderRascunhos();
+  notif('💾 Rascunho salvo!');
+}
+
+function siCapturarRelease() {
+  return {
+    data: (document.getElementById('si-r-data')||{}).value||'',
+    cat: (document.getElementById('si-r-cat')||{}).value||'',
+    embargo: (document.getElementById('si-r-embargo')||{}).value||'',
+    titulos: { pt:(document.getElementById('si-r-tit-pt')||{}).value||'', en:(document.getElementById('si-r-tit-en')||{}).value||'', es:(document.getElementById('si-r-tit-es')||{}).value||'', fr:(document.getElementById('si-r-tit-fr')||{}).value||'' },
+    subtitulos: { pt:(document.getElementById('si-r-sub-pt')||{}).value||'', en:(document.getElementById('si-r-sub-en')||{}).value||'', es:(document.getElementById('si-r-sub-es')||{}).value||'', fr:(document.getElementById('si-r-sub-fr')||{}).value||'' },
+    textos: { pt:(document.getElementById('si-r-txt-pt')||{}).value||'', en:(document.getElementById('si-r-txt-en')||{}).value||'', es:(document.getElementById('si-r-txt-es')||{}).value||'', fr:(document.getElementById('si-r-txt-fr')||{}).value||'' },
+    contatoEmail: (document.getElementById('si-r-contato-email')||{}).value||'',
+    contatoTel: (document.getElementById('si-r-contato-tel')||{}).value||'',
+    tags: (document.getElementById('si-r-tags')||{}).value||'',
+    arqUrl: (document.getElementById('si-r-arq-url')||{}).value||'',
+    arqNome: (document.getElementById('si-r-arq-nome')||{}).value||''
+  };
+}
+
+function siCarregarRascunho(id) {
+  var r = siRascunhos().find(function(x){ return x.rascunhoId===id; });
+  if (!r) return;
+  var set = function(elId, val){ var el=document.getElementById(elId); if(el) el.value=val||''; };
+  set('si-r-data', r.data); set('si-r-cat', r.cat); set('si-r-embargo', r.embargo);
+  set('si-r-tit-pt', r.titulos.pt); set('si-r-tit-en', r.titulos.en); set('si-r-tit-es', r.titulos.es); set('si-r-tit-fr', r.titulos.fr);
+  set('si-r-sub-pt', r.subtitulos&&r.subtitulos.pt||''); set('si-r-sub-en', r.subtitulos&&r.subtitulos.en||''); set('si-r-sub-es', r.subtitulos&&r.subtitulos.es||''); set('si-r-sub-fr', r.subtitulos&&r.subtitulos.fr||'');
+  set('si-r-txt-pt', r.textos.pt); set('si-r-txt-en', r.textos.en); set('si-r-txt-es', r.textos.es); set('si-r-txt-fr', r.textos.fr);
+  set('si-r-contato-email', r.contatoEmail); set('si-r-contato-tel', r.contatoTel); set('si-r-tags', r.tags);
+  notif('📝 Rascunho carregado!');
+}
+
+function siRenderRascunhos() {
+  var el = document.getElementById('si-rascunhos-lista'); if (!el) return;
+  var arr = siRascunhos();
+  if (!arr.length) { el.innerHTML = '<div style="font-size:.75rem;color:rgba(249,245,237,.3);padding:.4rem 0">Nenhum rascunho salvo.</div>'; return; }
+  el.innerHTML = arr.slice(0,5).map(function(r){
+    return '<div class="si-historico-item">'+
+      '<div><div class="si-hist-titulo">'+escH(r.titulos&&r.titulos.pt||'(sem título)')+'</div>'+
+      '<div class="si-hist-meta">'+(r.cat||'')+' · '+siFormatarData(r.ts)+'</div></div>'+
+      '<div style="display:flex;gap:.3rem">'+
+        '<button class="si-btn" onclick="siCarregarRascunho(\''+r.rascunhoId+'\')">📂</button>'+
+        '<button class="si-btn del" onclick="siRemoverRascunho(\''+r.rascunhoId+'\')">🗑</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+function siRemoverRascunho(id) {
+  siSalvarRascunhos(siRascunhos().filter(function(r){ return r.rascunhoId!==id; }));
+  siRenderRascunhos();
+}
+
+// --- Pré-visualização ---
+function siPreviewEmail() {
+  var r = siCapturarRelease();
+  var cfg = siCfg();
+  siRenderPreviewLang(r, 'pt', cfg);
+  var modal = document.getElementById('si-preview-modal');
+  if (modal) modal.style.display = 'block';
+}
+function siPrevLang(el, lang) {
+  document.querySelectorAll('#si-prev-lang-tabs .si-lang-badge').forEach(function(b){ b.classList.remove('sel'); b.classList.add('nsel'); });
+  if(el){ el.classList.add('sel'); el.classList.remove('nsel'); }
+  var r = siCapturarRelease();
+  siRenderPreviewLang(r, lang, siCfg());
+}
+function siRenderPreviewLang(r, lang, cfg) {
+  var h = SI.hdrs(lang);
+  var tit = r.titulos[lang]||r.titulos.pt||'';
+  var sub = r.subtitulos&&r.subtitulos[lang]||'';
+  var txt = r.textos[lang]||r.textos.pt||'';
+  var from = cfg.fromName||'CMDDI — Sala de Imprensa';
+  var dataFmt = r.data ? new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+  var html = '<div style="border-bottom:2px solid #5C1E0A;padding-bottom:.7rem;margin-bottom:.8rem">'+
+    '<div style="font-size:.7rem;color:#a0a0a0;letter-spacing:.08em;text-transform:uppercase">'+h.from+'</div>'+
+    '<div style="font-size:.7rem;color:#a0a0a0;margin-top:.2rem">Campo Grande/MS — Brasil · '+dataFmt+'</div></div>'+
+    (r.embargo ? '<div style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);padding:.4rem .7rem;border-radius:4px;font-size:.75rem;color:#f87171;margin-bottom:.6rem">'+h.embargo+' '+r.embargo+'</div>' : '')+
+    '<h2 style="color:#C9A24A;font-family:Georgia,serif;font-size:1.1rem;line-height:1.4;margin-bottom:.3rem">'+escH(tit)+'</h2>'+
+    (sub ? '<div style="font-style:italic;color:#b0b0b0;font-size:.9rem;margin-bottom:.7rem">'+escH(sub)+'</div>' : '')+
+    '<div style="line-height:1.75;color:#e0d8cc;white-space:pre-line;font-size:.88rem;margin-bottom:.8rem">'+escH(txt)+'</div>'+
+    (r.arqNome ? '<div style="border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:.5rem .8rem;font-size:.78rem;color:#a0a0a0;margin-bottom:.6rem">📎 Anexo: <a href="'+r.arqUrl+'" style="color:#C9A24A">'+escH(r.arqNome)+'</a></div>' : '')+
+    (r.tags ? '<div style="font-size:.75rem;color:#5F9ECC;margin-bottom:.7rem">'+escH(r.tags)+'</div>' : '')+
+    (r.contatoEmail||r.contatoTel ? '<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:.6rem;font-size:.78rem;color:#888">'+
+      '<strong style="color:#C9A24A">'+h.contact+':</strong> '+escH(r.contatoEmail)+(r.contatoTel?' · '+escH(r.contatoTel):'')+'</div>' : '')+
+    '<div style="border-top:1px solid rgba(255,255,255,.08);padding-top:.6rem;margin-top:.6rem;font-size:.7rem;color:#666;white-space:pre-line">'+escH(h.footer)+'</div>';
+  var el = document.getElementById('si-preview-content');
+  if (el) el.innerHTML = html;
+}
+
+// --- Seleção de destinatários ---
+function siRenderEnvLista() {
+  var el = document.getElementById('si-env-destinatarios'); if (!el) return;
+  var busca = ((document.getElementById('si-env-busca')||{}).value||'').toLowerCase();
+  var filtro = (document.getElementById('si-env-filtro-tipo')||{}).value||'';
+  var arr = siMidia().filter(function(c){
+    if (filtro && c.tipo!==filtro) return false;
+    if (busca && !c.nome.toLowerCase().includes(busca) && !c.email.toLowerCase().includes(busca)) return false;
+    return true;
+  });
+  if (!arr.length) { el.innerHTML='<div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1rem">Nenhum contato encontrado.</div>'; return; }
+  el.innerHTML = arr.map(function(c){
+    return '<label class="si-check-label">'+
+      '<input type="checkbox" name="si-dest" value="'+c.id+'" onchange="siAtualizarCount()"> '+
+      (_tipoIco[c.tipo]||'📄')+' <strong>'+escH(c.nome)+'</strong> '+
+      '<span style="color:rgba(249,245,237,.45);font-size:.75rem">'+escH(c.email)+'</span> '+
+      (_langIco[c.lang]||'')+
+    '</label>';
+  }).join('');
+  siAtualizarCount();
+}
+
+function siSelecionarTodos(sel) {
+  document.querySelectorAll('input[name="si-dest"]').forEach(function(cb){ cb.checked=sel; });
+  siAtualizarCount();
+}
+
+function siAtualizarCount() {
+  var n = document.querySelectorAll('input[name="si-dest"]:checked').length;
+  var el = document.getElementById('si-env-count'); if(el) el.textContent=n;
+}
+
+function siSelecionarPorTipo() {
+  var tipos = [...new Set(siMidia().map(function(c){ return c.tipo; }))];
+  var modal = document.getElementById('si-tipo-modal');
+  var cont = document.getElementById('si-tipo-opcoes');
+  if (!modal||!cont) return;
+  cont.innerHTML = tipos.map(function(t){
+    return '<label class="si-check-label"><input type="checkbox" class="si-tipo-chk" value="'+t+'"> '+(_tipoIco[t]||'')+ ' '+(SI.tiposTrad.pt[t]||t)+'</label>';
+  }).join('');
+  modal.style.display='flex';
+}
+
+function siAplicarTipo() {
+  var selecionados = [];
+  document.querySelectorAll('.si-tipo-chk:checked').forEach(function(cb){ selecionados.push(cb.value); });
+  if (!selecionados.length) { document.getElementById('si-tipo-modal').style.display='none'; return; }
+  var ids = siMidia().filter(function(c){ return selecionados.includes(c.tipo); }).map(function(c){ return c.id; });
+  document.querySelectorAll('input[name="si-dest"]').forEach(function(cb){ cb.checked = ids.includes(cb.value); });
+  siAtualizarCount();
+  document.getElementById('si-tipo-modal').style.display='none';
+}
+
+// --- Select de releases para envio ---
+function siCarregarReleasesNoSelect() {
+  var sel = document.getElementById('si-env-release'); if (!sel) return;
+  // Releases do banco de dados + rascunhos
+  var arr = siRascunhos();
+  var opts = arr.map(function(r){ return '<option value="'+r.rascunhoId+'">'+escH(r.titulos&&r.titulos.pt||'(sem título)')+' · '+siFormatarData(r.ts)+'</option>'; }).join('');
+  sel.innerHTML = '<option value="">— Selecione um release —</option>'+opts;
+}
+
+// --- ENVIO ---
+async function siEnviarRelease() {
+  var cfg = siCfg();
+  if (!cfg.brevo) { notif('⚠ Configure a chave Brevo na Sala de Imprensa.'); return; }
+  var relId = (document.getElementById('si-env-release')||{}).value||'';
+  var r = relId ? siRascunhos().find(function(x){ return x.rascunhoId===relId; }) : siCapturarRelease();
+  if (!r || !r.textos || !r.textos.pt) { notif('⚠ Selecione ou redija um release antes.'); return; }
+  var destCBs = document.querySelectorAll('input[name="si-dest"]:checked');
+  if (!destCBs.length) { notif('⚠ Selecione ao menos um destinatário.'); return; }
+  var destIds = Array.from(destCBs).map(function(cb){ return cb.value; });
+  var todos = siMidia();
+  var dests = todos.filter(function(c){ return destIds.includes(c.id); });
+  var testeFirst = (document.getElementById('si-opt-teste')||{}).checked;
+  var cc = (document.getElementById('si-opt-cc')||{}).checked ? ((document.getElementById('si-opt-cc-email')||{}).value||'') : '';
+  var progArea = document.getElementById('si-prog-area');
+  var progBar = document.getElementById('si-prog-bar');
+  var progMsg = document.getElementById('si-prog-msg');
+  if (progArea) progArea.style.display='block';
+  var erros=0, enviados=0;
+  var total = dests.length + (testeFirst?1:0);
+  // Teste primeiro
+  if (testeFirst) {
+    if (progMsg) progMsg.textContent='Enviando e-mail de teste...';
+    var ok = await siEnviarEmail(cfg, r, 'pt', [{name:cfg.fromName||'Teste CMDDI',email:cfg.from}], cc, true);
+    if (!ok) erros++;
+    if (progBar) progBar.style.width = (1/total*100)+'%';
+    if (!ok) { if (progArea) progArea.style.display='none'; notif('❌ Falha no e-mail de teste. Verifique a chave Brevo e o remetente.'); return; }
+  }
+  // Enviar para lista
+  for (var i=0; i<dests.length; i++) {
+    var c = dests[i];
+    var lang = c.lang||'pt';
+    var tit = r.titulos[lang]||r.titulos.pt||'';
+    if (progMsg) progMsg.textContent='Enviando para '+c.nome+'... ('+(i+1)+'/'+dests.length+')';
+    var ok2 = await siEnviarEmail(cfg, r, lang, [{name:c.nome,email:c.email}], cc, false);
+    if (ok2) enviados++; else erros++;
+    if (progBar) progBar.style.width = ((i+1+(testeFirst?1:0))/total*100)+'%';
+    // Pequeno delay para não sobrecarregar a API
+    await new Promise(function(res){ setTimeout(res, 150); });
+  }
+  if (progArea) progArea.style.display='none';
+  // Registrar histórico
+  var hist = siHist();
+  hist.unshift({ id:'h_'+Date.now(), ts:Date.now(), titulo:r.titulos.pt, enviados, erros, total:dests.length });
+  if (hist.length>100) hist=hist.slice(0,100);
+  siSalvarHist(hist);
+  siRenderHistorico();
+  siRenderStats();
+  notif('✅ Envio concluído: '+enviados+' enviados'+( erros?' · ❌ '+erros+' erros':'')+'.');
+}
+
+async function siEnviarEmail(cfg, r, lang, tos, cc, isTeste) {
+  var h = SI.hdrs(lang);
+  var tit = r.titulos[lang]||r.titulos.pt||'(sem título)';
+  var sub = r.subtitulos&&r.subtitulos[lang]||'';
+  var txt = r.textos[lang]||r.textos.pt||'';
+  var assunto = (isTeste?'[TESTE] ':'')+h.subj+': '+tit;
+  var htmlBody = siGerarHtmlEmail(r, lang, cfg);
+  var payload = {
+    sender: { name: cfg.fromName||'CMDDI — Sala de Imprensa', email: cfg.from },
+    to: tos,
+    subject: assunto,
+    htmlContent: htmlBody
+  };
+  if (cc) payload.cc = [{email:cc}];
+  if (r.arqUrl && r.arqNome) {
+    payload.attachment = [{ url: r.arqUrl, name: r.arqNome }];
+  }
+  try {
+    var resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method:'POST',
+      headers: { 'api-key': cfg.brevo, 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify(payload)
+    });
+    var data = await resp.json();
+    return resp.ok && (data.messageId||data.messageIds);
+  } catch(e) { console.error('Erro Brevo', e); return false; }
+}
+
+async function siTesteEmail() {
+  var cfg = siCfg();
+  if (!cfg.brevo||!cfg.from) { notif('⚠ Configure a chave Brevo e o remetente.'); return; }
+  var r = siCapturarRelease();
+  if (!r.textos.pt && !r.titulos.pt) { notif('⚠ Redija o release antes de testar.'); return; }
+  notif('📤 Enviando teste para '+cfg.from+'...');
+  var ok = await siEnviarEmail(cfg, r, 'pt', [{name:cfg.fromName||'CMDDI',email:cfg.from}], '', true);
+  notif(ok ? '✅ E-mail de teste enviado para '+cfg.from+'!' : '❌ Falha. Verifique chave Brevo e remetente.');
+}
+
+function siGerarHtmlEmail(r, lang, cfg) {
+  var h = SI.hdrs(lang);
+  var tit = escH(r.titulos[lang]||r.titulos.pt||'');
+  var sub = escH(r.subtitulos&&r.subtitulos[lang]||'');
+  var txt = escH(r.textos[lang]||r.textos.pt||'').replace(/\n/g,'<br>');
+  var dataFmt = r.data ? new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+  return '<!DOCTYPE html><html lang="'+lang+'"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+tit+'</title></head>'+
+  '<body style="margin:0;padding:0;background:#f4f1eb;font-family:Georgia,serif">'+
+  '<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:20px 10px">'+
+  '<table width="640" align="center" cellpadding="0" cellspacing="0" style="max-width:640px;background:#1a1a1a;border-radius:8px;overflow:hidden">'+
+    // Cabeçalho
+    '<tr><td style="background:#5C1E0A;padding:18px 30px">'+
+      '<table width="100%" cellpadding="0" cellspacing="0"><tr>'+
+        '<td><div style="color:#C9A24A;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">CMDDI</div>'+
+        '<div style="color:rgba(255,255,255,.7);font-size:11px;font-family:Arial,sans-serif">'+escH(h.from)+'</div></td>'+
+        '<td align="right" style="color:rgba(255,255,255,.55);font-size:11px;font-family:Arial,sans-serif">Campo Grande/MS — Brasil<br>'+dataFmt+'</td>'+
+      '</tr></table></td></tr>'+
+    // Embargo
+    (r.embargo?'<tr><td style="background:rgba(248,113,113,.15);padding:8px 30px;color:#f87171;font-size:12px;font-family:Arial,sans-serif">'+escH(h.embargo)+' '+escH(r.embargo)+'</td></tr>':'')  +
+    // Corpo
+    '<tr><td style="padding:28px 30px">'+
+      '<h1 style="color:#C9A24A;font-size:22px;line-height:1.4;margin:0 0 10px;font-family:Georgia,serif">'+tit+'</h1>'+
+      (sub?'<p style="color:#a0987a;font-style:italic;font-size:15px;margin:0 0 18px;border-left:3px solid #5C1E0A;padding-left:12px">'+sub+'</p>':'')+
+      '<div style="color:#d8cfc0;font-size:15px;line-height:1.8;margin-bottom:20px">'+txt+'</div>'+
+      (r.tags?'<div style="color:#5F9ECC;font-size:12px;margin-bottom:16px">'+escH(r.tags)+'</div>':'')+
+      (r.arqUrl?'<table cellpadding="0" cellspacing="0" style="margin-bottom:16px"><tr><td style="background:rgba(90,62,0,.3);border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:8px 14px"><a href="'+r.arqUrl+'" style="color:#C9A24A;font-size:13px;text-decoration:none">📎 '+escH(r.arqNome||'Anexo')+'</a></td></tr></table>':'')+
+      (r.contatoEmail||r.contatoTel?'<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px;color:#888;font-size:12px;font-family:Arial,sans-serif"><strong style="color:#C9A24A">'+escH(h.contact)+':</strong> '+escH(r.contatoEmail)+(r.contatoTel?' · '+escH(r.contatoTel):'')+'</div>':'')+
+    '</td></tr>'+
+    // Rodapé
+    '<tr><td style="background:#111;padding:14px 30px;color:#555;font-size:11px;font-family:Arial,sans-serif;border-top:1px solid rgba(255,255,255,.06)">'+
+      escH(h.footer).replace(/\n/g,'<br>')+
+      '<br><br><a href="cmddicg.github.io" style="color:#5C1E0A">cmddicg.github.io</a>'+
+    '</td></tr>'+
+  '</table></td></tr></table></body></html>';
+}
+
+// --- Histórico ---
+function siRenderHistorico() {
+  var el = document.getElementById('si-historico-lista'); if (!el) return;
+  var arr = siHist();
+  if (!arr.length) { el.innerHTML='<div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1.5rem">Nenhum envio registrado.</div>'; return; }
+  el.innerHTML = arr.slice(0,30).map(function(h){
+    return '<div class="si-historico-item">'+
+      '<div><div class="si-hist-titulo">'+escH(h.titulo||'(sem título)')+'</div>'+
+      '<div class="si-hist-meta">'+siFormatarData(h.ts)+' · ✅ '+h.enviados+' enviados'+(h.erros?' · ❌ '+h.erros+' erros':'')+' · '+h.total+' destinatários</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+function siLimparHistorico() {
+  if (!confirm('Limpar todo o histórico de envios?')) return;
+  siSalvarHist([]);
+  siRenderHistorico();
+  siRenderStats();
+  notif('🗑 Histórico limpo.');
+}
+
+// --- Estatísticas ---
+function siRenderStats() {
+  var midia = siMidia();
+  var hist = siHist();
+  var setN = function(id, n){ var el=document.getElementById(id); if(el) el.textContent=n; };
+  setN('si-st-contatos', midia.length);
+  setN('si-st-envios', hist.length);
+  setN('si-st-emails', hist.reduce(function(s,h){ return s+(h.enviados||0); }, 0));
+  // Por tipo
+  var tipos = {};
+  midia.forEach(function(c){ tipos[c.tipo]=(tipos[c.tipo]||0)+1; });
+  var elT = document.getElementById('si-stats-tipos');
+  if (elT) elT.innerHTML = Object.keys(tipos).map(function(t){
+    return '<span style="background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.25);border-radius:12px;padding:.25rem .7rem;font-size:.75rem;color:var(--am)">'+(_tipoIco[t]||'')+(SI.tiposTrad.pt[t]||t)+' ('+tipos[t]+')</span>';
+  }).join('');
+  // Por idioma
+  var langs = {pt:0,en:0,es:0,fr:0};
+  midia.forEach(function(c){ langs[c.lang]=(langs[c.lang]||0)+1; });
+  var elL = document.getElementById('si-stats-langs');
+  if (elL) elL.innerHTML = Object.keys(langs).filter(function(k){ return langs[k]>0; }).map(function(k){
+    return '<span style="background:rgba(42,74,28,.2);border:1px solid rgba(42,74,28,.4);border-radius:12px;padding:.25rem .7rem;font-size:.75rem;color:#7bc67e">'+(_langIco[k]||k)+' '+langs[k]+'</span>';
+  }).join('');
+}
+
+// --- Utilitários ---
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function siFormatarData(ts){ return ts ? new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : ''; }
+
+// Inicializar quando o ADM for aberto
+var _siInitDone = false;
+var _siOrigAdmLogin = typeof admLogin === 'function' ? admLogin : null;
+document.addEventListener('DOMContentLoaded', function(){
+  var origBtn = document.querySelector('[onclick="admLogin()"]');
+  if (origBtn) {
+    origBtn.addEventListener('click', function(){
+      setTimeout(function(){
+        if (document.body.classList.contains('adm-ok') && !_siInitDone) {
+          _siInitDone = true; siInit();
+        }
+      }, 600);
+    });
+  }
+  // Também inicializar se o ADM já estiver aberto (reload com sessão)
+  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; }
+});
+
 function pubArtigo() {
   var tit = v('art-tit'), meta = v('art-meta'), link = v('art-link'), cat = v('art-cat');
   if (!tit) { alert('Preencha o título.'); return; }

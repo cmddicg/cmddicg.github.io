@@ -1892,6 +1892,21 @@ body.adm-ok .cac-del-btn { display: flex !important; }
   background: rgba(255,255,255,.06) !important;
   border-color: rgba(212,149,74,.18) !important;
 }
+/* ===== LISTAS PERSONALIZADAS — SALA DE IMPRENSA ===== */
+.si-lista-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:12px;font-size:.72rem;font-weight:600;margin:.15rem;cursor:default;border:1px solid transparent}
+.si-lista-tag .rm{cursor:pointer;opacity:.6;font-size:.85em;margin-left:.15rem;transition:.15s}
+.si-lista-tag .rm:hover{opacity:1}
+.si-lista-chk-grid{display:flex;flex-wrap:wrap;gap:.3rem;margin:.4rem 0}
+.si-lista-chk{display:none}
+.si-lista-chk + label{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .65rem;border-radius:12px;font-size:.73rem;font-weight:600;border:1.5px solid rgba(212,149,74,.25);color:rgba(249,245,237,.5);cursor:pointer;transition:.15s}
+.si-lista-chk:checked + label{border-color:var(--am);color:var(--am);background:rgba(212,149,74,.12)}
+.si-lista-chk + label:hover{border-color:rgba(212,149,74,.5);color:rgba(249,245,237,.8)}
+.si-bloco-textarea{width:100%;min-height:120px;background:rgba(255,255,255,.05);border:1px solid rgba(212,149,74,.2);border-radius:5px;color:#f9f5ed;font-family:monospace;font-size:.8rem;padding:.6rem .8rem;resize:vertical;line-height:1.6}
+.si-bloco-textarea:focus{outline:none;border-color:rgba(212,149,74,.5)}
+.si-lista-card{display:flex;align-items:center;justify-content:space-between;padding:.55rem .8rem;background:rgba(255,255,255,.04);border:1px solid rgba(212,149,74,.15);border-radius:5px;margin-bottom:.4rem;gap:.5rem}
+.si-lista-bolinha{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.si-lista-nome{font-weight:600;font-size:.88rem;flex:1}
+.si-lista-count{font-size:.75rem;color:rgba(249,245,237,.45);margin-left:.3rem}
 /* ===== BOTÃO TRADUÇÃO AUTOMÁTICA (global ADM) ===== */
 .adm-autotrad-btn{display:inline-flex;align-items:center;gap:.35rem;background:#2D5016;border:1.5px solid #7bc67e;color:#b8f0bc;font-size:.72rem;font-weight:700;padding:.38rem .9rem;border-radius:20px;cursor:pointer;transition:.2s;letter-spacing:.03em;margin-bottom:.5rem}
 .adm-autotrad-btn:hover{background:#3E6B1F;border-color:#a0e0a4;color:#d0f5d3}
@@ -2987,68 +3002,158 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
       <!-- ABA: BANCO DE MÍDIA -->
       <div class="si-pane ativo" id="si-banco">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem">
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">Nome / Veículo</label>
-            <input class="adm-input" id="si-m-nome" placeholder="ex: Campo Grande News">
-          </div>
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">E-mail</label>
-            <input class="adm-input" id="si-m-email" type="email" placeholder="redacao@jornal.com.br">
-          </div>
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">Tipo</label>
-            <select class="adm-select" id="si-m-tipo">
-              <option value="tv">📺 TV</option>
-              <option value="radio">📻 Rádio</option>
-              <option value="digital" selected>🌐 Digital</option>
-              <option value="impresso">📰 Impresso</option>
-              <option value="agencia">📡 Agência</option>
-              <option value="internacional">🌍 Internacional</option>
-              <option value="podcast">🎙 Podcast</option>
-            </select>
-          </div>
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">Grupo / Editoria</label>
-            <input class="adm-input" id="si-m-grupo" placeholder="ex: Geral, Indígena, Direitos">
-          </div>
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">Idioma preferido</label>
-            <select class="adm-select" id="si-m-lang">
-              <option value="pt">🇧🇷 Português</option>
-              <option value="en">🇬🇧 English</option>
-              <option value="es">🇪🇸 Español</option>
-              <option value="fr">🇫🇷 Français</option>
-            </select>
-          </div>
-          <div class="adm-form-group" style="margin:0">
-            <label class="adm-label">Contato / Repórter</label>
-            <input class="adm-input" id="si-m-contato" placeholder="ex: Maria Silva (editora)">
-          </div>
-        </div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
-          <button class="si-btn pri" onclick="siAdicionarMidia()">➕ Adicionar Contato</button>
-          <button class="si-btn" onclick="siImportarCSV()">📤 Importar CSV</button>
-          <button class="si-btn" onclick="siExportarCSV()">📥 Exportar CSV</button>
-          <label class="si-btn" for="si-csv-file" style="cursor:pointer">📂 Carregar arquivo CSV</label>
-          <input type="file" id="si-csv-file" accept=".csv" style="display:none" onchange="siCarregarCSV(this)">
+
+        <!-- Sub-abas -->
+        <div style="display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:1px solid rgba(212,149,74,.15);padding-bottom:.6rem">
+          <button class="si-editor-tab ativo" onclick="siBancoAba(this,'si-sub-contatos')">👤 Contatos</button>
+          <button class="si-editor-tab" onclick="siBancoAba(this,'si-sub-listas')">📋 Listas</button>
+          <button class="si-editor-tab" onclick="siBancoAba(this,'si-sub-bloco')">📥 Adição em Bloco</button>
         </div>
 
-        <!-- Filtros -->
-        <div style="display:flex;gap:.5rem;margin-bottom:.7rem;align-items:center;flex-wrap:wrap">
-          <input class="adm-input" id="si-busca" style="flex:1;min-width:160px;font-size:.8rem;padding:.35rem .7rem" placeholder="🔍 Buscar por nome, veículo ou e-mail..." oninput="siRenderBanco()">
-          <select class="adm-select" id="si-filtro-tipo" style="font-size:.78rem;padding:.35rem .6rem" onchange="siRenderBanco()">
-            <option value="">Todos os tipos</option>
-            <option value="tv">📺 TV</option><option value="radio">📻 Rádio</option>
-            <option value="digital">🌐 Digital</option><option value="impresso">📰 Impresso</option>
-            <option value="agencia">📡 Agência</option><option value="internacional">🌍 Internacional</option>
-            <option value="podcast">🎙 Podcast</option>
-          </select>
+        <!-- SUB-ABA: CONTATOS -->
+        <div id="si-sub-contatos" class="si-editor-pane ativo">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.7rem">
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Nome / Veículo</label>
+              <input class="adm-input" id="si-m-nome" placeholder="ex: Campo Grande News">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">E-mail</label>
+              <input class="adm-input" id="si-m-email" type="email" placeholder="redacao@jornal.com.br">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Tipo de veículo</label>
+              <select class="adm-select" id="si-m-tipo">
+                <option value="tv">📺 TV</option>
+                <option value="radio">📻 Rádio</option>
+                <option value="digital" selected>🌐 Digital</option>
+                <option value="impresso">📰 Impresso</option>
+                <option value="agencia">📡 Agência</option>
+                <option value="internacional">🌍 Internacional</option>
+                <option value="podcast">🎙 Podcast</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Contato / Repórter</label>
+              <input class="adm-input" id="si-m-contato" placeholder="ex: Maria Silva (editora)">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Idioma preferido</label>
+              <select class="adm-select" id="si-m-lang">
+                <option value="pt">🇧🇷 Português</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Grupo/Editoria (legado)</label>
+              <input class="adm-input" id="si-m-grupo" placeholder="ex: Indigenismo, Geral...">
+            </div>
+          </div>
+          <!-- Listas personalizadas -->
+          <div class="adm-form-group" style="margin-bottom:.7rem">
+            <label class="adm-label">Adicionar às Listas <span style="font-weight:400;opacity:.6;font-size:.75rem">(pode selecionar várias)</span></label>
+            <div class="si-lista-chk-grid" id="si-m-listas-chk">
+              <span style="font-size:.78rem;color:rgba(249,245,237,.3);padding:.3rem 0">Crie listas na aba "📋 Listas" para aparecerem aqui.</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
+            <button class="si-btn pri" onclick="siAdicionarMidia()">➕ Adicionar Contato</button>
+            <button class="si-btn" onclick="siExportarCSV()">📥 Exportar CSV</button>
+            <label class="si-btn" for="si-csv-file" style="cursor:pointer">📂 Importar CSV</label>
+            <input type="file" id="si-csv-file" accept=".csv" style="display:none" onchange="siCarregarCSV(this)">
+          </div>
+          <!-- Filtros -->
+          <div style="display:flex;gap:.4rem;margin-bottom:.6rem;flex-wrap:wrap">
+            <input class="adm-input" id="si-busca" style="flex:1;min-width:160px;font-size:.8rem;padding:.35rem .7rem" placeholder="🔍 Buscar por nome, veículo ou e-mail..." oninput="siRenderBanco()">
+            <select class="adm-select" id="si-filtro-tipo" style="font-size:.78rem;padding:.35rem .6rem" onchange="siRenderBanco()">
+              <option value="">Todos os tipos</option>
+              <option value="tv">📺 TV</option><option value="radio">📻 Rádio</option>
+              <option value="digital">🌐 Digital</option><option value="impresso">📰 Impresso</option>
+              <option value="agencia">📡 Agência</option><option value="internacional">🌍 Internacional</option>
+              <option value="podcast">🎙 Podcast</option>
+            </select>
+            <select class="adm-select" id="si-filtro-lista" style="font-size:.78rem;padding:.35rem .6rem" onchange="siRenderBanco()">
+              <option value="">Todas as listas</option>
+            </select>
+          </div>
+          <div id="si-banco-lista" style="max-height:320px;overflow-y:auto">
+            <div style="text-align:center;color:rgba(249,245,237,.35);font-size:.82rem;padding:1.5rem">Nenhum contato cadastrado ainda.</div>
+          </div>
         </div>
-        <div id="si-banco-lista" style="max-height:340px;overflow-y:auto">
-          <div style="text-align:center;color:rgba(249,245,237,.35);font-size:.82rem;padding:1.5rem">Nenhum contato cadastrado ainda.</div>
+
+        <!-- SUB-ABA: LISTAS -->
+        <div id="si-sub-listas" class="si-editor-pane">
+          <div style="display:flex;gap:.6rem;margin-bottom:.9rem;align-items:flex-end">
+            <div class="adm-form-group" style="margin:0;flex:1">
+              <label class="adm-label">Nome da nova lista</label>
+              <input class="adm-input" id="si-l-nome" placeholder="ex: TV Nacional, Imprensa MS, Indigenismo...">
+            </div>
+            <div class="adm-form-group" style="margin:0;width:56px">
+              <label class="adm-label">Cor</label>
+              <input type="color" id="si-l-cor" value="#D4954A" style="width:100%;height:36px;border:1px solid rgba(212,149,74,.3);border-radius:4px;background:none;cursor:pointer;padding:2px">
+            </div>
+            <button class="si-btn pri" onclick="siCriarLista()" style="height:36px;white-space:nowrap">➕ Criar Lista</button>
+          </div>
+          <div id="si-listas-lista">
+            <div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1.2rem">Nenhuma lista criada ainda.</div>
+          </div>
+          <div style="margin-top:1rem;font-size:.75rem;color:rgba(249,245,237,.4)">
+            💡 Dica: um contato pode pertencer a várias listas ao mesmo tempo — por exemplo, "Imprensa MS" + "Indigenismo" + "Rádios CG".
+          </div>
         </div>
-      </div>
+
+        <!-- SUB-ABA: ADIÇÃO EM BLOCO -->
+        <div id="si-sub-bloco" class="si-editor-pane">
+          <div style="font-size:.82rem;color:rgba(249,245,237,.6);margin-bottom:.8rem;line-height:1.6">
+            Cole um e-mail por linha. Formatos aceitos:<br>
+            <code style="font-size:.78rem;color:var(--am)">email@dominio.com</code> &nbsp;ou&nbsp;
+            <code style="font-size:.78rem;color:var(--am)">Nome do Veículo &lt;email@dominio.com&gt;</code> &nbsp;ou&nbsp;
+            <code style="font-size:.78rem;color:var(--am)">email@dominio.com | Nome do Veículo</code>
+          </div>
+          <textarea class="si-bloco-textarea" id="si-bloco-txt" placeholder="redacao@g1.com&#10;jornal@correio.com.br&#10;Dourados News &lt;news@douradosnews.com.br&gt;&#10;radio@cultura.ms.gov.br | Rádio Cultura MS&#10;..."></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin:.7rem 0">
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Tipo padrão</label>
+              <select class="adm-select" id="si-bloco-tipo">
+                <option value="digital">🌐 Digital</option>
+                <option value="tv">📺 TV</option><option value="radio">📻 Rádio</option>
+                <option value="impresso">📰 Impresso</option><option value="agencia">📡 Agência</option>
+                <option value="internacional">🌍 Internacional</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Idioma padrão</label>
+              <select class="adm-select" id="si-bloco-lang">
+                <option value="pt">🇧🇷 Português</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Grupo/Editoria</label>
+              <input class="adm-input" id="si-bloco-grupo" placeholder="ex: Imprensa MS">
+            </div>
+          </div>
+          <!-- Listas -->
+          <div class="adm-form-group" style="margin-bottom:.7rem">
+            <label class="adm-label">Adicionar todos às Listas</label>
+            <div class="si-lista-chk-grid" id="si-bloco-listas-chk">
+              <span style="font-size:.78rem;color:rgba(249,245,237,.3);padding:.3rem 0">Crie listas na aba "📋 Listas" para aparecerem aqui.</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+            <button class="si-btn pri" onclick="siAdicionarBloco()">📥 Adicionar em Bloco</button>
+            <span id="si-bloco-status" style="font-size:.78rem;color:rgba(249,245,237,.5)"></span>
+          </div>
+          <div style="margin-top:1rem;font-size:.75rem;color:rgba(249,245,237,.4)">
+            💡 Duplicatas (e-mails já cadastrados) são ignoradas automaticamente.
+          </div>
+        </div>
+
+      </div><!-- /si-banco -->
 
       <!-- ABA: REDIGIR RELEASE -->
       <div class="si-pane" id="si-compose">
@@ -3168,13 +3273,16 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </div>
 
         <!-- Filtro rápido -->
-        <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
-          <input class="adm-input" id="si-env-busca" style="flex:1;font-size:.78rem;padding:.3rem .6rem" placeholder="🔍 Filtrar destinatários..." oninput="siRenderEnvLista()">
+        <div style="display:flex;gap:.4rem;margin-bottom:.5rem;flex-wrap:wrap">
+          <input class="adm-input" id="si-env-busca" style="flex:1;min-width:160px;font-size:.78rem;padding:.3rem .6rem" placeholder="🔍 Filtrar destinatários..." oninput="siRenderEnvLista()">
           <select class="adm-select" id="si-env-filtro-tipo" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
-            <option value="">Todos</option>
+            <option value="">Todos os tipos</option>
             <option value="tv">TV</option><option value="radio">Rádio</option>
             <option value="digital">Digital</option><option value="impresso">Impresso</option>
             <option value="agencia">Agência</option><option value="internacional">Internacional</option>
+          </select>
+          <select class="adm-select" id="si-env-filtro-lista" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
+            <option value="">Todas as listas</option>
           </select>
         </div>
 
@@ -4817,23 +4925,116 @@ function siHist() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_HIST)
 function siSalvarHist(arr) { localStorage.setItem(SI.DB_KEY_HIST, JSON.stringify(arr)); }
 function siRascunhos() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_RASCUNHO)||'[]'); } catch(e){ return []; } }
 function siSalvarRascunhos(arr) { localStorage.setItem(SI.DB_KEY_RASCUNHO, JSON.stringify(arr)); }
+// --- Listas personalizadas ---
+function siListas() { try { return JSON.parse(localStorage.getItem('cmddi_si_listas')||'[]'); } catch(e){ return []; } }
+function siSalvarListas(arr) { localStorage.setItem('cmddi_si_listas',JSON.stringify(arr)); }
+
+// Sub-abas do Banco de Mídia
+function siBancoAba(el, pane) {
+  document.querySelectorAll('#si-banco .si-editor-tab').forEach(function(t){ t.classList.remove('ativo'); });
+  document.querySelectorAll('#si-banco .si-editor-pane').forEach(function(p){ p.classList.remove('ativo'); });
+  if (el) el.classList.add('ativo');
+  var p = document.getElementById(pane);
+  if (p) p.classList.add('ativo');
+  if (pane === 'si-sub-listas') siRenderListas();
+  if (pane === 'si-sub-bloco') siRenderListasChk('si-bloco-listas-chk');
+  if (pane === 'si-sub-contatos') siRenderListasChk('si-m-listas-chk');
+}
+
+// Criar lista
+function siCriarLista() {
+  var nome = ((document.getElementById('si-l-nome')||{}).value||'').trim();
+  var cor  = (document.getElementById('si-l-cor')||{}).value||'#D4954A';
+  if (!nome) { notif('⚠ Digite um nome para a lista.'); return; }
+  var arr = siListas();
+  if (arr.some(function(l){ return l.nome.toLowerCase()===nome.toLowerCase(); })) { notif('⚠ Já existe uma lista com esse nome.'); return; }
+  arr.push({ id:'lst_'+Date.now(), nome, cor, ts: Date.now() });
+  siSalvarListas(arr);
+  siRenderListas();
+  siRenderListasChk('si-m-listas-chk');
+  siRenderListasChk('si-bloco-listas-chk');
+  siPopularFiltrosLista();
+  document.getElementById('si-l-nome').value = '';
+  notif('✅ Lista "'+nome+'" criada!');
+}
+
+function siRemoverLista(id) {
+  var lista = siListas().find(function(l){ return l.id===id; });
+  if (!lista) return;
+  if (!confirm('Remover a lista "'+lista.nome+'"? Os contatos não serão excluídos, apenas desvinculados desta lista.')) return;
+  siSalvarListas(siListas().filter(function(l){ return l.id!==id; }));
+  // Remover a lista dos contatos
+  var midia = siMidia().map(function(c){
+    c.listas = (c.listas||[]).filter(function(lid){ return lid!==id; });
+    return c;
+  });
+  siSalvarMidia(midia);
+  siRenderListas();
+  siRenderListasChk('si-m-listas-chk');
+  siRenderListasChk('si-bloco-listas-chk');
+  siPopularFiltrosLista();
+  siRenderBanco();
+  notif('🗑 Lista removida.');
+}
+
+function siRenderListas() {
+  var el = document.getElementById('si-listas-lista'); if (!el) return;
+  var arr = siListas();
+  var midia = siMidia();
+  if (!arr.length) { el.innerHTML='<div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1.2rem">Nenhuma lista criada ainda.</div>'; return; }
+  el.innerHTML = arr.map(function(l){
+    var count = midia.filter(function(c){ return (c.listas||[]).includes(l.id); }).length;
+    return '<div class="si-lista-card">'+
+      '<div class="si-lista-bolinha" style="background:'+l.cor+'"></div>'+
+      '<span class="si-lista-nome">'+escH(l.nome)+'</span>'+
+      '<span class="si-lista-count">'+count+' contato'+(count!==1?'s':'')+'</span>'+
+      '<div style="display:flex;gap:.3rem">'+
+        '<button class="si-btn" onclick="siSelecionarPorLista(\''+l.id+'\')" title="Selecionar no envio">📨</button>'+
+        '<button class="si-btn del" onclick="siRemoverLista(\''+l.id+'\')" title="Remover lista">🗑</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+function siRenderListasChk(containerId) {
+  var el = document.getElementById(containerId); if (!el) return;
+  var arr = siListas();
+  if (!arr.length) {
+    el.innerHTML='<span style="font-size:.78rem;color:rgba(249,245,237,.3);padding:.3rem 0">Crie listas na aba "📋 Listas" para aparecerem aqui.</span>';
+    return;
+  }
+  el.innerHTML = arr.map(function(l){
+    var uid = containerId+'_'+l.id;
+    return '<input type="checkbox" class="si-lista-chk" id="'+uid+'" value="'+l.id+'">'+
+           '<label for="'+uid+'" style="border-color:'+l.cor+'40;color:'+l.cor+'">'+escH(l.nome)+'</label>';
+  }).join('');
+}
+
+function siPopularFiltrosLista() {
+  var arr = siListas();
+  var opts = '<option value="">Todas as listas</option>'+arr.map(function(l){
+    return '<option value="'+l.id+'">'+escH(l.nome)+'</option>';
+  }).join('');
+  ['si-filtro-lista','si-env-filtro-lista'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.innerHTML = opts;
+  });
+}
 
 // --- Inicialização ---
 function siInit() {
-  // Preencher data padrão
   var di = document.getElementById('si-r-data');
   if (di && !di.value) di.value = new Date().toISOString().split('T')[0];
-  // Verificar config
   var cfg = siCfg();
   var configArea = document.getElementById('si-config-area');
   if (cfg.brevo && configArea) configArea.style.display = 'none';
+  siPopularFiltrosLista();
+  siRenderListasChk('si-m-listas-chk');
+  siRenderListasChk('si-bloco-listas-chk');
   siRenderBanco();
   siRenderEnvLista();
   siRenderHistorico();
   siRenderRascunhos();
   siRenderStats();
   siCarregarReleasesNoSelect();
-  // CC checkbox
   var ccChk = document.getElementById('si-opt-cc');
   if (ccChk) ccChk.addEventListener('change', function() {
     var ar = document.getElementById('si-opt-cc-area');
@@ -4885,20 +5086,21 @@ function siAdicionarMidia() {
   if (!nome || !email) { notif('⚠ Nome e e-mail são obrigatórios.'); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { notif('⚠ E-mail inválido.'); return; }
   var arr = siMidia();
-  // Verificar duplicata
   if (arr.some(function(c){ return c.email.toLowerCase() === email.toLowerCase(); })) {
     notif('⚠ Este e-mail já está cadastrado.'); return;
   }
-  arr.push({ id: 'mid_'+Date.now(), nome, email, tipo, grupo, lang, contato, ts: Date.now() });
+  // Coletar listas selecionadas
+  var listasSel = [];
+  document.querySelectorAll('#si-m-listas-chk .si-lista-chk:checked').forEach(function(cb){ listasSel.push(cb.value); });
+  arr.push({ id: 'mid_'+Date.now(), nome, email, tipo, grupo, lang, contato, listas: listasSel, ts: Date.now() });
   siSalvarMidia(arr);
-  siRenderBanco();
-  siRenderEnvLista();
-  siRenderStats();
-  // Limpar campos
+  siRenderBanco(); siRenderEnvLista(); siRenderStats(); siRenderListas();
   ['si-m-nome','si-m-email','si-m-grupo','si-m-contato'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.value = '';
   });
-  notif('✅ Contato adicionado ao banco de mídia!');
+  // Desmarcar listas
+  document.querySelectorAll('#si-m-listas-chk .si-lista-chk').forEach(function(cb){ cb.checked=false; });
+  notif('✅ Contato adicionado' + (listasSel.length ? ' às listas selecionadas!' : '!'));
 }
 
 function siRemoverMidia(id) {
@@ -4934,8 +5136,13 @@ function siRenderBanco() {
   var el = document.getElementById('si-banco-lista'); if (!el) return;
   var busca = ((document.getElementById('si-busca')||{}).value||'').toLowerCase();
   var filtroTipo = (document.getElementById('si-filtro-tipo')||{}).value||'';
+  var filtroLista = (document.getElementById('si-filtro-lista')||{}).value||'';
+  var listas = siListas();
+  var listaMap = {};
+  listas.forEach(function(l){ listaMap[l.id]=l; });
   var arr = siMidia().filter(function(c){
     if (filtroTipo && c.tipo !== filtroTipo) return false;
+    if (filtroLista && !(c.listas||[]).includes(filtroLista)) return false;
     if (busca && !c.nome.toLowerCase().includes(busca) && !c.email.toLowerCase().includes(busca) && !(c.grupo||'').toLowerCase().includes(busca)) return false;
     return true;
   });
@@ -4944,13 +5151,15 @@ function siRenderBanco() {
     return;
   }
   el.innerHTML = arr.map(function(c){
+    var tagsListas = (c.listas||[]).map(function(lid){
+      var l = listaMap[lid]; if (!l) return '';
+      return '<span class="si-lista-tag" style="background:'+l.cor+'22;color:'+l.cor+';border-color:'+l.cor+'44">'+escH(l.nome)+'</span>';
+    }).join('');
     return '<div class="si-card">'+
       '<div class="si-card-info">'+
         '<div class="si-card-nome">'+(_tipoIco[c.tipo]||'📄')+' '+escH(c.nome)+'</div>'+
         '<div class="si-card-meta">'+escH(c.email)+' · '+(_langIco[c.lang]||'')+'</div>'+
-        '<div style="margin-top:.25rem">'+
-          '<span class="si-grupo-tag">'+escH(c.grupo||'Geral')+'</span>'+
-          (c.contato?'<span style="font-size:.72rem;color:rgba(249,245,237,.45)">'+escH(c.contato)+'</span>':'')+'</div>'+
+        '<div style="margin-top:.25rem">'+tagsListas+(c.grupo&&c.grupo!=='Geral'?'<span class="si-grupo-tag">'+escH(c.grupo)+'</span>':'')+'</div>'+
       '</div>'+
       '<div class="si-card-acoes">'+
         '<button class="si-btn" onclick="siEditarMidia(\''+c.id+'\')">✏</button>'+
@@ -5171,21 +5380,79 @@ function siRenderEnvLista() {
   var el = document.getElementById('si-env-destinatarios'); if (!el) return;
   var busca = ((document.getElementById('si-env-busca')||{}).value||'').toLowerCase();
   var filtro = (document.getElementById('si-env-filtro-tipo')||{}).value||'';
+  var filtroLista = (document.getElementById('si-env-filtro-lista')||{}).value||'';
+  var listas = siListas(); var listaMap = {};
+  listas.forEach(function(l){ listaMap[l.id]=l; });
   var arr = siMidia().filter(function(c){
     if (filtro && c.tipo!==filtro) return false;
+    if (filtroLista && !(c.listas||[]).includes(filtroLista)) return false;
     if (busca && !c.nome.toLowerCase().includes(busca) && !c.email.toLowerCase().includes(busca)) return false;
     return true;
   });
   if (!arr.length) { el.innerHTML='<div style="text-align:center;color:rgba(249,245,237,.3);font-size:.8rem;padding:1rem">Nenhum contato encontrado.</div>'; return; }
   el.innerHTML = arr.map(function(c){
+    var tagsListas = (c.listas||[]).slice(0,2).map(function(lid){
+      var l = listaMap[lid]; if (!l) return '';
+      return '<span style="font-size:.68rem;padding:.1rem .4rem;border-radius:8px;background:'+l.cor+'22;color:'+l.cor+';margin-left:.3rem">'+escH(l.nome)+'</span>';
+    }).join('');
     return '<label class="si-check-label">'+
       '<input type="checkbox" name="si-dest" value="'+c.id+'" onchange="siAtualizarCount()"> '+
       (_tipoIco[c.tipo]||'📄')+' <strong>'+escH(c.nome)+'</strong> '+
       '<span style="color:rgba(249,245,237,.45);font-size:.75rem">'+escH(c.email)+'</span> '+
-      (_langIco[c.lang]||'')+
+      (_langIco[c.lang]||'')+tagsListas+
     '</label>';
   }).join('');
   siAtualizarCount();
+}
+
+// Selecionar todos os contatos de uma lista específica (chamado do card da lista)
+function siSelecionarPorLista(listaId) {
+  siAba(document.querySelector('.si-tab[onclick*="si-enviar"]'), 'si-enviar');
+  var el = document.getElementById('si-env-filtro-lista');
+  if (el) { el.value = listaId; siRenderEnvLista(); }
+  siSelecionarTodos(true);
+  notif('✅ Contatos da lista selecionados para envio!');
+}
+
+// Adição em bloco
+function siAdicionarBloco() {
+  var txt = ((document.getElementById('si-bloco-txt')||{}).value||'').trim();
+  if (!txt) { notif('⚠ Cole os e-mails na área de texto.'); return; }
+  var tipo = (document.getElementById('si-bloco-tipo')||{}).value||'digital';
+  var lang = (document.getElementById('si-bloco-lang')||{}).value||'pt';
+  var grupo = (document.getElementById('si-bloco-grupo')||{}).value||'Geral';
+  // Listas selecionadas
+  var listasSel = [];
+  document.querySelectorAll('#si-bloco-listas-chk .si-lista-chk:checked').forEach(function(cb){ listasSel.push(cb.value); });
+  var linhas = txt.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var arr = siMidia();
+  var adicionados=0, duplicatas=0, invalidos=0;
+  linhas.forEach(function(linha) {
+    var nome='', email='';
+    // Formato: Nome <email>
+    var m1 = linha.match(/^(.+?)\s*<([^>]+)>$/);
+    if (m1) { nome=m1[1].trim(); email=m1[2].trim(); }
+    // Formato: email | Nome
+    else if (linha.includes('|')) {
+      var partes = linha.split('|'); email=partes[0].trim(); nome=partes[1]?partes[1].trim():'';
+    }
+    // Formato: só email
+    else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(linha)) { email=linha; nome=''; }
+    else { invalidos++; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { invalidos++; return; }
+    if (arr.some(function(c){ return c.email.toLowerCase()===email.toLowerCase(); })) { duplicatas++; return; }
+    arr.push({ id:'mid_'+Date.now()+'_'+adicionados, nome:nome||email.split('@')[0], email, tipo, grupo, lang, listas:listasSel, ts:Date.now() });
+    adicionados++;
+  });
+  siSalvarMidia(arr);
+  siRenderBanco(); siRenderEnvLista(); siRenderStats(); siRenderListas();
+  var st = document.getElementById('si-bloco-status');
+  if (st) st.textContent = '✅ '+adicionados+' adicionados · ⚠ '+duplicatas+' duplicatas · ❌ '+invalidos+' inválidos';
+  if (adicionados) {
+    document.getElementById('si-bloco-txt').value='';
+    document.querySelectorAll('#si-bloco-listas-chk .si-lista-chk').forEach(function(cb){ cb.checked=false; });
+  }
+  notif('✅ '+adicionados+' contatos adicionados em bloco!');
 }
 
 function siSelecionarTodos(sel) {

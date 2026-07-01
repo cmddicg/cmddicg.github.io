@@ -1893,9 +1893,9 @@ body.adm-ok .cac-del-btn { display: flex !important; }
   border-color: rgba(212,149,74,.18) !important;
 }
 /* ===== BOTÃO TRADUÇÃO AUTOMÁTICA (global ADM) ===== */
-.adm-autotrad-btn{display:inline-flex;align-items:center;gap:.35rem;background:linear-gradient(135deg,rgba(212,149,74,.18),rgba(42,74,28,.18));border:1px solid rgba(212,149,74,.4);color:var(--am);font-size:.72rem;font-weight:700;padding:.35rem .85rem;border-radius:20px;cursor:pointer;transition:.2s;letter-spacing:.03em;margin-bottom:.5rem}
-.adm-autotrad-btn:hover{background:rgba(212,149,74,.25);border-color:var(--am)}
-.adm-autotrad-btn .spin{display:none;width:11px;height:11px;border:2px solid rgba(212,149,74,.3);border-top-color:var(--am);border-radius:50%;animation:spin .7s linear infinite}
+.adm-autotrad-btn{display:inline-flex;align-items:center;gap:.35rem;background:#2D5016;border:1.5px solid #7bc67e;color:#b8f0bc;font-size:.72rem;font-weight:700;padding:.38rem .9rem;border-radius:20px;cursor:pointer;transition:.2s;letter-spacing:.03em;margin-bottom:.5rem}
+.adm-autotrad-btn:hover{background:#3E6B1F;border-color:#a0e0a4;color:#d0f5d3}
+.adm-autotrad-btn .spin{display:none;width:11px;height:11px;border:2px solid rgba(184,240,188,.3);border-top-color:#b8f0bc;border-radius:50%;animation:spin .7s linear infinite}
 .adm-autotrad-btn.carregando .spin{display:inline-block}
 .adm-autotrad-btn.carregando .ico{display:none}
 .adm-autotrad-feito{font-size:.7rem;color:#7bc67e;margin-left:.5rem;display:none}
@@ -2947,51 +2947,8 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
     </div>
 
-    <!-- ADM: novo release -->
-    <div class="adm-panel" id="painel-release" style="margin-top:2rem">
-      <div class="adm-panel-t">⚙ Publicar Novo Release</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem">
-        <div class="adm-form-group">
-          <label class="adm-label">Dia</label>
-          <input class="adm-input" id="rel-dia" type="number" min="1" max="31" placeholder="Dia">
-        </div>
-        <div class="adm-form-group">
-          <label class="adm-label">Mês · Ano</label>
-          <input class="adm-input" id="rel-mes" placeholder="ex: Jun · 2025">
-        </div>
-        <div class="adm-form-group">
-          <label class="adm-label">Categoria</label>
-          <select class="adm-select" id="rel-cat">
-            <option>Direitos</option><option>Institucional</option><option>Cultural</option>
-            <option>Homenagem</option><option>Educação</option><option>Saúde</option>
-          </select>
-        </div>
-      </div>
-      <div class="adm-form-group">
-        <label class="adm-label">Título do Release</label>
-        <button class="adm-autotrad-btn" onclick="admTraduzir('release')" id="btn-trad-release"><span class="ico">✨</span><span class="spin"></span> Traduzir PT → EN / ES / FR</button><span class="adm-autotrad-feito" id="ok-trad-release">✅ Traduzido!</span>
-        <input class="adm-input" id="rel-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="margin-bottom:.4rem">
-        <input class="adm-input" id="rel-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="margin-bottom:.4rem">
-        <input class="adm-input" id="rel-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="margin-bottom:.4rem">
-        <input class="adm-input" id="rel-tit-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Français">
-      </div>
-      <div class="adm-form-group">
-        <label class="adm-label">Texto do Release <span style="font-weight:400;opacity:.6;font-size:.75rem">(EN/ES/FR preenchidos automaticamente)</span></label>
-        <textarea class="adm-textarea" id="rel-texto" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Português" style="height:70px;margin-bottom:.4rem"></textarea>
-        <textarea class="adm-textarea" id="rel-texto-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English" style="height:70px;margin-bottom:.4rem"></textarea>
-        <textarea class="adm-textarea" id="rel-texto-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Español" style="height:70px;margin-bottom:.4rem"></textarea>
-        <textarea class="adm-textarea" id="rel-texto-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Français" style="height:70px"></textarea>
-      </div>
-      <div class="adm-form-group">
-        <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
-        <input class="adm-input" id="rel-arq" type="file" accept=".pdf,.doc,.docx,image/*" style="padding:.4rem" onchange="uploadAnexoRelease(this)">
-        <div id="rel-arq-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
-        <input type="hidden" id="rel-arq-url"><input type="hidden" id="rel-arq-nome">
-      </div>
-      <button class="btn-primario" onclick="pubRelease()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">✅ Publicar Release</button>
-    </div>
 
-    <!-- ===== SALA DE IMPRENSA ADM ===== -->
+        <!-- ===== SALA DE IMPRENSA ADM ===== -->
     <div class="adm-panel" id="painel-sala-imprensa" style="margin-top:2rem">
       <div class="adm-panel-t">📡 Sala de Imprensa — Agência de Notícias CMDDI</div>
 
@@ -3241,7 +3198,9 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </div>
 
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem;align-items:center">
-          <button class="si-btn pri" onclick="siEnviarRelease()" style="padding:.55rem 1.2rem">📨 Enviar Release</button>
+          <button class="si-btn pri" onclick="siEnviarRelease()" style="padding:.55rem 1.2rem">📨 Enviar para a Mídia</button>
+          <button class="si-btn" onclick="siPublicarNoSite()" style="background:rgba(42,74,28,.3);border-color:#7bc67e;color:#b8f0bc;font-weight:700">📰 Publicar no Site</button>
+          <button class="si-btn" onclick="siEnviarEPublicar()" style="background:rgba(180,120,20,.25);border-color:var(--am);color:var(--am);font-weight:700">⚡ Enviar + Publicar (tudo)</button>
           <button class="si-btn" onclick="siTesteEmail()">🧪 Teste (só para mim)</button>
         </div>
 
@@ -4183,6 +4142,53 @@ function abrirAdm(e) {
 function fecharAdm() {
   var modal = document.getElementById('adm-modal');
   if (modal) { modal.classList.remove('aberto'); modal.style.display = 'none'; }
+}
+
+// Publicar release no site CMDDI (dados.json via GitHub)
+async function siPublicarNoSite() {
+  var relId = (document.getElementById('si-env-release')||{}).value||'';
+  var r = relId ? siRascunhos().find(function(x){ return x.rascunhoId===relId; }) : siCapturarRelease();
+  if (!r || !r.titulos || !r.titulos.pt) { notif('⚠ Selecione ou redija um release antes.'); return; }
+  var data = r.data || new Date().toISOString().split('T')[0];
+  var partes = data.split('-');
+  var meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var dia = parseInt(partes[2]||1,10);
+  var mesIdx = parseInt(partes[1]||1,10)-1;
+  var ano = partes[0]||new Date().getFullYear();
+  var mesAno = meses[mesIdx]+' · '+ano;
+  // Montar objeto para o banco de dados
+  var key = 'rel_'+Date.now();
+  notif('⏳ Publicando no site...');
+  try {
+    var db = dbLer();
+    if (!db.releases) db.releases = {};
+    db.releases[key] = {
+      dia: String(dia),
+      mes: mesAno,
+      cat: r.cat||'Institucional',
+      tit: r.titulos,
+      sub: r.subtitulos||{pt:'',en:'',es:'',fr:''},
+      txt: r.textos,
+      tags: r.tags||'',
+      arqUrl: r.arqUrl||'',
+      arqNome: r.arqNome||'',
+      contatoEmail: r.contatoEmail||'',
+      contatoTel: r.contatoTel||'',
+      ts: Date.now()
+    };
+    dbSalvar(db);
+    await salvarNoGitHub();
+    notif('✅ Release publicado no site com sucesso!');
+  } catch(e) {
+    console.error(e);
+    notif('❌ Erro ao publicar no site. Tente novamente.');
+  }
+}
+
+// Enviar para mídia E publicar no site de uma vez
+async function siEnviarEPublicar() {
+  await siPublicarNoSite();
+  await siEnviarRelease();
 }
 
 function admLogin() {

@@ -1891,9 +1891,11 @@ body.adm-ok .cac-del-btn { display: flex !important; }
   color: var(--cr) !important;
   background: rgba(30,18,8,.85) !important;
   border-color: rgba(212,149,74,.35) !important;
+  color-scheme: dark;
 }
+.adm-select { color-scheme: dark; }
 .adm-select option { background: #1e1208 !important; color: #EDE5CF !important; }
-.adm-select option:checked { background: #3D1A0A !important; color: #E8B86D !important; }
+.adm-select option:checked, .adm-select option:hover, .adm-select option:focus { background: #3D1A0A !important; color: #E8B86D !important; }
 /* ===== LISTAS PERSONALIZADAS — SALA DE IMPRENSA ===== */
 .si-lista-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:12px;font-size:.72rem;font-weight:600;margin:.15rem;cursor:default;border:1px solid transparent}
 .si-lista-tag .rm{cursor:pointer;opacity:.6;font-size:.85em;margin-left:.15rem;transition:.15s}
@@ -1947,6 +1949,29 @@ body.adm-ok .cac-del-btn { display: flex !important; }
 .doc-num-sugerido{font-size:.72rem;color:#7bc67e;margin-top:.25rem}
 .doc-num-alerta{font-size:.72rem;color:#f87171;margin-top:.25rem}
 /* ===== SALA DE IMPRENSA ADM ===== */
+/* CORREÇÃO CRÍTICA: este painel foi projetado com paleta escura, mas está
+   dentro de <section class="sec-palha"> (fundo claro). Força um fundo
+   escuro sólido e auto-contido, independente da seção que o envolve. */
+#painel-sala-imprensa {
+  background: #14100a !important;
+  border: 1px solid rgba(212,149,74,.3) !important;
+  border-radius: 10px;
+  padding: 1.5rem 1.6rem !important;
+  color: rgba(249,245,237,.92);
+}
+#painel-sala-imprensa .adm-panel-t { color: var(--am) !important; }
+#painel-sala-imprensa .adm-label { color: rgba(249,245,237,.90) !important; }
+#painel-sala-imprensa .adm-input,
+#painel-sala-imprensa .adm-textarea,
+#painel-sala-imprensa .adm-select {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--cr) !important;
+  border-color: rgba(212,149,74,.35) !important;
+  color-scheme: dark;
+}
+#painel-sala-imprensa .adm-select option { background: #1e1208 !important; color: #EDE5CF !important; }
+#painel-sala-imprensa .adm-select option:checked,
+#painel-sala-imprensa .adm-select option:hover { background: #3D1A0A !important; color: #E8B86D !important; }
 .si-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
 .si-tab{background:rgba(212,149,74,.15);border:1.5px solid rgba(212,149,74,.5);color:var(--am);padding:.45rem 1rem;border-radius:4px;cursor:pointer;font-size:.78rem;font-weight:700;letter-spacing:.04em;transition:.2s}
 .si-tab.ativo{background:var(--am);color:#1a1a1a}
@@ -2044,7 +2069,11 @@ body.adm-ok .si-btn[onclick*="siEnviarEPublicar"] {
   background: white !important;
   color: var(--tx) !important;
   border-color: rgba(107,61,30,.25) !important;
+  color-scheme: light;
 }
+.sec-clara .adm-select option, .sec-palha .adm-select option { background: #ffffff !important; color: #160E04 !important; }
+.sec-clara .adm-select option:checked, .sec-palha .adm-select option:checked,
+.sec-clara .adm-select option:hover, .sec-palha .adm-select option:hover { background: #eee2cf !important; color: #4A2810 !important; }
 .sec-clara .adm-label, .sec-palha .adm-label { color: var(--tx2) !important; }
 .sec-clara .adm-panel-t, .sec-palha .adm-panel-t { color: var(--vd) !important; }
 
@@ -3456,6 +3485,9 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
     </div>
 
+  </div>
+</section>
+<!-- ^ fecha corretamente a section#releases (estava sem fechamento, causando aninhamento indevido das seções seguintes) -->
 
 <!-- ARTIGOS CIENTÍFICOS -->
 <section id="artigos" class="sec sec-dark2 bg-pattern2">

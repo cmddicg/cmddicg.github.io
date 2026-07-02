@@ -2546,9 +2546,8 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
             </select>
           </div>
           <div class="adm-form-group">
-            <label class="adm-label">Título</label>
-            <button class="adm-autotrad-btn" onclick="admTraduzir('evento')" id="btn-trad-evento"><span class="ico">✨</span><span class="spin"></span> Traduzir Título+Local PT → EN/ES/FR</button><span class="adm-autotrad-feito" id="ok-trad-evento">✅ Traduzido!</span>
-            <input class="adm-input" id="ev-tit-in" placeholder="Título do evento">
+            <label class="adm-label">Título <span style="font-weight:500;opacity:.85;font-size:.72rem;color:#7bc67e">— traduzido automaticamente ao publicar</span></label>
+            <input class="adm-input" id="ev-tit-in" placeholder="Título do evento, em português">
             <input type="hidden" id="ev-tit-in-en"><input type="hidden" id="ev-tit-in-es"><input type="hidden" id="ev-tit-in-fr">
           </div>
           <div class="adm-form-group">
@@ -2780,22 +2779,17 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
       <div class="adm-form-group">
         <label class="adm-label">Título *</label>
-        <button class="adm-autotrad-btn" onclick="admTraduzir('noticia')" id="btn-trad-noticia"><span class="ico">✨</span><span class="spin"></span> Traduzir PT → EN / ES / FR</button><span class="adm-autotrad-feito" id="ok-trad-noticia"> ✅ Traduzido!</span>
-        <input class="adm-input" id="nc-tit" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 T\u00edtulo" style="margin-bottom:.4rem">
-        <input class="adm-input" id="nc-tit-en" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 Title" style="margin-bottom:.4rem">
-        <input class="adm-input" id="nc-tit-es" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 T\u00edtulo" style="margin-bottom:.4rem">
-        <input class="adm-input" id="nc-tit-fr" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Fran\u00e7ais \u2014 Titre">
+        <input class="adm-input" id="nc-tit" placeholder="Título da notícia, em português">
+        <input type="hidden" id="nc-tit-en"><input type="hidden" id="nc-tit-es"><input type="hidden" id="nc-tit-fr">
       </div>
       <div class="adm-form-group">
         <label class="adm-label">Data &#183; Fonte</label>
         <input class="adm-input" id="nc-meta" placeholder="Ex: 09 jun. 2026 &#183; Assessoria CMDDI">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">Texto completo * <span style="font-weight:400;opacity:.6;font-size:.75rem">(EN/ES/FR são preenchidos automaticamente)</span></label>
-        <textarea class="adm-input" id="nc-resumo" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDE7\uD83C\uDDF7 Portugu\u00eas \u2014 texto integral"></textarea>
-        <textarea class="adm-input" id="nc-resumo-en" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEC\uD83C\uDDE7 English \u2014 full text"></textarea>
-        <textarea class="adm-input" id="nc-resumo-es" rows="4" style="resize:vertical;margin-bottom:.4rem" placeholder="\uD83C\uDDEA\uD83C\uDDF8 Espa\u00f1ol \u2014 texto integral"></textarea>
-        <textarea class="adm-input" id="nc-resumo-fr" rows="4" style="resize:vertical" placeholder="\uD83C\uDDEB\uD83C\uDDF7 Fran\u00e7ais \u2014 texte int\u00e9gral"></textarea>
+        <label class="adm-label">Texto completo * <span style="font-weight:500;opacity:.85;font-size:.75rem;color:#7bc67e">— traduzido automaticamente ao publicar</span></label>
+        <textarea class="adm-input" id="nc-resumo" rows="6" style="resize:vertical" placeholder="Texto completo da notícia, em português. As versões em inglês, espanhol e francês são geradas automaticamente quando você publicar."></textarea>
+        <input type="hidden" id="nc-resumo-en"><input type="hidden" id="nc-resumo-es"><input type="hidden" id="nc-resumo-fr">
       </div>
       <div class="adm-form-group">
         <label class="adm-label">&#128247; Foto da not&#237;cia (opcional)</label>
@@ -4383,11 +4377,20 @@ function notif(msg) {
 function v(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
 // === PUBLICAÇÕES ADM ===
-function pubEvento() {
+async function pubEvento() {
   var dia = v('ev-dia-in'), mes = v('ev-mes-in'), tipo = v('ev-tipo-in'), tit = v('ev-tit-in'), loc = v('ev-loc-in');
   if (!dia || !tit) { alert('Preencha dia e título.'); return; }
+  var btn = document.querySelector('button[onclick="pubEvento()"]');
+  var txtOriginal = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '✨ Traduzindo para EN / ES / FR...'; }
+  try {
+    await admTraduzir('evento');
+  } catch(e) {
+    console.warn('Traducao automatica falhou, publicando so em portugues.', e);
+  }
+  if (btn) { btn.textContent = '💾 Publicando...'; }
   var tipoLabel = {'tipo-reuniao':'Reunião Ordinária','tipo-evento':'Evento Cultural','tipo-audiencia':'Audiência Pública','tipo-assembleia':'Assembleia'}[tipo] || tipo;
-  // Capturar traduções (se admTraduzir foi chamado)
+  // Capturar traduções (geradas automaticamente acima)
   var titEn = v('ev-tit-in-en')||tit, titEs = v('ev-tit-in-es')||tit, titFr = v('ev-tit-in-fr')||tit;
   var locEn = v('ev-loc-in-en')||loc, locEs = v('ev-loc-in-es')||loc, locFr = v('ev-loc-in-fr')||loc;
   // Labels do tipo traduzidos
@@ -4413,8 +4416,9 @@ function pubEvento() {
     ts: Date.now()
   };
   dbSalvar(db); salvarNoGitHub();
-  notif('✅ Evento publicado com traduções!');
+  notif('✅ Evento publicado nos 4 idiomas automaticamente!');
   ['ev-dia-in','ev-tit-in','ev-loc-in','ev-tit-in-en','ev-tit-in-es','ev-tit-in-fr','ev-loc-in-en','ev-loc-in-es','ev-loc-in-fr'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  if (btn) { btn.disabled = false; btn.textContent = txtOriginal || '✅ Publicar Evento'; }
 }
 
 function uploadFotoNoticia(input) {
@@ -4441,9 +4445,18 @@ function uploadFotoNoticia(input) {
   xhr.send(fd);
 }
 
-function pubNoticia() {
+async function pubNoticia() {
   var tit = v('nc-tit'), res = v('nc-resumo'), meta = v('nc-meta'), link = v('nc-link'), cat = v('nc-cat');
   if (!tit || !res) { alert('Preencha pelo menos o titulo e o texto em portugues.'); return; }
+  var btn = document.querySelector('button[onclick="pubNoticia()"]');
+  var txtOriginal = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '✨ Traduzindo para EN / ES / FR...'; }
+  try {
+    await admTraduzir('noticia');
+  } catch(e) {
+    console.warn('Traducao automatica falhou, publicando so em portugues.', e);
+  }
+  if (btn) { btn.textContent = '💾 Publicando...'; }
   var key = 'not_' + Date.now();
   var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link, foto: v('nc-foto-url'),
     arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now(),
@@ -4454,11 +4467,14 @@ function pubNoticia() {
   var db = dbLer(); if (!db.noticias) db.noticias = {};
   db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
   renderNoticia(item, key);
-  notif('\u2705 Noticia publicada e salva!');
+  notif('\u2705 Not\u00edcia publicada nos 4 idiomas automaticamente!');
   ['nc-tit','nc-tit-en','nc-tit-es','nc-tit-fr','nc-resumo','nc-resumo-en','nc-resumo-es','nc-resumo-fr','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
   var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
+  if (btn) { btn.disabled = false; btn.textContent = txtOriginal || '📰 Publicar Notícia'; }
 }
+
+
 
 function uploadAnexoNoticia(input) {
   if (!input || !input.files || !input.files[0]) return;

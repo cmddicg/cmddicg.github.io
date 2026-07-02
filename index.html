@@ -4404,6 +4404,67 @@ var GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/cont
 var _memDb = {};
 var _ghSha = '0967ef424bce6791893e9a57bb952f80fd536e93';
 
+// === STORAGE PRIVADO: repositório separado, NUNCA carregado para visitante público ===
+// Conselheiros, contatos de imprensa, listas de envio, rascunhos, numeração e
+// auditoria de documentos vivem aqui — dados pessoais e de trabalho interno do
+// CMDDI que não devem ser baixados por quem apenas visita o site.
+var DB_KEY_PRIVADO = 'cmddi_db_privado_v1';
+var GH_REPO_PRIVADO = 'cmddi-dados-privados';
+var GH_FILE_PRIVADO = 'dados-privado.json';
+var GH_API_PRIVADO = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO_PRIVADO + '/contents/' + GH_FILE_PRIVADO;
+var _memDbPrivado = {};
+var _ghShaPrivado = null;
+var _privadoCarregado = false;
+
+function dbLerPrivado() {
+  try {
+    var s = localStorage.getItem(DB_KEY_PRIVADO);
+    if (s) { _memDbPrivado = JSON.parse(s); return _memDbPrivado; }
+  } catch(e) {}
+  return _memDbPrivado || {};
+}
+function dbSalvarPrivado(dados) {
+  _memDbPrivado = dados;
+  try { localStorage.setItem(DB_KEY_PRIVADO, JSON.stringify(dados)); } catch(e) {}
+}
+// Só deve ser chamada DEPOIS do login no ADM — nunca no carregamento público da página
+function carregarDoGitHubPrivado() {
+  return fetch(GH_API_PRIVADO + '?t=' + Date.now(), { headers: { 'Authorization': 'token ' + GH_TOKEN } })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    if (res.content) {
+      _ghShaPrivado = res.sha;
+      var decoded = atob(res.content.replace(/\n/g,''));
+      var json = JSON.parse(decodeURIComponent(escape(decoded)));
+      _memDbPrivado = json;
+      try { localStorage.setItem(DB_KEY_PRIVADO, JSON.stringify(json)); } catch(e) {}
+    }
+    _privadoCarregado = true;
+  })
+  .catch(function(){ _privadoCarregado = true; });
+}
+function salvarNoGitHubPrivado() {
+  var dados = dbLerPrivado();
+  var conteudo = btoa(unescape(encodeURIComponent(JSON.stringify(dados))));
+  fetch(GH_API_PRIVADO, { headers: { 'Authorization': 'token ' + GH_TOKEN } })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    var sha = res.sha || _ghShaPrivado;
+    var body = { message: 'Atualizar dados privados do CMDDI', content: conteudo, sha: sha };
+    return fetch(GH_API_PRIVADO, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    if (res.content) { _ghShaPrivado = res.content.sha; _admConexaoOk = true; notif('🔒 Dados privados salvos com segurança!'); }
+    else { _admConexaoOk = false; admBanner('erro', 'FALHA AO SALVAR DADOS PRIVADOS: ' + (res.message||'verifique a conexão') + '.'); }
+  })
+  .catch(function(){ _admConexaoOk = false; admBanner('erro', 'FALHA AO SALVAR DADOS PRIVADOS: erro de conexão.'); });
+}
+
 function dbLer() {
   try {
     var s = localStorage.getItem(DB_KEY);
@@ -4442,14 +4503,14 @@ function carregarDoGitHub() {
 }
 
 function admBaixarBackupCompleto() {
-  var dados = dbLer();
+  var dados = { publico: dbLer(), privado: dbLerPrivado() };
   var blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   var agora = new Date().toISOString().split('T')[0];
   a.href = url; a.download = 'backup_cmddi_' + agora + '.json'; a.click();
   setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
-  notif('⬇ Backup baixado! Guarde este arquivo em local seguro.');
+  notif('⬇ Backup baixado! Este arquivo contém dados pessoais de conselheiros e contatos — guarde em local seguro, não compartilhe.');
 }
 
 // === VERIFICAÇÃO DE SAÚDE DA CONEXÃO COM O GITHUB ===
@@ -4530,6 +4591,7 @@ function renderTodosDoStorage() {
   var dados = dbLer();
   if (dados.membrosLista && dados.membrosLista.length) { MEMBROS = dados.membrosLista; }
   renderMembros();
+  try { renderDocumentosPublicados(); } catch(e) { console.warn('renderDocumentosPublicados falhou', e); }
   document.querySelectorAll('.nc-custom').forEach(function(el){ el.remove(); });
   document.querySelectorAll('.rel-custom').forEach(function(el){ el.remove(); });
   if (dados.releases) {
@@ -5502,16 +5564,21 @@ function cdTipoInfo(key) { return CD_TIPOS.find(function(t){ return t.key===key;
 var CD_STATUS_LABEL = { rascunho:'📝 Rascunho', finalizado:'📄 Finalizado', aguardando:'⏳ Aguardando Assinatura', assinado:'✅ Assinado', enviado:'📤 Enviado', publicado:'🌐 Publicado' };
 
 // --- Storage (integrado ao dados.json / GitHub, igual ao resto do site) ---
-function cdDocs() { var db = dbLer(); return db.documentos || {}; }
-function cdSalvarDocs(docs) { var db = dbLer(); db.documentos = docs; dbSalvar(db); }
-function cdConselheiros() { var db = dbLer(); return db.conselheiros || {}; }
-function cdSalvarConselheirosDb(arr) { var db = dbLer(); db.conselheiros = arr; dbSalvar(db); }
-function cdListasDb() { var db = dbLer(); return db.documentosListas || {}; }
-function cdSalvarListasDb(arr) { var db = dbLer(); db.documentosListas = arr; dbSalvar(db); }
-function cdNumeracao() { var db = dbLer(); return db.documentosNumeracao || {}; }
-function cdSalvarNumeracao(n) { var db = dbLer(); db.documentosNumeracao = n; dbSalvar(db); }
-function cdAuditoria() { var db = dbLer(); return db.documentosAuditoria || []; }
-function cdSalvarAuditoria(arr) { var db = dbLer(); db.documentosAuditoria = arr; dbSalvar(db); }
+function cdDocs() { var db = dbLerPrivado(); return db.documentos || {}; }
+function cdSalvarDocs(docs) { var db = dbLerPrivado(); db.documentos = docs; dbSalvarPrivado(db); }
+function cdConselheiros() { var db = dbLerPrivado(); return db.conselheiros || {}; }
+function cdSalvarConselheirosDb(arr) { var db = dbLerPrivado(); db.conselheiros = arr; dbSalvarPrivado(db); }
+function cdListasDb() { var db = dbLerPrivado(); return db.documentosListas || {}; }
+function cdSalvarListasDb(arr) { var db = dbLerPrivado(); db.documentosListas = arr; dbSalvarPrivado(db); }
+function cdNumeracao() { var db = dbLerPrivado(); return db.documentosNumeracao || {}; }
+function cdSalvarNumeracao(n) { var db = dbLerPrivado(); db.documentosNumeracao = n; dbSalvarPrivado(db); }
+function cdAuditoria() { var db = dbLerPrivado(); return db.documentosAuditoria || []; }
+function cdSalvarAuditoria(arr) { var db = dbLerPrivado(); db.documentosAuditoria = arr; dbSalvarPrivado(db); }
+// Documentos PÚBLICOS: apenas o resumo do que foi de fato publicado
+// (sem considerandos, deliberações, dados de assinatura) — isso sim pode
+// ficar no repositório público, para render do Acervo Documental.
+function cdDocsPublicos() { var db = dbLer(); return db.documentosPublicados || {}; }
+function cdSalvarDocsPublicos(obj) { var db = dbLer(); db.documentosPublicados = obj; dbSalvar(db); }
 
 function cdLog(acao, detalhe) {
   var arr = cdAuditoria();
@@ -5720,8 +5787,8 @@ function cdSalvarRascunho() {
     num[tipo][ano] = (num[tipo][ano]||0) + 1;
     cdSalvarNumeracao(num);
   }
-  salvarNoGitHub();
   cdLog(isNovo?'Documento criado':'Rascunho atualizado', dados.titulo+' ('+dados.numero+')');
+  salvarNoGitHubPrivado();
   window._cdEditandoId = id;
   notif('💾 Rascunho salvo!');
   cdRenderPainel();
@@ -5826,7 +5893,7 @@ function cdPreviewPDF() {
   cdSalvarRascunho();
   var docs = cdDocs(); var d = docs[window._cdEditandoId];
   d.status = d.status === 'rascunho' ? 'finalizado' : d.status;
-  docs[window._cdEditandoId] = d; cdSalvarDocs(docs); salvarNoGitHub();
+  docs[window._cdEditandoId] = d; cdSalvarDocs(docs); salvarNoGitHubPrivado();
   var html = cdGerarHTMLDocumento(d);
   var w = window.open('', '_blank');
   if (w) { w.document.write(html); w.document.close(); }
@@ -5854,7 +5921,7 @@ function cdAdicionarConselheiro() {
   var listasSel = []; document.querySelectorAll('#cd-c-listas-chk .si-lista-chk:checked').forEach(function(cb){ listasSel.push(cb.value); });
   var id = 'cons_'+Date.now();
   arr[id] = { _id:id, nome:nome, email:email, cargo:cargo, entidade:entidade, tel:tel, listas:listasSel, ts:Date.now() };
-  cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  cdSalvarConselheirosDb(arr); salvarNoGitHubPrivado();
   cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
   ['cd-c-nome','cd-c-email','cd-c-entidade','cd-c-tel'].forEach(function(i){ var el=document.getElementById(i); if(el) el.value=''; });
   document.querySelectorAll('#cd-c-listas-chk .si-lista-chk').forEach(function(cb){ cb.checked=false; });
@@ -5865,7 +5932,7 @@ function cdAdicionarConselheiro() {
 function cdRemoverConselheiro(id) {
   if (!confirm('Remover este conselheiro?')) return;
   var arr = cdConselheiros(); var nome = arr[id]?arr[id].nome:'';
-  delete arr[id]; cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  delete arr[id]; cdSalvarConselheirosDb(arr); salvarNoGitHubPrivado();
   cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
   cdLog('Conselheiro removido', nome);
   notif('🗑 Conselheiro removido.');
@@ -5893,7 +5960,7 @@ function cdCriarLista() {
   if (Object.values(arr).some(function(l){ return l.nome.toLowerCase()===nome.toLowerCase(); })) { notif('⚠ Já existe uma lista com esse nome.'); return; }
   var id = 'clst_'+Date.now();
   arr[id] = { _id:id, nome:nome, cor:cor, ts:Date.now() };
-  cdSalvarListasDb(arr); salvarNoGitHub();
+  cdSalvarListasDb(arr); salvarNoGitHubPrivado();
   cdRenderListas(); cdRenderConselheirosChk(); cdPopularFiltroListasConselheiros();
   document.getElementById('cd-l-nome').value='';
   notif('✅ Lista "'+nome+'" criada!');
@@ -5944,7 +6011,7 @@ function cdAdicionarBloco() {
     arr[id] = { _id:id, nome:nome||email.split('@')[0], email:email, cargo:cargo, entidade:'', tel:'', listas:listasSel, ts:Date.now() };
     add++;
   });
-  cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  cdSalvarConselheirosDb(arr); salvarNoGitHubPrivado();
   cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
   var st = document.getElementById('cd-bloco-status'); if (st) st.textContent = '✅ '+add+' adicionados · ⚠ '+dup+' duplicados · ❌ '+inv+' inválidos';
   if (add) document.getElementById('cd-bloco-txt').value='';
@@ -6014,7 +6081,7 @@ async function cdEnviarDocumento() {
     await new Promise(function(res){ setTimeout(res,150); });
   }
   if (prog) prog.style.display='none';
-  d.status = 'enviado'; docs[docId]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  d.status = 'enviado'; docs[docId]=d; cdSalvarDocs(docs); salvarNoGitHubPrivado();
   cdLog('Documento enviado', d.titulo+' → '+tos.length+' destinatário(s)');
   notif('✅ Envio concluído: '+(feitos-(teste?1:0))+' enviados'+(erros?' · ❌ '+erros+' erros':''));
   cdRenderPainel();
@@ -6081,7 +6148,7 @@ function cdConfirmarAssinado() {
   d.status = 'assinado';
   d.arquivoAssinadoUrl = window._cdAssinadoUrl;
   d.protocoloGovBr = v('cd-assinado-protocolo');
-  docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  docs[id]=d; cdSalvarDocs(docs); salvarNoGitHubPrivado();
   cdLog('Documento assinado registrado', d.titulo+' ('+d.numero+')');
   document.getElementById('cd-assinado-modal').style.display='none';
   window._cdAssinadoUrl = null;
@@ -6092,25 +6159,54 @@ function cdConfirmarAssinado() {
 function cdPublicarDocumento(id) {
   var docs = cdDocs(); var d = docs[id]; if (!d) return;
   var info = cdTipoInfo(d.tipo);
-  if (!info.publica) { notif('ℹ Este tipo de documento é de uso interno e não aparece no acervo público.'); d.status='publicado'; docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub(); cdRenderPainel(); return; }
+  if (!info.publica) {
+    notif('ℹ Este tipo de documento é de uso interno e não aparece no acervo público.');
+    d.status='publicado'; docs[id]=d; cdSalvarDocs(docs); cdLog('Documento marcado como concluído (uso interno)', d.titulo+' ('+d.numero+')'); salvarNoGitHubPrivado();
+    cdRenderPainel(); return;
+  }
   if (d.visibilidade !== 'publico') { if (!confirm('Este documento está marcado como Restrito. Publicar mesmo assim no acervo público do site?')) return; }
-  var dataFmt = d.data ? new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
-  var html = '<div class="doc-item"><div class="doc-ico">'+info.ico+'</div>'+
-    '<div><div class="doc-nome">'+info.nome+' CMDDI Nº '+escH(d.numero)+' — '+escH(d.titulo)+'</div><div class="doc-meta">Publicado em '+dataFmt+'</div></div>'+
-    (d.arquivoAssinadoUrl ? '<a href="'+d.arquivoAssinadoUrl+'" target="_blank" class="doc-dl">⬇ Baixar</a>' : '<div class="doc-dl" style="opacity:.4">Sem arquivo</div>')+
-    '</div>';
-  var lista = document.getElementById('lista-'+info.publica);
-  if (lista) lista.insertAdjacentHTML('afterbegin', html);
-  d.status = 'publicado'; docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  // Resumo PÚBLICO — só o essencial para exibição, sem considerandos, deliberações,
+  // presentes de ata ou qualquer dado de trabalho interno.
+  var docsPub = cdDocsPublicos();
+  docsPub[id] = { tipo: d.tipo, numero: d.numero, titulo: d.titulo, data: d.data, arquivoAssinadoUrl: d.arquivoAssinadoUrl||'', ts: Date.now() };
+  cdSalvarDocsPublicos(docsPub);
+  renderDocumentosPublicados();
+  salvarNoGitHub(); // grava o resumo público no repositório público
+  // Documento completo (rascunho, corpo integral) permanece no repositório privado
+  d.status = 'publicado'; docs[id]=d; cdSalvarDocs(docs);
   cdLog('Documento publicado no acervo', d.titulo+' ('+d.numero+')');
+  salvarNoGitHubPrivado();
   notif('🌐 Publicado no acervo do site!');
   cdRenderPainel();
+}
+
+function renderDocumentosPublicados() {
+  var docs = cdDocsPublicos();
+  var porCategoria = {};
+  Object.values(docs).forEach(function(d){
+    var info = cdTipoInfo(d.tipo);
+    if (!info.publica) return;
+    (porCategoria[info.publica] = porCategoria[info.publica]||[]).push(d);
+  });
+  Object.keys(porCategoria).forEach(function(cat){
+    var lista = document.getElementById('lista-'+cat);
+    if (!lista) return;
+    var itens = porCategoria[cat].slice().sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+    lista.innerHTML = itens.map(function(d){
+      var info = cdTipoInfo(d.tipo);
+      var dataFmt = d.data ? new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
+      return '<div class="doc-item"><div class="doc-ico">'+info.ico+'</div>'+
+        '<div><div class="doc-nome">'+info.nome+' CMDDI Nº '+escH(d.numero)+' — '+escH(d.titulo)+'</div><div class="doc-meta">Publicado em '+dataFmt+'</div></div>'+
+        (d.arquivoAssinadoUrl ? '<a href="'+d.arquivoAssinadoUrl+'" target="_blank" class="doc-dl">⬇ Baixar</a>' : '<div class="doc-dl" style="opacity:.4">Sem arquivo</div>')+
+        '</div>';
+    }).join('');
+  });
 }
 
 function cdExcluirDocumento(id) {
   var docs = cdDocs(); var d = docs[id]; if (!d) return;
   if (!confirm('Excluir definitivamente "'+d.titulo+'" ('+d.numero+')? Esta ação não pode ser desfeita.')) return;
-  delete docs[id]; cdSalvarDocs(docs); salvarNoGitHub();
+  delete docs[id]; cdSalvarDocs(docs); salvarNoGitHubPrivado();
   cdLog('Documento excluído', d.titulo+' ('+d.numero+')');
   notif('🗑 Documento excluído.');
   cdRenderPainel(); cdCarregarDocsNoSelect();
@@ -6168,15 +6264,15 @@ function siCfg() { try { return JSON.parse(localStorage.getItem(SI.CFG_KEY)||'{}
 // com o GitHub que o resto do site usa — antes, contatos de mídia, listas,
 // rascunhos e histórico só existiam no navegador de quem cadastrou e
 // se perdiam ao trocar de computador ou limpar o cache.
-function siMidia() { var db = dbLer(); return db.siMidia || []; }
-function siSalvarMidia(arr) { var db = dbLer(); db.siMidia = arr; dbSalvar(db); salvarNoGitHub(); }
-function siHist() { var db = dbLer(); return db.siHist || []; }
-function siSalvarHist(arr) { var db = dbLer(); db.siHist = arr; dbSalvar(db); salvarNoGitHub(); }
-function siRascunhos() { var db = dbLer(); return db.siRascunhos || []; }
-function siSalvarRascunhos(arr) { var db = dbLer(); db.siRascunhos = arr; dbSalvar(db); salvarNoGitHub(); }
+function siMidia() { var db = dbLerPrivado(); return db.siMidia || []; }
+function siSalvarMidia(arr) { var db = dbLerPrivado(); db.siMidia = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
+function siHist() { var db = dbLerPrivado(); return db.siHist || []; }
+function siSalvarHist(arr) { var db = dbLerPrivado(); db.siHist = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
+function siRascunhos() { var db = dbLerPrivado(); return db.siRascunhos || []; }
+function siSalvarRascunhos(arr) { var db = dbLerPrivado(); db.siRascunhos = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
 // --- Listas personalizadas ---
-function siListas() { var db = dbLer(); return db.siListas || []; }
-function siSalvarListas(arr) { var db = dbLer(); db.siListas = arr; dbSalvar(db); salvarNoGitHub(); }
+function siListas() { var db = dbLerPrivado(); return db.siListas || []; }
+function siSalvarListas(arr) { var db = dbLerPrivado(); db.siListas = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
 
 // Sub-abas do Banco de Mídia
 function siBancoAba(el, pane) {
@@ -6921,21 +7017,29 @@ function siFormatarData(ts){ return ts ? new Date(ts).toLocaleString('pt-BR',{da
 // Inicializar quando o ADM for aberto
 var _siInitDone = false;
 var _siOrigAdmLogin = typeof admLogin === 'function' ? admLogin : null;
+function _cdIniciarTudoAposLogin() {
+  // Os dados privados (conselheiros, mídia, documentos, auditoria) só são
+  // buscados AGORA, depois do login confirmado — nunca no carregamento
+  // público da página.
+  carregarDoGitHubPrivado().then(function(){
+    _siInitDone = true; siInit();
+    try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); }
+    admVerificarConexaoGitHub();
+  });
+}
 document.addEventListener('DOMContentLoaded', function(){
   var origBtn = document.querySelector('[onclick="admLogin()"]');
   if (origBtn) {
     origBtn.addEventListener('click', function(){
       setTimeout(function(){
         if (document.body.classList.contains('adm-ok') && !_siInitDone) {
-          _siInitDone = true; siInit();
-          try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); }
-          admVerificarConexaoGitHub();
+          _cdIniciarTudoAposLogin();
         }
       }, 600);
     });
   }
   // Também inicializar se o ADM já estiver aberto (reload com sessão)
-  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); } admVerificarConexaoGitHub(); }
+  if (document.body.classList.contains('adm-ok') && !_siInitDone) { _cdIniciarTudoAposLogin(); }
 });
 
 function pubArtigo() {

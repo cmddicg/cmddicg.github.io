@@ -5676,7 +5676,7 @@ function siGerarHtmlEmail(r, lang, cfg) {
       (r.contatoEmail||r.contatoTel?'<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px;color:#888;font-size:12px;font-family:Arial,sans-serif"><strong style="color:#C9A24A">'+escH(h.contact)+':</strong> '+escH(r.contatoEmail)+(r.contatoTel?' · '+escH(r.contatoTel):'')+'</div>':'')+
     '</td></tr>'+
     // Rodapé
-    <tr><td style="background:#111;padding:14px 30px;color:#999;font-size:11px;font-family:Arial,sans-serif;border-top:1px solid rgba(255,255,255,.06)">'+
+    '<tr><td style="background:#111;padding:14px 30px;color:#999;font-size:11px;font-family:Arial,sans-serif;border-top:1px solid rgba(255,255,255,.06)">'+
       escH(h.footer).replace(/\n/g,'<br>')+
       '<br><br><a href="cmddicg.github.io" style="color:#5C1E0A">cmddicg.github.io</a>'+
     '</td></tr>'+

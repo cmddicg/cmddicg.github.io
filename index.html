@@ -1916,6 +1916,36 @@ body.adm-ok .cac-del-btn { display: flex !important; }
 .adm-autotrad-btn.carregando .spin{display:inline-block}
 .adm-autotrad-btn.carregando .ico{display:none}
 .adm-autotrad-feito{font-size:.7rem;color:#7bc67e;margin-left:.5rem;display:none}
+/* ===== CENTRAL DE DOCUMENTOS OFICIAIS ===== */
+.doc-status{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:12px;font-size:.68rem;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+.doc-status.rascunho{background:rgba(160,160,160,.18);color:#c4c4c4;border:1px solid rgba(160,160,160,.35)}
+.doc-status.finalizado{background:rgba(95,158,204,.18);color:#5F9ECC;border:1px solid rgba(95,158,204,.4)}
+.doc-status.aguardando{background:rgba(212,149,74,.18);color:var(--am);border:1px solid rgba(212,149,74,.4)}
+.doc-status.assinado{background:rgba(42,74,28,.25);color:#7bc67e;border:1px solid rgba(123,198,126,.4)}
+.doc-status.enviado{background:rgba(95,60,204,.2);color:#b39ddb;border:1px solid rgba(179,157,219,.4)}
+.doc-status.publicado{background:rgba(212,149,74,.28);color:#1a1a1a;border:1px solid var(--am);font-weight:800}
+.doc-tipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:.6rem 0 1rem}
+.doc-tipo-card{border:1.5px solid rgba(212,149,74,.3);border-radius:6px;padding:.6rem .7rem;cursor:pointer;transition:.15s;background:rgba(255,255,255,.03)}
+.doc-tipo-card:hover{border-color:rgba(212,149,74,.6);background:rgba(212,149,74,.08)}
+.doc-tipo-card.sel{border-color:var(--am);background:rgba(212,149,74,.18)}
+.doc-tipo-card .tt-ico{font-size:1.2rem}
+.doc-tipo-card .tt-nome{font-size:.76rem;font-weight:700;color:rgba(249,245,237,.92);margin-top:.2rem;line-height:1.25}
+.doc-tipo-card .tt-grp{font-size:.62rem;color:rgba(212,149,74,.75);text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
+.doc-grupo-titulo{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--am);margin:1rem 0 .3rem;padding-top:.6rem;border-top:1px solid rgba(212,149,74,.12)}
+.doc-grupo-titulo:first-child{margin-top:0;border-top:none;padding-top:0}
+.assin-slot{display:grid;grid-template-columns:2fr 2fr auto;gap:.5rem;align-items:end;margin-bottom:.5rem;padding:.6rem;background:rgba(255,255,255,.03);border-radius:5px;border:1px solid rgba(212,149,74,.15)}
+.assin-modelo-btns{display:flex;gap:.4rem;margin-bottom:.7rem;flex-wrap:wrap}
+.assin-modelo-btn{padding:.4rem .9rem;border-radius:16px;font-size:.74rem;font-weight:700;border:1.5px solid rgba(212,149,74,.35);background:rgba(255,255,255,.03);color:rgba(249,245,237,.82);cursor:pointer;transition:.15s}
+.assin-modelo-btn.ativo{background:var(--am);color:#1a1a1a;border-color:var(--am)}
+.doc-track-item{display:grid;grid-template-columns:auto 1fr auto auto;gap:.8rem;align-items:center;padding:.7rem .9rem;background:rgba(255,255,255,.03);border:1px solid rgba(212,149,74,.15);border-radius:6px;margin-bottom:.5rem}
+.doc-track-num{font-size:.72rem;font-weight:800;color:var(--am);background:rgba(212,149,74,.12);padding:.25rem .55rem;border-radius:4px;white-space:nowrap}
+.doc-track-info .dt-tit{font-size:.85rem;font-weight:600;color:rgba(249,245,237,.94)}
+.doc-track-info .dt-meta{font-size:.72rem;color:rgba(249,245,237,.68);margin-top:.15rem}
+.doc-track-acoes{display:flex;gap:.35rem;flex-wrap:wrap}
+.doc-hist-linha{font-size:.72rem;color:rgba(249,245,237,.78);padding:.35rem 0;border-bottom:1px solid rgba(212,149,74,.08);display:flex;justify-content:space-between;gap:.5rem}
+.doc-hist-linha:last-child{border-bottom:none}
+.doc-num-sugerido{font-size:.72rem;color:#7bc67e;margin-top:.25rem}
+.doc-num-alerta{font-size:.72rem;color:#f87171;margin-top:.25rem}
 /* ===== SALA DE IMPRENSA ADM ===== */
 .si-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
 .si-tab{background:rgba(212,149,74,.15);border:1.5px solid rgba(212,149,74,.5);color:var(--am);padding:.45rem 1rem;border-radius:4px;cursor:pointer;font-size:.78rem;font-weight:700;letter-spacing:.04em;transition:.2s}
@@ -3538,6 +3568,12 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       <button class="doc-tab" onclick="trocarTab(this,'rp-convenios')" data-i18n="docF.convenios">🤝 Convênios</button>
       <button class="doc-tab" onclick="trocarTab(this,'rp-gestao')" data-i18n="docF.gestao">📊 Gestão</button>
       <button class="doc-tab" onclick="trocarTab(this,'rp-composicao')" data-i18n="docF.composicao">🏛️ Composição</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-mocoes')" data-i18n="docF.mocoes">✊ Moções</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-recomendacoes')" data-i18n="docF.recomendacoes">💬 Recomendações</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-circulares')" data-i18n="docF.circulares">📢 Circulares</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-editais')" data-i18n="docF.editais">📯 Editais</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-pareceres')" data-i18n="docF.pareceres">🔎 Pareceres</button>
+      <button class="doc-tab" onclick="trocarTab(this,'rp-declaracoes')" data-i18n="docF.declaracoes">🖋️ Declarações</button>
     </div>
 
     <!-- LEGISLAÇÃO -->
@@ -3687,6 +3723,42 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.composicao">Nenhum documento de composição publicado ainda.</p>
     </div>
 
+    <!-- MOÇÕES -->
+    <div class="doc-panel" id="rp-mocoes">
+      <div class="doc-lista" id="lista-rp-mocoes"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.mocao">Nenhuma moção publicada ainda.</p>
+    </div>
+
+    <!-- RECOMENDAÇÕES -->
+    <div class="doc-panel" id="rp-recomendacoes">
+      <div class="doc-lista" id="lista-rp-recomendacoes"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.recomendacao">Nenhuma recomendação publicada ainda.</p>
+    </div>
+
+    <!-- CIRCULARES (externas) -->
+    <div class="doc-panel" id="rp-circulares">
+      <div class="doc-lista" id="lista-rp-circulares"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.circular">Nenhuma circular publicada ainda.</p>
+    </div>
+
+    <!-- EDITAIS -->
+    <div class="doc-panel" id="rp-editais">
+      <div class="doc-lista" id="lista-rp-editais"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.edital">Nenhum edital publicado ainda.</p>
+    </div>
+
+    <!-- PARECERES -->
+    <div class="doc-panel" id="rp-pareceres">
+      <div class="doc-lista" id="lista-rp-pareceres"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.parecer">Nenhum parecer publicado ainda.</p>
+    </div>
+
+    <!-- DECLARAÇÕES -->
+    <div class="doc-panel" id="rp-declaracoes">
+      <div class="doc-lista" id="lista-rp-declaracoes"></div>
+      <p style="color:rgba(249,245,237,.82);font-size:.82rem;padding:1rem 0" data-i18n="vazio.declaracao">Nenhuma declaração publicada ainda.</p>
+    </div>
+
     <!-- ADM: Publicar documento -->
     <div class="adm-panel" id="painel-rp" style="margin-top:1.5rem">
       <div class="adm-panel-t">⚙ Publicar Documento Oficial</div>
@@ -3702,6 +3774,12 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
             <option value="rp-convenios">🤝 Convênio</option>
             <option value="rp-gestao">📊 Gestão</option>
             <option value="rp-composicao">🏛️ Composição</option>
+            <option value="rp-mocoes">✊ Moção</option>
+            <option value="rp-recomendacoes">💬 Recomendação</option>
+            <option value="rp-circulares">📢 Circular</option>
+            <option value="rp-editais">📯 Edital</option>
+            <option value="rp-pareceres">🔎 Parecer</option>
+            <option value="rp-declaracoes">🖋️ Declaração</option>
           </select>
         </div>
         <div class="adm-form-group">
@@ -3745,6 +3823,345 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
       </div>
       <button class="btn-primario" onclick="pubRP()" style="margin-top:.75rem;font-size:.75rem;padding:.6rem 1.2rem">✅ Publicar Documento</button>
     </div>
+    <!-- ===== CENTRAL DE DOCUMENTOS OFICIAIS DO CMDDI ===== -->
+    <div class="adm-panel" id="painel-central-docs" style="margin-top:2rem">
+      <div class="adm-panel-t">📑 Central de Documentos Oficiais do CMDDI</div>
+      <p style="font-size:.8rem;color:rgba(249,245,237,.82);margin-bottom:1rem;line-height:1.6">Elabore, numere, formate com o timbre do CMDDI, encaminhe para assinatura eletrônica via <strong style="color:var(--am)">gov.br</strong>, publique e envie aos conselheiros — tudo em um só lugar, com histórico completo.</p>
+
+      <div class="si-tabs">
+        <button class="si-tab ativo" onclick="cdAba(this,'cd-elaborar')">✍️ Elaborar</button>
+        <button class="si-tab" onclick="cdAba(this,'cd-conselheiros')">👥 Conselheiros</button>
+        <button class="si-tab" onclick="cdAba(this,'cd-enviar')">📤 Enviar</button>
+        <button class="si-tab" onclick="cdAba(this,'cd-painel')">📋 Documentos</button>
+        <button class="si-tab" onclick="cdAba(this,'cd-transparencia')">📊 Transparência</button>
+      </div>
+
+      <!-- ABA: ELABORAR -->
+      <div class="si-pane ativo" id="cd-elaborar">
+
+        <label class="adm-label">1. Escolha o tipo de documento</label>
+        <div id="cd-tipo-grid" class="doc-tipo-grid"></div>
+        <input type="hidden" id="cd-tipo-sel">
+
+        <div id="cd-form-area" style="display:none">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;margin-top:1rem">
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Número</label>
+              <input class="adm-input" id="cd-numero" placeholder="ex: 003/2026">
+              <div id="cd-num-status"></div>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Data</label>
+              <input class="adm-input" id="cd-data" type="date">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Visibilidade</label>
+              <select class="adm-select" id="cd-visib">
+                <option value="publico">🌐 Público (Acervo do site)</option>
+                <option value="restrito">🔒 Restrito (uso interno)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-label">Título / Ementa *</label>
+            <input class="adm-input" id="cd-titulo" placeholder="Resumo do objeto do documento, em uma frase">
+          </div>
+
+          <!-- Campo: Considerandos + Artigos (Resolução, Moção, Recomendação, Portaria) -->
+          <div class="cd-campo cd-campo-considerandos" style="display:none">
+            <div class="adm-form-group">
+              <label class="adm-label">Considerandos <span style="font-weight:400;opacity:.75;font-size:.72rem">(um por linha — a justificativa do ato)</span></label>
+              <textarea class="adm-input" id="cd-considerandos" rows="5" placeholder="Considerando que a Constituição Federal, em seu art. 231...&#10;Considerando a deliberação da Assembleia Geral de...&#10;Considerando a necessidade de..."></textarea>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Artigos <span style="font-weight:400;opacity:.75;font-size:.72rem">(um por linha — comece cada linha com "Art. 1º", "Art. 2º"...)</span></label>
+              <textarea class="adm-input" id="cd-artigos" rows="5" placeholder="Art. 1º Fica aprovado...&#10;Art. 2º Esta Resolução entra em vigor na data de sua publicação."></textarea>
+            </div>
+          </div>
+
+          <!-- Campo: Ata -->
+          <div class="cd-campo cd-campo-ata" style="display:none">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Local</label>
+                <input class="adm-input" id="cd-ata-local" placeholder="ex: Sede do CMDDI, Campo Grande/MS">
+              </div>
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Horário de início/término</label>
+                <input class="adm-input" id="cd-ata-hora" placeholder="ex: 14h às 16h30">
+              </div>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Presentes <span style="font-weight:400;opacity:.75;font-size:.72rem">(um nome por linha)</span></label>
+              <textarea class="adm-input" id="cd-ata-presentes" rows="4" placeholder="Nome do Conselheiro 1 — Presidente&#10;Nome do Conselheiro 2 — Secretário Geral&#10;..."></textarea>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Pauta <span style="font-weight:400;opacity:.75;font-size:.72rem">(um item por linha)</span></label>
+              <textarea class="adm-input" id="cd-ata-pauta" rows="4" placeholder="1. Aprovação da ata anterior&#10;2. Informes da Presidência&#10;3. ..."></textarea>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Deliberações e encaminhamentos</label>
+              <textarea class="adm-input" id="cd-ata-deliberacoes" rows="6" placeholder="Descreva o que foi discutido e decidido em cada item da pauta..."></textarea>
+            </div>
+          </div>
+
+          <!-- Campo: Correspondência (Ofício, Circular Interna, Circular Externa, Memorando) -->
+          <div class="cd-campo cd-campo-correspondencia" style="display:none">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Destinatário</label>
+                <input class="adm-input" id="cd-corr-destinatario" placeholder="ex: Ilmo. Sr. Secretário Municipal de Saúde">
+              </div>
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Assunto</label>
+                <input class="adm-input" id="cd-corr-assunto" placeholder="Referência direta do documento">
+              </div>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Corpo do texto</label>
+              <textarea class="adm-input" id="cd-corr-corpo" rows="8" placeholder="Prezado(a) Senhor(a),&#10;&#10;Vimos por meio deste..."></textarea>
+            </div>
+          </div>
+
+          <!-- Campo: Edital de Convocação -->
+          <div class="cd-campo cd-campo-edital" style="display:none">
+            <div class="adm-form-group">
+              <label class="adm-label">Base legal da convocação</label>
+              <input class="adm-input" id="cd-ed-base" placeholder="ex: Art. 12 do Regimento Interno do CMDDI">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem">
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Data da reunião</label>
+                <input class="adm-input" id="cd-ed-data" type="date">
+              </div>
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Horário</label>
+                <input class="adm-input" id="cd-ed-hora" placeholder="ex: 14h">
+              </div>
+              <div class="adm-form-group" style="margin:0">
+                <label class="adm-label">Local</label>
+                <input class="adm-input" id="cd-ed-local" placeholder="Sede do CMDDI">
+              </div>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Pauta da reunião convocada <span style="font-weight:400;opacity:.75;font-size:.72rem">(um item por linha)</span></label>
+              <textarea class="adm-input" id="cd-ed-pauta" rows="4" placeholder="1. ...&#10;2. ..."></textarea>
+            </div>
+          </div>
+
+          <!-- Campo: Corpo livre (Parecer, Nota Técnica, Declaração, Convênio, Minuta) -->
+          <div class="cd-campo cd-campo-livre" style="display:none">
+            <div class="adm-form-group">
+              <label class="adm-label">Corpo do documento</label>
+              <textarea class="adm-input" id="cd-livre-corpo" rows="12" placeholder="Redija o conteúdo completo do documento aqui..."></textarea>
+            </div>
+          </div>
+
+          <!-- Bloco de assinatura -->
+          <div class="adm-form-group" style="margin-top:1.2rem">
+            <label class="adm-label">2. Modelo de assinatura</label>
+            <div class="assin-modelo-btns">
+              <button type="button" class="assin-modelo-btn ativo" onclick="cdAssinModelo(this,'padrao')">🏛️ Padrão (Presidência + Secretaria Geral)</button>
+              <button type="button" class="assin-modelo-btn" onclick="cdAssinModelo(this,'comissao')">👥 Comissão Designada</button>
+              <button type="button" class="assin-modelo-btn" onclick="cdAssinModelo(this,'individual')">✍️ Individual</button>
+            </div>
+            <input type="hidden" id="cd-assin-modelo" value="padrao">
+            <div id="cd-assin-slots"></div>
+            <button type="button" class="si-btn" onclick="cdAssinAdicionar()" id="cd-assin-add-btn" style="display:none">➕ Adicionar signatário</button>
+            <p style="font-size:.72rem;color:rgba(249,245,237,.7);margin-top:.5rem">💡 A assinatura eletrônica em si é feita fora do sistema, no <strong style="color:var(--am)">gov.br</strong>, depois de baixar o PDF. Aqui você só define quem vai assinar e em que função — para que os nomes e cargos apareçam corretos no documento.</p>
+          </div>
+
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem">
+            <button class="si-btn pri" onclick="cdSalvarRascunho()">💾 Salvar Rascunho</button>
+            <button class="si-btn" onclick="cdPreviewPDF()">👁 Pré-visualizar / Gerar PDF</button>
+            <button class="si-btn" onclick="cdNovoDocumento()">🆕 Novo Documento</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA: CONSELHEIROS -->
+      <div class="si-pane" id="cd-conselheiros">
+        <div style="display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:2px solid rgba(212,149,74,.35);padding-bottom:.6rem">
+          <button class="si-editor-tab ativo" onclick="cdConsAba(this,'cd-cons-membros')">👤 Membros</button>
+          <button class="si-editor-tab" onclick="cdConsAba(this,'cd-cons-listas')">📋 Listas</button>
+          <button class="si-editor-tab" onclick="cdConsAba(this,'cd-cons-bloco')">📥 Adição em Bloco</button>
+        </div>
+
+        <!-- Sub: Membros -->
+        <div id="cd-cons-membros" class="si-editor-pane ativo">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.7rem">
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Nome completo</label>
+              <input class="adm-input" id="cd-c-nome" placeholder="Nome do conselheiro(a)">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">E-mail</label>
+              <input class="adm-input" id="cd-c-email" type="email" placeholder="email@exemplo.com">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Cargo</label>
+              <select class="adm-select" id="cd-c-cargo">
+                <option value="Presidente">Presidente</option>
+                <option value="Vice-Presidente">Vice-Presidente</option>
+                <option value="Secretário Geral">Secretário Geral</option>
+                <option value="Conselheiro Titular" selected>Conselheiro Titular</option>
+                <option value="Conselheiro Suplente">Conselheiro Suplente</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Entidade / Etnia representada</label>
+              <input class="adm-input" id="cd-c-entidade" placeholder="ex: Povo Terena, Sociedade Civil...">
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Telefone / WhatsApp</label>
+              <input class="adm-input" id="cd-c-tel" placeholder="(67) 9....">
+            </div>
+          </div>
+          <div class="adm-form-group" style="margin-bottom:.7rem">
+            <label class="adm-label">Adicionar às Listas</label>
+            <div class="si-lista-chk-grid" id="cd-c-listas-chk">
+              <span style="font-size:.78rem;color:rgba(249,245,237,.5);padding:.3rem 0">Crie listas na aba "📋 Listas".</span>
+            </div>
+          </div>
+          <button class="si-btn pri" onclick="cdAdicionarConselheiro()">➕ Adicionar Conselheiro</button>
+          <div style="margin-top:1rem" id="cd-cons-lista"></div>
+        </div>
+
+        <!-- Sub: Listas -->
+        <div id="cd-cons-listas" class="si-editor-pane">
+          <div style="display:flex;gap:.6rem;margin-bottom:.9rem;align-items:flex-end">
+            <div class="adm-form-group" style="margin:0;flex:1">
+              <label class="adm-label">Nome da lista</label>
+              <input class="adm-input" id="cd-l-nome" placeholder="ex: Diretoria, Todos os Titulares...">
+            </div>
+            <div class="adm-form-group" style="margin:0;width:56px">
+              <label class="adm-label">Cor</label>
+              <input type="color" id="cd-l-cor" value="#5F9ECC" style="width:100%;height:38px;border:2px solid rgba(212,149,74,.6);border-radius:4px;background:rgba(212,149,74,.1);cursor:pointer;padding:2px">
+            </div>
+            <button class="si-btn pri" onclick="cdCriarLista()" style="height:36px;white-space:nowrap">➕ Criar Lista</button>
+          </div>
+          <div id="cd-listas-lista"><div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1.2rem">Nenhuma lista criada ainda.</div></div>
+        </div>
+
+        <!-- Sub: Bloco -->
+        <div id="cd-cons-bloco" class="si-editor-pane">
+          <p style="font-size:.82rem;color:rgba(249,245,237,.88);margin-bottom:.7rem">Cole um conselheiro por linha: <code>Nome &lt;email&gt;</code> ou <code>email | Nome</code></p>
+          <textarea class="si-bloco-textarea" id="cd-bloco-txt" placeholder="Maria Silva <maria@email.com>&#10;joao@email.com | João Santos"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.7rem 0">
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Cargo padrão</label>
+              <select class="adm-select" id="cd-bloco-cargo">
+                <option value="Conselheiro Titular">Conselheiro Titular</option>
+                <option value="Conselheiro Suplente">Conselheiro Suplente</option>
+              </select>
+            </div>
+            <div class="adm-form-group" style="margin:0">
+              <label class="adm-label">Adicionar todos à lista</label>
+              <div class="si-lista-chk-grid" id="cd-bloco-listas-chk"></div>
+            </div>
+          </div>
+          <button class="si-btn pri" onclick="cdAdicionarBloco()">📥 Adicionar em Bloco</button>
+          <span id="cd-bloco-status" style="font-size:.78rem;color:rgba(249,245,237,.8);margin-left:.6rem"></span>
+        </div>
+      </div>
+
+      <!-- ABA: ENVIAR -->
+      <div class="si-pane" id="cd-enviar">
+        <div class="adm-form-group">
+          <label class="adm-label">Documento a enviar</label>
+          <select class="adm-select" id="cd-env-doc" style="width:100%"><option value="">— Selecione um documento —</option></select>
+        </div>
+        <div id="cd-env-doc-status" style="font-size:.78rem;margin:.4rem 0"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:1rem 0 .5rem">
+          <label class="adm-label" style="margin:0">Destinatários</label>
+          <div style="display:flex;gap:.4rem">
+            <button class="si-btn" onclick="cdSelecionarTodosConselheiros(true)">Todos</button>
+            <button class="si-btn" onclick="cdSelecionarTodosConselheiros(false)">Nenhum</button>
+          </div>
+        </div>
+        <select class="adm-select" id="cd-env-filtro-lista" style="width:100%;margin-bottom:.5rem" onchange="cdRenderEnvLista()">
+          <option value="">Todas as listas / todos os conselheiros</option>
+        </select>
+        <div class="si-env-lista" id="cd-env-destinatarios"><div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1rem">Nenhum conselheiro cadastrado.</div></div>
+        <div style="font-size:.78rem;color:rgba(249,245,237,.8);margin:.4rem 0"><span id="cd-env-count">0</span> destinatário(s) selecionado(s)</div>
+
+        <div class="adm-form-group">
+          <label class="adm-label">Ou envie para um e-mail avulso (opcional)</label>
+          <input class="adm-input" id="cd-env-avulso" placeholder="email@destino.com — além dos selecionados acima">
+        </div>
+
+        <div style="background:rgba(212,149,74,.08);border-radius:5px;padding:.7rem .9rem;margin:.7rem 0">
+          <label class="si-check-label"><input type="checkbox" id="cd-env-teste" checked> Enviar cópia de teste para mim antes de disparar</label>
+        </div>
+
+        <button class="si-btn pri" onclick="cdEnviarDocumento()" style="padding:.55rem 1.2rem">📨 Enviar Documento</button>
+        <div id="cd-env-prog" style="display:none;margin-top:.7rem">
+          <div style="font-size:.78rem;color:var(--am)" id="cd-env-prog-msg">Enviando...</div>
+          <div class="si-prog"><div class="si-prog-bar" id="cd-env-prog-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- ABA: PAINEL DE DOCUMENTOS -->
+      <div class="si-pane" id="cd-painel">
+        <div style="display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap">
+          <select class="adm-select" id="cd-filtro-status" style="font-size:.78rem;padding:.35rem .6rem" onchange="cdRenderPainel()">
+            <option value="">Todos os status</option>
+            <option value="rascunho">📝 Rascunho</option>
+            <option value="finalizado">📄 Finalizado</option>
+            <option value="aguardando">⏳ Aguardando Assinatura</option>
+            <option value="assinado">✅ Assinado</option>
+            <option value="enviado">📤 Enviado</option>
+            <option value="publicado">🌐 Publicado</option>
+          </select>
+          <select class="adm-select" id="cd-filtro-tipo-painel" style="font-size:.78rem;padding:.35rem .6rem" onchange="cdRenderPainel()">
+            <option value="">Todos os tipos</option>
+          </select>
+        </div>
+        <div id="cd-painel-lista"><div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1.5rem">Nenhum documento elaborado ainda.</div></div>
+      </div>
+
+      <!-- ABA: TRANSPARÊNCIA -->
+      <div class="si-pane" id="cd-transparencia">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.2rem">
+          <div class="si-stat"><div class="si-stat-n" id="cd-st-total">0</div><div class="si-stat-l">Documentos totais</div></div>
+          <div class="si-stat"><div class="si-stat-n" id="cd-st-publicados">0</div><div class="si-stat-l">Publicados</div></div>
+          <div class="si-stat"><div class="si-stat-n" id="cd-st-aguardando">0</div><div class="si-stat-l">Aguardando assinatura</div></div>
+          <div class="si-stat"><div class="si-stat-n" id="cd-st-conselheiros">0</div><div class="si-stat-l">Conselheiros cadastrados</div></div>
+        </div>
+        <div style="font-size:.78rem;font-weight:700;color:var(--am);margin-bottom:.5rem">Por tipo de documento</div>
+        <div id="cd-st-tipos" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem"></div>
+        <div style="font-size:.78rem;font-weight:700;color:var(--am);margin-bottom:.5rem">Log de auditoria (últimas ações)</div>
+        <div id="cd-audit-log" style="max-height:320px;overflow-y:auto"></div>
+      </div>
+
+    </div><!-- /painel-central-docs -->
+
+    <!-- Modal: upload de documento assinado -->
+    <div id="cd-assinado-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9998;align-items:center;justify-content:center">
+      <div style="background:#1a1208;border:1px solid rgba(212,149,74,.35);border-radius:8px;padding:1.3rem;min-width:320px;max-width:420px">
+        <div style="font-size:.85rem;font-weight:800;color:var(--am);margin-bottom:.4rem">✅ Registrar documento assinado</div>
+        <p style="font-size:.76rem;color:rgba(249,245,237,.85);margin-bottom:.8rem">Envie aqui o PDF já assinado eletronicamente via gov.br.</p>
+        <input type="hidden" id="cd-assinado-docid">
+        <div class="adm-form-group">
+          <label class="adm-label">Arquivo PDF assinado</label>
+          <input class="adm-input" id="cd-assinado-file" type="file" accept=".pdf" style="padding:.4rem">
+          <div id="cd-assinado-status" style="font-size:.78rem;margin-top:.4rem;display:none"></div>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label">Protocolo/código de verificação gov.br (opcional)</label>
+          <input class="adm-input" id="cd-assinado-protocolo" placeholder="ex: 9f2a-....-....">
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:.8rem">
+          <button class="si-btn pri" onclick="cdConfirmarAssinado()">✅ Confirmar</button>
+          <button class="si-btn" onclick="document.getElementById('cd-assinado-modal').style.display='none'">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -4957,6 +5374,675 @@ function admTraduzirFallback(painel, cfg, erroMsg) {
 var _origPubEvento = typeof pubEvento === 'function' ? pubEvento : null;
 
 // ============================================================
+// CENTRAL DE DOCUMENTOS OFICIAIS DO CMDDI
+// ============================================================
+
+var CD_TIPOS = [
+  // Atos Deliberativos
+  { key:'Resolucao', nome:'Resolução', ico:'📋', grupo:'Atos Deliberativos', publica:'rp-resolucoes', campos:'considerandos', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'Mocao', nome:'Moção', ico:'✊', grupo:'Atos Deliberativos', publica:'rp-mocoes', campos:'considerandos', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'Recomendacao', nome:'Recomendação', ico:'💬', grupo:'Atos Deliberativos', publica:'rp-recomendacoes', campos:'considerandos', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'Portaria', nome:'Portaria', ico:'📜', grupo:'Atos Deliberativos', publica:'rp-portarias', campos:'considerandos', assinPadrao:'padrao', visibPadrao:'publico' },
+  // Registro
+  { key:'Ata', nome:'Ata de Reunião', ico:'📝', grupo:'Registro', publica:'rp-atas', campos:'ata', assinPadrao:'padrao', visibPadrao:'publico' },
+  // Correspondência
+  { key:'Oficio', nome:'Ofício', ico:'📨', grupo:'Correspondência', publica:'rp-oficios', campos:'correspondencia', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'CircularExterna', nome:'Circular Externa', ico:'📢', grupo:'Correspondência', publica:'rp-circulares', campos:'correspondencia', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'CircularInterna', nome:'Circular Interna', ico:'📥', grupo:'Correspondência', publica:'', campos:'correspondencia', assinPadrao:'individual', visibPadrao:'restrito' },
+  { key:'Memorando', nome:'Memorando', ico:'🗒️', grupo:'Correspondência', publica:'', campos:'correspondencia', assinPadrao:'individual', visibPadrao:'restrito' },
+  // Convocatórios
+  { key:'Edital', nome:'Edital de Convocação', ico:'📯', grupo:'Convocatórios', publica:'rp-editais', campos:'edital', assinPadrao:'padrao', visibPadrao:'publico' },
+  // Técnicos
+  { key:'Parecer', nome:'Parecer Técnico', ico:'🔎', grupo:'Instrumentos Técnicos', publica:'rp-pareceres', campos:'livre', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'NotaTecnica', nome:'Nota Técnica', ico:'🧾', grupo:'Instrumentos Técnicos', publica:'rp-pareceres', campos:'livre', assinPadrao:'padrao', visibPadrao:'publico' },
+  // Declaratórios
+  { key:'Declaracao', nome:'Declaração', ico:'🖋️', grupo:'Declaratórios', publica:'rp-declaracoes', campos:'livre', assinPadrao:'individual', visibPadrao:'publico' },
+  // Institucionais
+  { key:'Convenio', nome:'Convênio / Termo de Cooperação', ico:'🤝', grupo:'Institucional', publica:'rp-convenios', campos:'livre', assinPadrao:'padrao', visibPadrao:'publico' },
+  { key:'Minuta', nome:'Minuta', ico:'✏️', grupo:'Institucional', publica:'rp-minutas', campos:'livre', assinPadrao:'nenhuma', visibPadrao:'restrito' }
+];
+function cdTipoInfo(key) { return CD_TIPOS.find(function(t){ return t.key===key; }) || CD_TIPOS[0]; }
+
+var CD_STATUS_LABEL = { rascunho:'📝 Rascunho', finalizado:'📄 Finalizado', aguardando:'⏳ Aguardando Assinatura', assinado:'✅ Assinado', enviado:'📤 Enviado', publicado:'🌐 Publicado' };
+
+// --- Storage (integrado ao dados.json / GitHub, igual ao resto do site) ---
+function cdDocs() { var db = dbLer(); return db.documentos || {}; }
+function cdSalvarDocs(docs) { var db = dbLer(); db.documentos = docs; dbSalvar(db); }
+function cdConselheiros() { var db = dbLer(); return db.conselheiros || {}; }
+function cdSalvarConselheirosDb(arr) { var db = dbLer(); db.conselheiros = arr; dbSalvar(db); }
+function cdListasDb() { var db = dbLer(); return db.documentosListas || {}; }
+function cdSalvarListasDb(arr) { var db = dbLer(); db.documentosListas = arr; dbSalvar(db); }
+function cdNumeracao() { var db = dbLer(); return db.documentosNumeracao || {}; }
+function cdSalvarNumeracao(n) { var db = dbLer(); db.documentosNumeracao = n; dbSalvar(db); }
+function cdAuditoria() { var db = dbLer(); return db.documentosAuditoria || []; }
+function cdSalvarAuditoria(arr) { var db = dbLer(); db.documentosAuditoria = arr; dbSalvar(db); }
+
+function cdLog(acao, detalhe) {
+  var arr = cdAuditoria();
+  arr.unshift({ acao:acao, detalhe:detalhe||'', ts:Date.now() });
+  if (arr.length > 200) arr = arr.slice(0,200);
+  cdSalvarAuditoria(arr);
+}
+
+// --- Inicialização ---
+var _cdInitDone = false;
+function cdInit() {
+  cdRenderTipoGrid();
+  cdPopularFiltroListasConselheiros();
+  cdRenderConselheirosChk();
+  cdRenderConselheiros();
+  cdRenderListas();
+  cdRenderEnvLista();
+  cdCarregarDocsNoSelect();
+  cdRenderPainel();
+  cdRenderTransparencia();
+  var di = document.getElementById('cd-data');
+  if (di && !di.value) di.value = new Date().toISOString().split('T')[0];
+}
+
+function cdAba(el, pane) {
+  document.querySelectorAll('#painel-central-docs > .si-tabs .si-tab').forEach(function(t){ t.classList.remove('ativo'); });
+  document.querySelectorAll('#painel-central-docs > .si-pane').forEach(function(p){ p.classList.remove('ativo'); });
+  if (el) el.classList.add('ativo');
+  var p = document.getElementById(pane); if (p) p.classList.add('ativo');
+  if (pane === 'cd-enviar') { cdCarregarDocsNoSelect(); cdRenderEnvLista(); }
+  if (pane === 'cd-painel') cdRenderPainel();
+  if (pane === 'cd-transparencia') cdRenderTransparencia();
+}
+
+function cdConsAba(el, pane) {
+  document.querySelectorAll('#cd-conselheiros .si-editor-tab').forEach(function(t){ t.classList.remove('ativo'); });
+  document.querySelectorAll('#cd-conselheiros .si-editor-pane').forEach(function(p){ p.classList.remove('ativo'); });
+  if (el) el.classList.add('ativo');
+  var p = document.getElementById(pane); if (p) p.classList.add('ativo');
+}
+
+// --- Seletor de tipo ---
+function cdRenderTipoGrid() {
+  var el = document.getElementById('cd-tipo-grid'); if (!el) return;
+  var grupos = {};
+  CD_TIPOS.forEach(function(t){ (grupos[t.grupo] = grupos[t.grupo]||[]).push(t); });
+  var html = '';
+  Object.keys(grupos).forEach(function(g){
+    html += '<div style="grid-column:1/-1" class="doc-grupo-titulo">'+g+'</div>';
+    grupos[g].forEach(function(t){
+      html += '<div class="doc-tipo-card" id="cdtc-'+t.key+'" onclick="cdSelecionarTipo(\''+t.key+'\')">'+
+        '<div class="tt-ico">'+t.ico+'</div><div class="tt-nome">'+t.nome+'</div>'+
+        '<div class="tt-grp">'+(t.visibPadrao==='restrito'?'Uso interno':'Público')+'</div></div>';
+    });
+  });
+  el.innerHTML = html;
+}
+
+function cdSelecionarTipo(key) {
+  document.querySelectorAll('.doc-tipo-card').forEach(function(c){ c.classList.remove('sel'); });
+  var card = document.getElementById('cdtc-'+key); if (card) card.classList.add('sel');
+  document.getElementById('cd-tipo-sel').value = key;
+  document.getElementById('cd-form-area').style.display = 'block';
+  var info = cdTipoInfo(key);
+  // Mostrar apenas o grupo de campos correspondente
+  document.querySelectorAll('.cd-campo').forEach(function(c){ c.style.display='none'; });
+  var campoEl = document.querySelector('.cd-campo-'+info.campos);
+  if (campoEl) campoEl.style.display = 'block';
+  // Visibilidade padrão
+  var visibSel = document.getElementById('cd-visib'); if (visibSel) visibSel.value = info.visibPadrao;
+  // Sugerir número
+  cdSugerirNumero(key);
+  // Modelo de assinatura padrão
+  var modeloBtns = document.querySelectorAll('.assin-modelo-btn');
+  modeloBtns.forEach(function(b){ b.classList.remove('ativo'); });
+  var alvo = Array.from(modeloBtns).find(function(b){ return b.getAttribute('onclick').indexOf("'"+info.assinPadrao+"'") !== -1; });
+  if (alvo) cdAssinModelo(alvo, info.assinPadrao);
+}
+
+function cdSugerirNumero(key) {
+  var ano = new Date().getFullYear();
+  var num = cdNumeracao();
+  var atual = (num[key] && num[key][ano]) || 0;
+  var proximo = String(atual+1).padStart(3,'0') + '/' + ano;
+  document.getElementById('cd-numero').value = proximo;
+  var st = document.getElementById('cd-num-status');
+  if (st) st.innerHTML = '<div class="doc-num-sugerido">✓ Número sugerido automaticamente — pode ajustar se necessário</div>';
+}
+
+document.addEventListener('input', function(e){
+  if (e.target && e.target.id === 'cd-numero') {
+    var key = document.getElementById('cd-tipo-sel').value;
+    if (!key) return;
+    var num = e.target.value.trim();
+    var duplicado = Object.values(cdDocs()).some(function(d){ return d.tipo===key && d.numero===num && d._id !== (window._cdEditandoId||''); });
+    var st = document.getElementById('cd-num-status');
+    if (st) st.innerHTML = duplicado ? '<div class="doc-num-alerta">⚠ Já existe um documento deste tipo com este número!</div>' : '';
+  }
+});
+
+// --- Bloco de assinatura ---
+function cdAssinModelo(el, modelo) {
+  document.querySelectorAll('.assin-modelo-btn').forEach(function(b){ b.classList.remove('ativo'); });
+  if (el) el.classList.add('ativo');
+  document.getElementById('cd-assin-modelo').value = modelo;
+  var addBtn = document.getElementById('cd-assin-add-btn');
+  var slotsEl = document.getElementById('cd-assin-slots');
+  slotsEl.innerHTML = '';
+  if (modelo === 'nenhuma') { addBtn.style.display='none'; return; }
+  if (modelo === 'padrao') {
+    addBtn.style.display = 'none';
+    cdAssinSlotAdd('', 'Presidente do CMDDI');
+    cdAssinSlotAdd('', 'Secretário Geral do CMDDI');
+  } else if (modelo === 'individual') {
+    addBtn.style.display = 'none';
+    cdAssinSlotAdd('', 'Secretário Geral do CMDDI');
+  } else if (modelo === 'comissao') {
+    addBtn.style.display = 'inline-block';
+    cdAssinSlotAdd('', 'Presidente do CMDDI');
+    cdAssinSlotAdd('', 'Conselheiro Designado — Comissão');
+  }
+}
+
+function cdAssinSlotAdd(nome, cargo) {
+  var slotsEl = document.getElementById('cd-assin-slots');
+  var id = 'as_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+  var conselheiros = Object.values(cdConselheiros());
+  var opts = '<option value="">— digitar nome abaixo —</option>' + conselheiros.map(function(c){
+    return '<option value="'+escH(c.nome)+'">'+escH(c.nome)+' ('+escH(c.cargo||'')+')</option>';
+  }).join('');
+  var div = document.createElement('div');
+  div.className = 'assin-slot';
+  div.id = id;
+  div.innerHTML =
+    '<div><label class="adm-label">Signatário</label><select class="adm-select" onchange="this.nextElementSibling.nextElementSibling.value=this.value">'+opts+'</select>'+
+    '<input type="hidden">'+
+    '<input class="adm-input cd-as-nome" placeholder="ou digite o nome" style="margin-top:.3rem"></div>'+
+    '<div><label class="adm-label">Cargo / Função no documento</label><input class="adm-input cd-as-cargo" value="'+escH(cargo||'')+'"></div>'+
+    '<button type="button" class="si-btn del" onclick="document.getElementById(\''+id+'\').remove()" title="Remover">🗑</button>';
+  slotsEl.appendChild(div);
+}
+function cdAssinAdicionar() { cdAssinSlotAdd('', 'Conselheiro Designado — Comissão'); }
+
+function cdCapturarAssinatura() {
+  var modelo = document.getElementById('cd-assin-modelo').value;
+  var signatarios = [];
+  document.querySelectorAll('#cd-assin-slots .assin-slot').forEach(function(slot){
+    var nome = slot.querySelector('.cd-as-nome').value.trim() || slot.querySelector('select').value;
+    var cargo = slot.querySelector('.cd-as-cargo').value.trim();
+    if (nome || cargo) signatarios.push({ nome: nome, cargo: cargo });
+  });
+  return { modelo: modelo, signatarios: signatarios };
+}
+
+// --- Captura e persistência do documento ---
+function cdCapturarDocumento() {
+  var tipo = document.getElementById('cd-tipo-sel').value;
+  var info = cdTipoInfo(tipo);
+  var corpo = {};
+  if (info.campos === 'considerandos') {
+    corpo = { considerandos: v('cd-considerandos'), artigos: v('cd-artigos') };
+  } else if (info.campos === 'ata') {
+    corpo = { local: v('cd-ata-local'), hora: v('cd-ata-hora'), presentes: v('cd-ata-presentes'), pauta: v('cd-ata-pauta'), deliberacoes: v('cd-ata-deliberacoes') };
+  } else if (info.campos === 'correspondencia') {
+    corpo = { destinatario: v('cd-corr-destinatario'), assunto: v('cd-corr-assunto'), texto: v('cd-corr-corpo') };
+  } else if (info.campos === 'edital') {
+    corpo = { base: v('cd-ed-base'), data: v('cd-ed-data'), hora: v('cd-ed-hora'), local: v('cd-ed-local'), pauta: v('cd-ed-pauta') };
+  } else if (info.campos === 'livre') {
+    corpo = { texto: v('cd-livre-corpo') };
+  }
+  return {
+    tipo: tipo,
+    numero: v('cd-numero'),
+    data: v('cd-data'),
+    titulo: v('cd-titulo'),
+    visibilidade: (document.getElementById('cd-visib')||{}).value || 'publico',
+    campos: info.campos,
+    corpo: corpo,
+    assinatura: cdCapturarAssinatura()
+  };
+}
+
+function cdSalvarRascunho() {
+  var tipo = document.getElementById('cd-tipo-sel').value;
+  if (!tipo) { notif('⚠ Escolha o tipo de documento primeiro.'); return; }
+  var dados = cdCapturarDocumento();
+  if (!dados.titulo) { notif('⚠ Preencha o título/ementa.'); return; }
+  var docs = cdDocs();
+  var id = window._cdEditandoId || ('doc_'+Date.now());
+  var existente = docs[id];
+  var isNovo = !existente;
+  docs[id] = Object.assign({}, existente, dados, {
+    _id: id,
+    status: (existente && existente.status && existente.status !== 'rascunho') ? existente.status : 'rascunho',
+    arquivoAssinadoUrl: existente ? existente.arquivoAssinadoUrl : '',
+    protocoloGovBr: existente ? existente.protocoloGovBr : '',
+    ts: existente ? existente.ts : Date.now(),
+    atualizadoTs: Date.now()
+  });
+  cdSalvarDocs(docs);
+  // Incrementar numeração apenas para documento novo
+  if (isNovo) {
+    var ano = new Date().getFullYear();
+    var num = cdNumeracao();
+    if (!num[tipo]) num[tipo] = {};
+    num[tipo][ano] = (num[tipo][ano]||0) + 1;
+    cdSalvarNumeracao(num);
+  }
+  salvarNoGitHub();
+  cdLog(isNovo?'Documento criado':'Rascunho atualizado', dados.titulo+' ('+dados.numero+')');
+  window._cdEditandoId = id;
+  notif('💾 Rascunho salvo!');
+  cdRenderPainel();
+}
+
+function cdNovoDocumento() {
+  window._cdEditandoId = null;
+  document.getElementById('cd-tipo-sel').value = '';
+  document.getElementById('cd-form-area').style.display = 'none';
+  document.querySelectorAll('.doc-tipo-card').forEach(function(c){ c.classList.remove('sel'); });
+  ['cd-numero','cd-titulo','cd-considerandos','cd-artigos','cd-ata-local','cd-ata-hora','cd-ata-presentes','cd-ata-pauta','cd-ata-deliberacoes',
+    'cd-corr-destinatario','cd-corr-assunto','cd-corr-corpo','cd-ed-base','cd-ed-data','cd-ed-hora','cd-ed-local','cd-ed-pauta','cd-livre-corpo'
+  ].forEach(function(id){ var el=document.getElementById(id); if (el) el.value=''; });
+  notif('🆕 Pronto para um novo documento.');
+}
+
+function cdCarregarDocumento(id) {
+  var docs = cdDocs();
+  var d = docs[id]; if (!d) return;
+  window._cdEditandoId = id;
+  cdSelecionarTipo(d.tipo);
+  document.getElementById('cd-numero').value = d.numero||'';
+  document.getElementById('cd-data').value = d.data||'';
+  document.getElementById('cd-titulo').value = d.titulo||'';
+  document.getElementById('cd-visib').value = d.visibilidade||'publico';
+  var c = d.corpo||{};
+  if (d.campos==='considerandos') { document.getElementById('cd-considerandos').value=c.considerandos||''; document.getElementById('cd-artigos').value=c.artigos||''; }
+  else if (d.campos==='ata') { document.getElementById('cd-ata-local').value=c.local||''; document.getElementById('cd-ata-hora').value=c.hora||''; document.getElementById('cd-ata-presentes').value=c.presentes||''; document.getElementById('cd-ata-pauta').value=c.pauta||''; document.getElementById('cd-ata-deliberacoes').value=c.deliberacoes||''; }
+  else if (d.campos==='correspondencia') { document.getElementById('cd-corr-destinatario').value=c.destinatario||''; document.getElementById('cd-corr-assunto').value=c.assunto||''; document.getElementById('cd-corr-corpo').value=c.texto||''; }
+  else if (d.campos==='edital') { document.getElementById('cd-ed-base').value=c.base||''; document.getElementById('cd-ed-data').value=c.data||''; document.getElementById('cd-ed-hora').value=c.hora||''; document.getElementById('cd-ed-local').value=c.local||''; document.getElementById('cd-ed-pauta').value=c.pauta||''; }
+  else if (d.campos==='livre') { document.getElementById('cd-livre-corpo').value=c.texto||''; }
+  // Assinatura
+  if (d.assinatura) {
+    var modeloBtns = document.querySelectorAll('.assin-modelo-btn');
+    var alvo = Array.from(modeloBtns).find(function(b){ return b.getAttribute('onclick').indexOf("'"+d.assinatura.modelo+"'") !== -1; });
+    if (alvo) cdAssinModelo(alvo, d.assinatura.modelo);
+    document.getElementById('cd-assin-slots').innerHTML = '';
+    (d.assinatura.signatarios||[]).forEach(function(s){ cdAssinSlotAdd(s.nome, s.cargo); document.querySelectorAll('#cd-assin-slots .cd-as-nome').forEach(function(inp){ if(!inp.value) inp.value = s.nome; }); });
+  }
+  cdAba(document.querySelector('.si-tab[onclick*="cd-elaborar"]'), 'cd-elaborar');
+  notif('📂 Documento carregado para edição.');
+}
+
+// --- Geração do PDF (via impressão do navegador, com timbre do CMDDI) ---
+function cdGerarHTMLDocumento(d) {
+  var info = cdTipoInfo(d.tipo);
+  var dataFmt = d.data ? new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+  var corpoHtml = '';
+  var c = d.corpo || {};
+  if (d.campos === 'considerandos') {
+    var considerandos = (c.considerandos||'').split('\n').filter(Boolean);
+    var artigos = (c.artigos||'').split('\n').filter(Boolean);
+    corpoHtml += considerandos.map(function(l){ return '<p style="text-align:justify;margin-bottom:10px">'+escH(l)+'</p>'; }).join('');
+    corpoHtml += '<p style="text-align:center;font-weight:bold;margin:22px 0 14px">RESOLVE:</p>';
+    corpoHtml += artigos.map(function(l){ return '<p style="text-align:justify;margin-bottom:10px"><strong>'+escH(l.split(' ').slice(0,2).join(' '))+'</strong> '+escH(l.split(' ').slice(2).join(' '))+'</p>'; }).join('');
+  } else if (d.campos === 'ata') {
+    corpoHtml += '<p><strong>Local:</strong> '+escH(c.local||'')+' &nbsp; <strong>Horário:</strong> '+escH(c.hora||'')+'</p>';
+    corpoHtml += '<p style="margin-top:14px"><strong>Presentes:</strong></p><ul>'+(c.presentes||'').split('\n').filter(Boolean).map(function(l){return '<li>'+escH(l)+'</li>';}).join('')+'</ul>';
+    corpoHtml += '<p style="margin-top:14px"><strong>Pauta:</strong></p><ol>'+(c.pauta||'').split('\n').filter(Boolean).map(function(l){return '<li>'+escH(l.replace(/^\d+\.\s*/,''))+'</li>';}).join('')+'</ol>';
+    corpoHtml += '<p style="margin-top:14px"><strong>Deliberações:</strong></p><p style="text-align:justify;white-space:pre-line">'+escH(c.deliberacoes||'')+'</p>';
+  } else if (d.campos === 'correspondencia') {
+    corpoHtml += '<p style="margin-bottom:14px">'+escH(c.destinatario||'')+'</p>';
+    corpoHtml += '<p style="margin-bottom:14px"><strong>Assunto:</strong> '+escH(c.assunto||'')+'</p>';
+    corpoHtml += '<div style="text-align:justify;white-space:pre-line;line-height:1.8">'+escH(c.texto||'')+'</div>';
+  } else if (d.campos === 'edital') {
+    corpoHtml += '<p style="text-align:justify;margin-bottom:14px">Com base em '+escH(c.base||'')+', ficam convocados os membros do CMDDI para reunião a realizar-se em <strong>'+ (c.data? new Date(c.data+'T12:00:00').toLocaleDateString('pt-BR'):'') +'</strong>, às <strong>'+escH(c.hora||'')+'</strong>, em <strong>'+escH(c.local||'')+'</strong>, com a seguinte pauta:</p>';
+    corpoHtml += '<ol>'+(c.pauta||'').split('\n').filter(Boolean).map(function(l){return '<li style="margin-bottom:6px">'+escH(l.replace(/^\d+\.\s*/,''))+'</li>';}).join('')+'</ol>';
+  } else if (d.campos === 'livre') {
+    corpoHtml += '<div style="text-align:justify;white-space:pre-line;line-height:1.8">'+escH(c.texto||'')+'</div>';
+  }
+  var assinHtml = '';
+  if (d.assinatura && d.assinatura.signatarios && d.assinatura.signatarios.length) {
+    assinHtml = '<div style="margin-top:60px">' + d.assinatura.signatarios.map(function(s){
+      return '<div style="text-align:center;margin-bottom:46px"><div style="border-top:1px solid #333;width:320px;margin:0 auto;padding-top:6px">'+
+        '<div style="font-weight:bold">'+escH(s.nome||'\u00A0')+'</div><div style="font-size:.85em;color:#555">'+escH(s.cargo||'')+'</div></div></div>';
+    }).join('') + '<p style="text-align:center;font-size:.72em;color:#888;margin-top:10px">Documento a ser assinado eletronicamente via gov.br</p></div>';
+  }
+  return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>'+escH(d.titulo)+'</title>'+
+  '<style>@page{margin:2.5cm 2cm}body{font-family:Georgia,"Times New Roman",serif;color:#1a1a1a;font-size:12.5pt;line-height:1.6;max-width:720px;margin:0 auto;padding:20px}'+
+  '.timbre{display:flex;align-items:center;gap:16px;border-bottom:3px solid #5C1E0A;padding-bottom:14px;margin-bottom:22px}'+
+  '.timbre img{height:64px}.timbre-tx{font-family:Arial,sans-serif}.timbre-tx b{display:block;font-size:13px;color:#5C1E0A}'+
+  '.timbre-tx span{font-size:10px;color:#666}'+
+  'h1{font-size:15pt;text-align:center;text-transform:uppercase;letter-spacing:.03em;margin:18px 0 6px}'+
+  '.ementa{text-align:center;font-style:italic;color:#444;margin-bottom:26px;font-size:11pt}'+
+  '.rodape-doc{margin-top:50px;padding-top:10px;border-top:1px solid #ccc;font-size:9pt;color:#888;text-align:center;font-family:Arial,sans-serif}'+
+  '@media print{.no-print{display:none}}</style></head><body>'+
+  '<div class="timbre"><img src="assets/img/logo-cmddi-pt.jpg" alt="CMDDI"><div class="timbre-tx"><b>CONSELHO MUNICIPAL DOS DIREITOS E DEFESA DOS POVOS INDÍGENAS</b><span>Campo Grande — Mato Grosso do Sul — Brasil</span></div></div>'+
+  '<h1>'+info.nome+' CMDDI Nº '+escH(d.numero)+'</h1>'+
+  '<div class="ementa">'+escH(d.titulo)+'</div>'+
+  '<p style="text-align:right;font-size:10pt;color:#555;margin-bottom:20px">Campo Grande/MS, '+dataFmt+'.</p>'+
+  corpoHtml + assinHtml +
+  '<div class="rodape-doc">CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas · cmddicg.github.io</div>'+
+  '<div class="no-print" style="text-align:center;margin-top:30px"><button onclick="window.print()" style="background:#5C1E0A;color:#fff;border:none;padding:10px 22px;border-radius:5px;font-size:13px;cursor:pointer">🖨️ Imprimir / Salvar como PDF</button></div>'+
+  '</body></html>';
+}
+
+function cdPreviewPDF() {
+  var tipo = document.getElementById('cd-tipo-sel').value;
+  if (!tipo) { notif('⚠ Escolha o tipo de documento primeiro.'); return; }
+  var dados = cdCapturarDocumento();
+  if (!dados.titulo) { notif('⚠ Preencha o título/ementa.'); return; }
+  cdSalvarRascunho();
+  var docs = cdDocs(); var d = docs[window._cdEditandoId];
+  d.status = d.status === 'rascunho' ? 'finalizado' : d.status;
+  docs[window._cdEditandoId] = d; cdSalvarDocs(docs); salvarNoGitHub();
+  var html = cdGerarHTMLDocumento(d);
+  var w = window.open('', '_blank');
+  if (w) { w.document.write(html); w.document.close(); }
+  else { notif('⚠ Permita pop-ups para gerar o PDF.'); }
+  cdLog('PDF gerado', d.titulo+' ('+d.numero+')');
+  cdRenderPainel();
+}
+
+// --- Conselheiros: CRUD ---
+function cdRenderConselheirosChk() {
+  var arr = Object.values(cdListasDb());
+  var html = arr.length ? arr.map(function(l){
+    var uid = 'cdc_'+l._id;
+    return '<input type="checkbox" class="si-lista-chk" id="'+uid+'" value="'+l._id+'"><label for="'+uid+'" style="border-color:'+l.cor+'40;color:'+l.cor+'">'+escH(l.nome)+'</label>';
+  }).join('') : '<span style="font-size:.78rem;color:rgba(249,245,237,.5)">Crie listas na aba "📋 Listas".</span>';
+  ['cd-c-listas-chk','cd-bloco-listas-chk'].forEach(function(id){ var el=document.getElementById(id); if(el) el.innerHTML = html; });
+}
+
+function cdAdicionarConselheiro() {
+  var nome=v('cd-c-nome'), email=v('cd-c-email'), cargo=v('cd-c-cargo'), entidade=v('cd-c-entidade'), tel=v('cd-c-tel');
+  if (!nome || !email) { notif('⚠ Nome e e-mail são obrigatórios.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { notif('⚠ E-mail inválido.'); return; }
+  var arr = cdConselheiros();
+  if (Object.values(arr).some(function(c){ return c.email.toLowerCase()===email.toLowerCase(); })) { notif('⚠ Este e-mail já está cadastrado.'); return; }
+  var listasSel = []; document.querySelectorAll('#cd-c-listas-chk .si-lista-chk:checked').forEach(function(cb){ listasSel.push(cb.value); });
+  var id = 'cons_'+Date.now();
+  arr[id] = { _id:id, nome:nome, email:email, cargo:cargo, entidade:entidade, tel:tel, listas:listasSel, ts:Date.now() };
+  cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
+  ['cd-c-nome','cd-c-email','cd-c-entidade','cd-c-tel'].forEach(function(i){ var el=document.getElementById(i); if(el) el.value=''; });
+  document.querySelectorAll('#cd-c-listas-chk .si-lista-chk').forEach(function(cb){ cb.checked=false; });
+  cdLog('Conselheiro adicionado', nome);
+  notif('✅ Conselheiro adicionado!');
+}
+
+function cdRemoverConselheiro(id) {
+  if (!confirm('Remover este conselheiro?')) return;
+  var arr = cdConselheiros(); var nome = arr[id]?arr[id].nome:'';
+  delete arr[id]; cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
+  cdLog('Conselheiro removido', nome);
+  notif('🗑 Conselheiro removido.');
+}
+
+var _cdTipoIco = {};
+function cdRenderConselheiros() {
+  var el = document.getElementById('cd-cons-lista'); if (!el) return;
+  var arr = Object.values(cdConselheiros());
+  var listaMap = cdListasDb();
+  if (!arr.length) { el.innerHTML = '<div style="text-align:center;color:rgba(249,245,237,.5);font-size:.8rem;padding:1.2rem">Nenhum conselheiro cadastrado ainda.</div>'; return; }
+  el.innerHTML = arr.map(function(c){
+    var tags = (c.listas||[]).map(function(lid){ var l=listaMap[lid]; if(!l) return ''; return '<span class="si-grupo-tag" style="background:'+l.cor+'22;color:'+l.cor+'">'+escH(l.nome)+'</span>'; }).join('');
+    return '<div class="si-card"><div class="si-card-info"><div class="si-card-nome">👤 '+escH(c.nome)+' <span style="font-weight:400;color:rgba(249,245,237,.7)">— '+escH(c.cargo||'')+'</span></div>'+
+      '<div class="si-card-meta">'+escH(c.email)+(c.entidade?' · '+escH(c.entidade):'')+'</div><div style="margin-top:.25rem">'+tags+'</div></div>'+
+      '<div class="si-card-acoes"><button class="si-btn del" onclick="cdRemoverConselheiro(\''+c._id+'\')">🗑</button></div></div>';
+  }).join('');
+}
+
+// --- Listas ---
+function cdCriarLista() {
+  var nome=v('cd-l-nome'), cor=(document.getElementById('cd-l-cor')||{}).value||'#5F9ECC';
+  if (!nome) { notif('⚠ Digite um nome para a lista.'); return; }
+  var arr = cdListasDb();
+  if (Object.values(arr).some(function(l){ return l.nome.toLowerCase()===nome.toLowerCase(); })) { notif('⚠ Já existe uma lista com esse nome.'); return; }
+  var id = 'clst_'+Date.now();
+  arr[id] = { _id:id, nome:nome, cor:cor, ts:Date.now() };
+  cdSalvarListasDb(arr); salvarNoGitHub();
+  cdRenderListas(); cdRenderConselheirosChk(); cdPopularFiltroListasConselheiros();
+  document.getElementById('cd-l-nome').value='';
+  notif('✅ Lista "'+nome+'" criada!');
+}
+function cdRemoverLista(id) {
+  var arr = cdListasDb(); var l = arr[id]; if (!l) return;
+  if (!confirm('Remover a lista "'+l.nome+'"? Os conselheiros continuam cadastrados, só desvinculados desta lista.')) return;
+  delete arr[id]; cdSalvarListasDb(arr);
+  var cons = cdConselheiros();
+  Object.keys(cons).forEach(function(k){ cons[k].listas = (cons[k].listas||[]).filter(function(x){ return x!==id; }); });
+  cdSalvarConselheirosDb(cons); salvarNoGitHub();
+  cdRenderListas(); cdRenderConselheirosChk(); cdPopularFiltroListasConselheiros(); cdRenderConselheiros();
+  notif('🗑 Lista removida.');
+}
+function cdRenderListas() {
+  var el = document.getElementById('cd-listas-lista'); if (!el) return;
+  var arr = Object.values(cdListasDb()); var cons = Object.values(cdConselheiros());
+  if (!arr.length) { el.innerHTML='<div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1.2rem">Nenhuma lista criada ainda.</div>'; return; }
+  el.innerHTML = arr.map(function(l){
+    var count = cons.filter(function(c){ return (c.listas||[]).includes(l._id); }).length;
+    return '<div class="si-lista-card"><div class="si-lista-bolinha" style="background:'+l.cor+'"></div><span class="si-lista-nome">'+escH(l.nome)+'</span>'+
+      '<span class="si-lista-count">'+count+' membro(s)</span><button class="si-btn del" onclick="cdRemoverLista(\''+l._id+'\')">🗑</button></div>';
+  }).join('');
+}
+function cdPopularFiltroListasConselheiros() {
+  var arr = Object.values(cdListasDb());
+  var opts = '<option value="">Todas as listas / todos os conselheiros</option>' + arr.map(function(l){ return '<option value="'+l._id+'">'+escH(l.nome)+'</option>'; }).join('');
+  var el = document.getElementById('cd-env-filtro-lista'); if (el) el.innerHTML = opts;
+}
+
+function cdAdicionarBloco() {
+  var txt = v('cd-bloco-txt'); if (!txt) { notif('⚠ Cole os conselheiros na área de texto.'); return; }
+  var cargo = (document.getElementById('cd-bloco-cargo')||{}).value || 'Conselheiro Titular';
+  var listasSel = []; document.querySelectorAll('#cd-bloco-listas-chk .si-lista-chk:checked').forEach(function(cb){ listasSel.push(cb.value); });
+  var linhas = txt.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+  var arr = cdConselheiros();
+  var add=0, dup=0, inv=0;
+  linhas.forEach(function(linha, i){
+    var nome='', email='';
+    var m1 = linha.match(/^(.+?)\s*<([^>]+)>$/);
+    if (m1) { nome=m1[1].trim(); email=m1[2].trim(); }
+    else if (linha.includes('|')) { var p=linha.split('|'); email=p[0].trim(); nome=p[1]?p[1].trim():''; }
+    else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(linha)) { email=linha; }
+    else { inv++; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { inv++; return; }
+    if (Object.values(arr).some(function(c){ return c.email.toLowerCase()===email.toLowerCase(); })) { dup++; return; }
+    var id = 'cons_'+Date.now()+'_'+i;
+    arr[id] = { _id:id, nome:nome||email.split('@')[0], email:email, cargo:cargo, entidade:'', tel:'', listas:listasSel, ts:Date.now() };
+    add++;
+  });
+  cdSalvarConselheirosDb(arr); salvarNoGitHub();
+  cdRenderConselheiros(); cdRenderListas(); cdRenderEnvLista();
+  var st = document.getElementById('cd-bloco-status'); if (st) st.textContent = '✅ '+add+' adicionados · ⚠ '+dup+' duplicados · ❌ '+inv+' inválidos';
+  if (add) document.getElementById('cd-bloco-txt').value='';
+  notif('✅ '+add+' conselheiros adicionados em bloco!');
+}
+
+// --- Envio ---
+function cdCarregarDocsNoSelect() {
+  var sel = document.getElementById('cd-env-doc'); if (!sel) return;
+  var docs = Object.values(cdDocs()).filter(function(d){ return d.status!=='rascunho'; });
+  var opts = docs.map(function(d){ return '<option value="'+d._id+'">'+cdTipoInfo(d.tipo).nome+' '+d.numero+' — '+escH(d.titulo)+' ('+CD_STATUS_LABEL[d.status]+')</option>'; }).join('');
+  sel.innerHTML = '<option value="">— Selecione um documento —</option>' + opts;
+}
+function cdRenderEnvLista() {
+  var el = document.getElementById('cd-env-destinatarios'); if (!el) return;
+  var filtroLista = (document.getElementById('cd-env-filtro-lista')||{}).value||'';
+  var arr = Object.values(cdConselheiros()).filter(function(c){ return !filtroLista || (c.listas||[]).includes(filtroLista); });
+  if (!arr.length) { el.innerHTML = '<div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1rem">Nenhum conselheiro encontrado.</div>'; return; }
+  el.innerHTML = arr.map(function(c){
+    return '<label class="si-check-label"><input type="checkbox" name="cd-dest" value="'+c._id+'" onchange="cdAtualizarEnvCount()"> 👤 <strong>'+escH(c.nome)+'</strong> <span style="color:rgba(249,245,237,.7);font-size:.75rem">'+escH(c.email)+' · '+escH(c.cargo||'')+'</span></label>';
+  }).join('');
+  cdAtualizarEnvCount();
+}
+function cdSelecionarTodosConselheiros(sel) { document.querySelectorAll('input[name="cd-dest"]').forEach(function(cb){ cb.checked=sel; }); cdAtualizarEnvCount(); }
+function cdAtualizarEnvCount() { var n = document.querySelectorAll('input[name="cd-dest"]:checked').length; var el=document.getElementById('cd-env-count'); if(el) el.textContent=n; }
+
+async function cdEnviarDocumento() {
+  var cfg = siCfg();
+  if (!cfg.brevo) { notif('⚠ Configure a chave Brevo na Sala de Imprensa primeiro (é a mesma usada aqui).'); return; }
+  var docId = (document.getElementById('cd-env-doc')||{}).value;
+  if (!docId) { notif('⚠ Selecione um documento.'); return; }
+  var docs = cdDocs(); var d = docs[docId]; if (!d) return;
+  var destCbs = document.querySelectorAll('input[name="cd-dest"]:checked');
+  var avulso = v('cd-env-avulso');
+  if (!destCbs.length && !avulso) { notif('⚠ Selecione ao menos um destinatário ou informe um e-mail avulso.'); return; }
+  var cons = cdConselheiros();
+  var tos = Array.from(destCbs).map(function(cb){ var c=cons[cb.value]; return { name:c.nome, email:c.email }; });
+  if (avulso) tos.push({ name:avulso, email:avulso });
+  var teste = (document.getElementById('cd-env-teste')||{}).checked;
+  var prog = document.getElementById('cd-env-prog'); var msg = document.getElementById('cd-env-prog-msg'); var bar = document.getElementById('cd-env-prog-bar');
+  if (prog) prog.style.display='block';
+  var info = cdTipoInfo(d.tipo);
+  var assunto = info.nome+' CMDDI Nº '+d.numero+' — '+d.titulo;
+  var linkPdf = d.arquivoAssinadoUrl || '';
+  var corpoEmail = '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:20px">'+
+    '<h2 style="color:#5C1E0A">'+escH(assunto)+'</h2>'+
+    '<p>Prezado(a) Conselheiro(a),</p>'+
+    '<p>Segue o documento <strong>'+info.nome+' CMDDI Nº '+escH(d.numero)+'</strong>, de '+(d.data?new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR'):'')+', com o seguinte objeto: <em>'+escH(d.titulo)+'</em>.</p>'+
+    (linkPdf ? '<p><a href="'+linkPdf+'" style="background:#5C1E0A;color:#fff;padding:10px 18px;text-decoration:none;border-radius:4px;display:inline-block;margin:10px 0">📄 Baixar o documento (PDF)</a></p>' : '<p style="color:#a00">Este documento ainda não possui uma versão em PDF anexada.</p>')+
+    (d.protocoloGovBr ? '<p style="font-size:.85em;color:#666">Protocolo de assinatura gov.br: '+escH(d.protocoloGovBr)+'</p>' : '')+
+    '<p style="margin-top:20px;font-size:.85em;color:#888">CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas · Campo Grande/MS</p></div>';
+  var total = tos.length + (teste?1:0), feitos=0, erros=0;
+  if (teste) {
+    if (msg) msg.textContent='Enviando cópia de teste...';
+    try {
+      await fetch('https://api.brevo.com/v3/smtp/email', { method:'POST', headers:{'api-key':cfg.brevo,'Content-Type':'application/json'}, body: JSON.stringify({ sender:{name:cfg.fromName||'CMDDI',email:cfg.from}, to:[{email:cfg.from}], subject:'[TESTE] '+assunto, htmlContent:corpoEmail }) });
+    } catch(e){ erros++; }
+    feitos++; if(bar) bar.style.width=(feitos/total*100)+'%';
+  }
+  for (var i=0;i<tos.length;i++) {
+    if (msg) msg.textContent = 'Enviando para '+tos[i].name+'... ('+(i+1)+'/'+tos.length+')';
+    try {
+      var r = await fetch('https://api.brevo.com/v3/smtp/email', { method:'POST', headers:{'api-key':cfg.brevo,'Content-Type':'application/json'}, body: JSON.stringify({ sender:{name:cfg.fromName||'CMDDI',email:cfg.from}, to:[{name:tos[i].name,email:tos[i].email}], subject:assunto, htmlContent:corpoEmail }) });
+      if (r.ok) feitos++; else erros++;
+    } catch(e) { erros++; }
+    if(bar) bar.style.width=((i+1+(teste?1:0))/total*100)+'%';
+    await new Promise(function(res){ setTimeout(res,150); });
+  }
+  if (prog) prog.style.display='none';
+  d.status = 'enviado'; docs[docId]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  cdLog('Documento enviado', d.titulo+' → '+tos.length+' destinatário(s)');
+  notif('✅ Envio concluído: '+(feitos-(teste?1:0))+' enviados'+(erros?' · ❌ '+erros+' erros':''));
+  cdRenderPainel();
+}
+
+// --- Painel / tracker ---
+function cdRenderPainel() {
+  var el = document.getElementById('cd-painel-lista'); if (!el) return;
+  var filtroStatus = (document.getElementById('cd-filtro-status')||{}).value||'';
+  var filtroTipo = (document.getElementById('cd-filtro-tipo-painel')||{}).value||'';
+  var selTipo = document.getElementById('cd-filtro-tipo-painel');
+  if (selTipo && selTipo.options.length<=1) { selTipo.innerHTML = '<option value="">Todos os tipos</option>' + CD_TIPOS.map(function(t){return '<option value="'+t.key+'">'+t.ico+' '+t.nome+'</option>';}).join(''); }
+  var arr = Object.values(cdDocs()).filter(function(d){
+    if (filtroStatus && d.status!==filtroStatus) return false;
+    if (filtroTipo && d.tipo!==filtroTipo) return false;
+    return true;
+  }).sort(function(a,b){ return (b.atualizadoTs||b.ts||0)-(a.atualizadoTs||a.ts||0); });
+  if (!arr.length) { el.innerHTML = '<div style="text-align:center;color:rgba(249,245,237,.55);font-size:.8rem;padding:1.5rem">Nenhum documento encontrado.</div>'; return; }
+  el.innerHTML = arr.map(function(d){
+    var info = cdTipoInfo(d.tipo);
+    var acoes = '<button class="si-btn" onclick="cdCarregarDocumento(\''+d._id+'\')">✏️ Editar</button>';
+    if (d.status!=='rascunho') acoes += '<button class="si-btn" onclick="cdBaixarPDFExistente(\''+d._id+'\')">📄 PDF</button>';
+    if (d.status==='finalizado' || d.status==='aguardando') acoes += '<button class="si-btn" onclick="cdAbrirModalAssinado(\''+d._id+'\')">✅ Registrar Assinado</button>';
+    if (d.status==='assinado') acoes += '<button class="si-btn" style="border-color:var(--am);color:var(--am)" onclick="cdPublicarDocumento(\''+d._id+'\')">🌐 Publicar</button>';
+    acoes += '<button class="si-btn del" onclick="cdExcluirDocumento(\''+d._id+'\')">🗑</button>';
+    return '<div class="doc-track-item"><div class="doc-track-num">'+info.ico+' '+d.numero+'</div>'+
+      '<div class="doc-track-info"><div class="dt-tit">'+escH(d.titulo)+'</div><div class="dt-meta">'+info.nome+' · '+(d.data?new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR'):'sem data')+' · '+(d.visibilidade==='publico'?'🌐 Público':'🔒 Restrito')+'</div></div>'+
+      '<div class="doc-status '+d.status+'">'+CD_STATUS_LABEL[d.status]+'</div>'+
+      '<div class="doc-track-acoes">'+acoes+'</div></div>';
+  }).join('');
+}
+
+function cdBaixarPDFExistente(id) {
+  var d = cdDocs()[id]; if (!d) return;
+  var html = cdGerarHTMLDocumento(d);
+  var w = window.open('', '_blank');
+  if (w) { w.document.write(html); w.document.close(); }
+}
+
+function cdAbrirModalAssinado(id) {
+  document.getElementById('cd-assinado-docid').value = id;
+  document.getElementById('cd-assinado-modal').style.display = 'flex';
+}
+function cdUploadAssinadoFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var st = document.getElementById('cd-assinado-status');
+  st.style.display='block'; st.style.color='var(--am)'; st.textContent='⏳ Enviando...';
+  var fd = new FormData(); fd.append('file',file); fd.append('upload_preset','cmddi_galeria');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST','https://api.cloudinary.com/v1_1/dn1ubybc0/raw/upload',true);
+  xhr.onload = function(){
+    try { var d=JSON.parse(xhr.responseText); if (d.secure_url) { window._cdAssinadoUrl=d.secure_url; st.style.color='#7bc67e'; st.textContent='✅ '+file.name; } else { st.style.color='#f87171'; st.textContent='❌ Erro no upload'; } }
+    catch(e){ st.style.color='#f87171'; st.textContent='❌ Erro'; }
+  };
+  xhr.send(fd);
+}
+document.addEventListener('change', function(e){ if (e.target && e.target.id==='cd-assinado-file') cdUploadAssinadoFile(e.target); });
+
+function cdConfirmarAssinado() {
+  var id = document.getElementById('cd-assinado-docid').value;
+  if (!window._cdAssinadoUrl) { notif('⚠ Envie o arquivo PDF assinado primeiro.'); return; }
+  var docs = cdDocs(); var d = docs[id]; if (!d) return;
+  d.status = 'assinado';
+  d.arquivoAssinadoUrl = window._cdAssinadoUrl;
+  d.protocoloGovBr = v('cd-assinado-protocolo');
+  docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  cdLog('Documento assinado registrado', d.titulo+' ('+d.numero+')');
+  document.getElementById('cd-assinado-modal').style.display='none';
+  window._cdAssinadoUrl = null;
+  notif('✅ Documento marcado como assinado!');
+  cdRenderPainel(); cdCarregarDocsNoSelect();
+}
+
+function cdPublicarDocumento(id) {
+  var docs = cdDocs(); var d = docs[id]; if (!d) return;
+  var info = cdTipoInfo(d.tipo);
+  if (!info.publica) { notif('ℹ Este tipo de documento é de uso interno e não aparece no acervo público.'); d.status='publicado'; docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub(); cdRenderPainel(); return; }
+  if (d.visibilidade !== 'publico') { if (!confirm('Este documento está marcado como Restrito. Publicar mesmo assim no acervo público do site?')) return; }
+  var dataFmt = d.data ? new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
+  var html = '<div class="doc-item"><div class="doc-ico">'+info.ico+'</div>'+
+    '<div><div class="doc-nome">'+info.nome+' CMDDI Nº '+escH(d.numero)+' — '+escH(d.titulo)+'</div><div class="doc-meta">Publicado em '+dataFmt+'</div></div>'+
+    (d.arquivoAssinadoUrl ? '<a href="'+d.arquivoAssinadoUrl+'" target="_blank" class="doc-dl">⬇ Baixar</a>' : '<div class="doc-dl" style="opacity:.4">Sem arquivo</div>')+
+    '</div>';
+  var lista = document.getElementById('lista-'+info.publica);
+  if (lista) lista.insertAdjacentHTML('afterbegin', html);
+  d.status = 'publicado'; docs[id]=d; cdSalvarDocs(docs); salvarNoGitHub();
+  cdLog('Documento publicado no acervo', d.titulo+' ('+d.numero+')');
+  notif('🌐 Publicado no acervo do site!');
+  cdRenderPainel();
+}
+
+function cdExcluirDocumento(id) {
+  var docs = cdDocs(); var d = docs[id]; if (!d) return;
+  if (!confirm('Excluir definitivamente "'+d.titulo+'" ('+d.numero+')? Esta ação não pode ser desfeita.')) return;
+  delete docs[id]; cdSalvarDocs(docs); salvarNoGitHub();
+  cdLog('Documento excluído', d.titulo+' ('+d.numero+')');
+  notif('🗑 Documento excluído.');
+  cdRenderPainel(); cdCarregarDocsNoSelect();
+}
+
+// --- Transparência ---
+function cdRenderTransparencia() {
+  var docs = Object.values(cdDocs());
+  var cons = Object.values(cdConselheiros());
+  var set = function(id,n){ var el=document.getElementById(id); if(el) el.textContent=n; };
+  set('cd-st-total', docs.length);
+  set('cd-st-publicados', docs.filter(function(d){return d.status==='publicado';}).length);
+  set('cd-st-aguardando', docs.filter(function(d){return d.status==='aguardando'||d.status==='finalizado';}).length);
+  set('cd-st-conselheiros', cons.length);
+  var tipos = {};
+  docs.forEach(function(d){ tipos[d.tipo]=(tipos[d.tipo]||0)+1; });
+  var elT = document.getElementById('cd-st-tipos');
+  if (elT) elT.innerHTML = Object.keys(tipos).map(function(k){ var info=cdTipoInfo(k); return '<span style="background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.3);border-radius:12px;padding:.25rem .7rem;font-size:.75rem;color:var(--am)">'+info.ico+' '+info.nome+' ('+tipos[k]+')</span>'; }).join('');
+  var elL = document.getElementById('cd-audit-log');
+  if (elL) {
+    var log = cdAuditoria();
+    elL.innerHTML = log.length ? log.slice(0,50).map(function(l){
+      return '<div class="doc-hist-linha"><span><strong style="color:var(--am)">'+escH(l.acao)+'</strong> — '+escH(l.detalhe)+'</span><span>'+new Date(l.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'</span></div>';
+    }).join('') : '<div style="color:rgba(249,245,237,.55);font-size:.8rem;padding:.6rem 0">Nenhuma ação registrada ainda.</div>';
+  }
+}
+
+// ============================================================
 // SALA DE IMPRENSA — AGÊNCIA DE NOTÍCIAS CMDDI
 // ============================================================
 var SI = {
@@ -5742,12 +6828,13 @@ document.addEventListener('DOMContentLoaded', function(){
       setTimeout(function(){
         if (document.body.classList.contains('adm-ok') && !_siInitDone) {
           _siInitDone = true; siInit();
+          try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); }
         }
       }, 600);
     });
   }
   // Também inicializar se o ADM já estiver aberto (reload com sessão)
-  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; }
+  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); } }
 });
 
 function pubArtigo() {

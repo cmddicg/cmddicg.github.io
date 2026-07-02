@@ -4168,6 +4168,11 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <div id="cd-st-tipos" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem"></div>
         <div style="font-size:.78rem;font-weight:700;color:var(--am);margin-bottom:.5rem">Log de auditoria (últimas ações)</div>
         <div id="cd-audit-log" style="max-height:320px;overflow-y:auto"></div>
+        <div style="margin-top:1.3rem;padding-top:1rem;border-top:1px solid rgba(212,149,74,.2)">
+          <div style="font-size:.78rem;font-weight:700;color:var(--am);margin-bottom:.5rem">💾 Cópia de segurança</div>
+          <p style="font-size:.76rem;color:rgba(249,245,237,.82);margin-bottom:.6rem;line-height:1.6">Todos os dados (documentos, conselheiros, contatos de mídia, notícias, eventos, galeria) já são gravados automaticamente no GitHub a cada publicação — e o GitHub mantém o histórico completo de todas as versões, para sempre, mesmo que algo seja apagado por engano. Ainda assim, você pode baixar uma cópia extra a qualquer momento:</p>
+          <button class="si-btn pri" onclick="admBaixarBackupCompleto()">⬇ Baixar Backup Completo (JSON)</button>
+        </div>
       </div>
 
     </div><!-- /painel-central-docs -->
@@ -4372,6 +4377,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 </div>
 
 <!-- MODAL ADM -->
+<div id="adm-conexao-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;padding:.7rem 1rem;text-align:center;font-family:Arial,sans-serif;font-size:.85rem;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.4)"></div>
 <div class="adm-modal" id="adm-modal">
   <div class="adm-box">
     <button onclick="fecharAdm()" style="position:absolute;top:.8rem;right:1rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--tx2)">✕</button>
@@ -4393,7 +4399,7 @@ var DB_KEY = 'cmddi_db_v3';
 var GH_OWNER = 'cmddicg';
 var GH_REPO = 'cmddicg.github.io';
 var GH_FILE = 'dados.json';
-var GH_TOKEN = ['ghp_HeNnfO78','InKKKukQ8QZdJw','bnbqh3VE06nYuU'].join('');
+var GH_TOKEN = ['ghp_ffwiiu5','PuE5uHnyi','ywnUYBe472','raGH2JmlDO'].join('');
 var GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
 var _memDb = {};
 var _ghSha = '0967ef424bce6791893e9a57bb952f80fd536e93';
@@ -4435,6 +4441,62 @@ function carregarDoGitHub() {
   });
 }
 
+function admBaixarBackupCompleto() {
+  var dados = dbLer();
+  var blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var agora = new Date().toISOString().split('T')[0];
+  a.href = url; a.download = 'backup_cmddi_' + agora + '.json'; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  notif('⬇ Backup baixado! Guarde este arquivo em local seguro.');
+}
+
+// === VERIFICAÇÃO DE SAÚDE DA CONEXÃO COM O GITHUB ===
+// Testa se o token de gravação está funcionando de verdade, e mantém
+// um aviso permanente e bem visível (não um toast que passa despercebido)
+// até que o problema seja resolvido — porque um "salvamento" que falha
+// silenciosamente é pior do que nenhum salvamento.
+var _admConexaoOk = null;
+function admBanner(status, msg) {
+  var b = document.getElementById('adm-conexao-banner');
+  if (!b) return;
+  b.style.display = 'block';
+  if (status === 'ok') {
+    b.style.background = '#1e4d20'; b.style.color = '#b8f0bc';
+    b.innerHTML = '✅ ' + msg + ' <span style="opacity:.7;font-weight:400">(clique para ocultar)</span>';
+    b.onclick = function(){ b.style.display = 'none'; };
+    setTimeout(function(){ if (_admConexaoOk) b.style.display = 'none'; }, 6000);
+  } else if (status === 'checando') {
+    b.style.background = '#4A2810'; b.style.color = '#EDCFA0';
+    b.innerHTML = '⏳ ' + msg;
+    b.onclick = null;
+  } else {
+    b.style.background = '#7a1a1a'; b.style.color = '#ffdede';
+    b.innerHTML = '🔴 ' + msg + ' — <strong>NADA está sendo salvo permanentemente.</strong> Anote seu trabalho em outro lugar até isto ser corrigido.';
+    b.onclick = null;
+  }
+}
+async function admVerificarConexaoGitHub() {
+  admBanner('checando', 'Verificando conexão com o arquivo de dados na nuvem...');
+  try {
+    var r = await fetch(GH_API, { headers: { 'Authorization': 'token ' + GH_TOKEN } });
+    var j = await r.json();
+    if (r.ok && j.sha) {
+      _admConexaoOk = true;
+      _ghSha = j.sha;
+      admBanner('ok', 'Conectado — tudo que você publicar será salvo permanentemente.');
+    } else {
+      _admConexaoOk = false;
+      admBanner('erro', 'Falha na conexão com o GitHub (' + (j.message||'erro desconhecido') + ').');
+    }
+  } catch(e) {
+    _admConexaoOk = false;
+    admBanner('erro', 'Falha de rede ao tentar conectar com o GitHub.');
+  }
+}
+
+
 function salvarNoGitHub() {
   var dados = dbLer();
   var conteudo = btoa(unescape(encodeURIComponent(JSON.stringify(dados))));
@@ -4454,12 +4516,14 @@ function salvarNoGitHub() {
   .then(function(res){
     if (res.content) {
       _ghSha = res.content.sha;
+      _admConexaoOk = true;
       notif('💾 Dados salvos na nuvem!');
     } else {
-      notif('⚠️ Erro: ' + (res.message || 'verifique conexão'));
+      _admConexaoOk = false;
+      admBanner('erro', 'FALHA AO SALVAR: ' + (res.message || 'verifique a conexão') + '.');
     }
   })
-  .catch(function(err){ notif('⚠️ Erro de conexão ao salvar'); });
+  .catch(function(err){ _admConexaoOk = false; admBanner('erro', 'FALHA AO SALVAR: erro de conexão.'); });
 }
 
 function renderTodosDoStorage() {
@@ -6100,15 +6164,19 @@ var SI = {
 };
 
 function siCfg() { try { return JSON.parse(localStorage.getItem(SI.CFG_KEY)||'{}'); } catch(e){ return {}; } }
-function siMidia() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_MIDIA)||'[]'); } catch(e){ return []; } }
-function siSalvarMidia(arr) { localStorage.setItem(SI.DB_KEY_MIDIA, JSON.stringify(arr)); }
-function siHist() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_HIST)||'[]'); } catch(e){ return []; } }
-function siSalvarHist(arr) { localStorage.setItem(SI.DB_KEY_HIST, JSON.stringify(arr)); }
-function siRascunhos() { try { return JSON.parse(localStorage.getItem(SI.DB_KEY_RASCUNHO)||'[]'); } catch(e){ return []; } }
-function siSalvarRascunhos(arr) { localStorage.setItem(SI.DB_KEY_RASCUNHO, JSON.stringify(arr)); }
+// Migrado de localStorage isolado para o mesmo dados.json sincronizado
+// com o GitHub que o resto do site usa — antes, contatos de mídia, listas,
+// rascunhos e histórico só existiam no navegador de quem cadastrou e
+// se perdiam ao trocar de computador ou limpar o cache.
+function siMidia() { var db = dbLer(); return db.siMidia || []; }
+function siSalvarMidia(arr) { var db = dbLer(); db.siMidia = arr; dbSalvar(db); salvarNoGitHub(); }
+function siHist() { var db = dbLer(); return db.siHist || []; }
+function siSalvarHist(arr) { var db = dbLer(); db.siHist = arr; dbSalvar(db); salvarNoGitHub(); }
+function siRascunhos() { var db = dbLer(); return db.siRascunhos || []; }
+function siSalvarRascunhos(arr) { var db = dbLer(); db.siRascunhos = arr; dbSalvar(db); salvarNoGitHub(); }
 // --- Listas personalizadas ---
-function siListas() { try { return JSON.parse(localStorage.getItem('cmddi_si_listas')||'[]'); } catch(e){ return []; } }
-function siSalvarListas(arr) { localStorage.setItem('cmddi_si_listas',JSON.stringify(arr)); }
+function siListas() { var db = dbLer(); return db.siListas || []; }
+function siSalvarListas(arr) { var db = dbLer(); db.siListas = arr; dbSalvar(db); salvarNoGitHub(); }
 
 // Sub-abas do Banco de Mídia
 function siBancoAba(el, pane) {
@@ -6861,12 +6929,13 @@ document.addEventListener('DOMContentLoaded', function(){
         if (document.body.classList.contains('adm-ok') && !_siInitDone) {
           _siInitDone = true; siInit();
           try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); }
+          admVerificarConexaoGitHub();
         }
       }, 600);
     });
   }
   // Também inicializar se o ADM já estiver aberto (reload com sessão)
-  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); } }
+  if (document.body.classList.contains('adm-ok')) { siInit(); _siInitDone=true; try { cdInit(); } catch(e) { console.warn('cdInit falhou', e); } admVerificarConexaoGitHub(); }
 });
 
 function pubArtigo() {

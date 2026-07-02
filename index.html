@@ -4958,8 +4958,9 @@ async function pubEvento() {
   var btn = document.querySelector('button[onclick="pubEvento()"]');
   var txtOriginal = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = '✨ Traduzindo para EN / ES / FR...'; }
+  var tradOk = false;
   try {
-    await admTraduzir('evento');
+    tradOk = (await admTraduzir('evento')) === true;
   } catch(e) {
     console.warn('Traducao automatica falhou, publicando so em portugues.', e);
   }
@@ -4991,7 +4992,7 @@ async function pubEvento() {
     ts: Date.now()
   };
   dbSalvar(db); salvarNoGitHub();
-  notif('✅ Evento publicado nos 4 idiomas automaticamente!');
+  notif(tradOk ? '✅ Evento publicado nos 4 idiomas automaticamente!' : '⚠ Evento publicado SOMENTE em Português — a tradução automática falhou. Configure a chave Claude na Sala de Imprensa.');
   ['ev-dia-in','ev-tit-in','ev-loc-in','ev-tit-in-en','ev-tit-in-es','ev-tit-in-fr','ev-loc-in-en','ev-loc-in-es','ev-loc-in-fr'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
   if (btn) { btn.disabled = false; btn.textContent = txtOriginal || '✅ Publicar Evento'; }
 }
@@ -5026,8 +5027,9 @@ async function pubNoticia() {
   var btn = document.querySelector('button[onclick="pubNoticia()"]');
   var txtOriginal = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = '✨ Traduzindo para EN / ES / FR...'; }
+  var tradOk = false;
   try {
-    await admTraduzir('noticia');
+    tradOk = (await admTraduzir('noticia')) === true;
   } catch(e) {
     console.warn('Traducao automatica falhou, publicando so em portugues.', e);
   }
@@ -5042,7 +5044,7 @@ async function pubNoticia() {
   var db = dbLer(); if (!db.noticias) db.noticias = {};
   db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
   renderNoticia(item, key);
-  notif('\u2705 Not\u00edcia publicada nos 4 idiomas automaticamente!');
+  notif(tradOk ? '\u2705 Not\u00edcia publicada nos 4 idiomas automaticamente!' : '\u26a0 Not\u00edcia publicada SOMENTE em Portugu\u00eas \u2014 a tradu\u00e7\u00e3o autom\u00e1tica falhou. Configure a chave Claude na Sala de Imprensa e republique.');
   ['nc-tit','nc-tit-en','nc-tit-es','nc-tit-fr','nc-resumo','nc-resumo-en','nc-resumo-es','nc-resumo-fr','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
   var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
@@ -5434,7 +5436,14 @@ async function admTraduzir(painel) {
 
   // Obter chave Claude (da Sala de Imprensa ou do objeto global)
   var cfgSI = (function(){ try { return JSON.parse(localStorage.getItem('cmddi_si_cfg')||'{}'); } catch(e){ return {}; } })();
-  var claudeKey = cfgSI.claude || '';
+  var claudeKey = (cfgSI.claude || '').trim();
+
+  // Sem chave configurada NESTE navegador: nao tentar a API
+  if (!claudeKey) {
+    if (btn) btn.classList.remove('carregando');
+    admTraduzirFallback(painel, cfg, 'chave-ausente');
+    return false;
+  }
 
   // Montar campos para traduzir
   var blocos = cfg.campos.map(function(c){
@@ -5502,19 +5511,22 @@ async function admTraduzir(painel) {
     if (btn) btn.classList.remove('carregando');
     if (ok) { ok.style.display = 'inline'; setTimeout(function(){ if(ok) ok.style.display='none'; }, 4000); }
     notif('✅ Tradução concluída automaticamente em EN, ES e FR!');
+    return true;
 
   } catch(e) {
     if (btn) btn.classList.remove('carregando');
     console.error('Erro tradução ADM', e);
-    // Fallback: tentar tradução offline básica com dicionário de frases comuns
+    // Fallback: preencher com PT para nao bloquear, sinalizando a falha
     admTraduzirFallback(painel, cfg, e.message);
+    return false;
   }
 }
 
 // Fallback leve para quando não há chave de API configurada
 function admTraduzirFallback(painel, cfg, erroMsg) {
-  var aviso = erroMsg && erroMsg.includes('api-key') ? 'Configure a chave Claude na Sala de Imprensa para tradução automática.' :
-               erroMsg ? 'Erro: '+erroMsg : 'Tradução indisponível.';
+  var aviso = (!erroMsg || /api.?key|authentication|autentica|401|chave/i.test(erroMsg))
+      ? 'Tradução NÃO realizada: configure a chave Claude (sk-ant-...) na Sala de Imprensa → Configurações, NESTE navegador. Os campos EN/ES/FR receberão o texto em Português.'
+      : 'Tradução falhou ('+erroMsg+'). Os campos EN/ES/FR receberão o texto em Português.';
   notif('⚠ '+aviso);
   // Mesmo sem tradução, copiar o PT nos campos en/es/fr para não bloquear a publicação
   cfg.campos.forEach(function(c){
@@ -6557,6 +6569,7 @@ function siImportarCSV() { document.getElementById('si-csv-file').click(); }
 // --- Tradução automática ---
 async function siTraduzirTudo() {
   var cfg = siCfg();
+  if (!((cfg.claude||'').trim())) { notif('⚠ Configure a chave Claude (sk-ant-...) em Configurações da Sala de Imprensa antes de traduzir.'); return; }
   var tit = (document.getElementById('si-r-tit-pt')||{}).value||'';
   var sub = (document.getElementById('si-r-sub-pt')||{}).value||'';
   var txt = (document.getElementById('si-r-txt-pt')||{}).value||'';
@@ -6565,6 +6578,7 @@ async function siTraduzirTudo() {
   var msg = document.getElementById('si-trad-msg');
   if (st) st.classList.add('vis');
   var idiomas = [{code:'en',nome:'inglês'},{code:'es',nome:'espanhol'},{code:'fr',nome:'francês'}];
+  var falhas = 0;
   for (var ii=0; ii<idiomas.length; ii++) {
     var idi = idiomas[ii];
     if (msg) msg.textContent = 'Traduzindo para '+idi.nome+'...';
@@ -6575,13 +6589,14 @@ async function siTraduzirTudo() {
         'Responda APENAS com JSON no formato: {"titulo":"...","subtitulo":"...","texto":"..."}\n\n'+
         'TÍTULO: '+tit+'\nSUBTÍTULO: '+sub+'\nTEXTO:\n'+txt;
       var body = { model:'claude-sonnet-4-6', max_tokens:2000, messages:[{role:'user',content:prompt}] };
-      var key = cfg.claude||'';
-      var headers = {'Content-Type':'application/json'};
+      var key = (cfg.claude||'').trim();
+      var headers = {'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
       if (key) headers['x-api-key'] = key;
       var resp = await fetch('https://api.anthropic.com/v1/messages', {
         method:'POST', headers, body: JSON.stringify(body)
       });
       var data = await resp.json();
+      if (!resp.ok) throw new Error((data.error&&data.error.message)||('HTTP '+resp.status));
       var raw = (data.content&&data.content[0]&&data.content[0].text)||'';
       var clean = raw.replace(/```json?|```/g,'').trim();
       var parsed = JSON.parse(clean);
@@ -6589,12 +6604,14 @@ async function siTraduzirTudo() {
       if (parsed.subtitulo) document.getElementById('si-r-sub-'+idi.code).value = parsed.subtitulo;
       if (parsed.texto) document.getElementById('si-r-txt-'+idi.code).value = parsed.texto;
     } catch(e) {
+      falhas++;
       console.warn('Erro ao traduzir para '+idi.nome, e);
-      notif('⚠ Erro ao traduzir para '+idi.nome+'. Verifique a chave da API Claude.');
+      notif('⚠ Erro ao traduzir para '+idi.nome+': '+((e && e.message) || 'falha'));
     }
   }
   if (st) st.classList.remove('vis');
-  notif('✅ Tradução concluída — EN, ES e FR preenchidos automaticamente!');
+  if (falhas === 0) { notif('✅ Tradução concluída — EN, ES e FR preenchidos automaticamente!'); }
+  else { notif('⚠ Tradução incompleta: '+falhas+' de 3 idiomas falharam. Verifique a chave Claude e tente novamente.'); }
 }
 
 // --- Upload de Anexo ---

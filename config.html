@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Configuração — Sala de Imprensa CMDDI</title>
+<style>
+  body{margin:0;padding:2rem 1rem;background:#1a1a1a;color:#f4f1eb;font-family:Arial,Helvetica,sans-serif;display:flex;justify-content:center}
+  .card{max-width:560px;width:100%;background:#242424;border:1px solid rgba(212,149,74,.4);border-radius:10px;padding:1.6rem}
+  h1{font-size:1.15rem;color:#C9A24A;margin:0 0 .3rem}
+  p.sub{font-size:.85rem;opacity:.75;margin:0 0 1.2rem}
+  label{display:block;font-size:.8rem;font-weight:700;color:#C9A24A;margin:.9rem 0 .3rem}
+  input{width:100%;box-sizing:border-box;padding:.6rem .7rem;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:#161616;color:#fff;font-size:.9rem}
+  small.dica{display:block;font-size:.72rem;opacity:.6;margin-top:.25rem}
+  button{margin-top:1.3rem;width:100%;padding:.8rem;border:none;border-radius:8px;background:#5C1E0A;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer}
+  button:hover{background:#7a2a10}
+  #status{margin-top:1rem;padding:.8rem;border-radius:8px;font-size:.85rem;display:none;white-space:pre-line}
+  #status.ok{display:block;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.4);color:#4ade80}
+  #status.erro{display:block;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.4);color:#f87171}
+  #atual{font-size:.75rem;opacity:.7;margin-top:1.2rem;border-top:1px solid rgba(255,255,255,.12);padding-top:.8rem;white-space:pre-line}
+  a{color:#C9A24A}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>⚙ Configuração — Sala de Imprensa CMDDI</h1>
+  <p class="sub">Página auxiliar. Preencha e salve: a configuração fica gravada neste navegador, no mesmo endereço do site.</p>
+
+  <label>Chave Brevo (API v3)</label>
+  <input id="brevo" type="password" placeholder="xkeysib-...">
+  <small class="dica">Termina em <b>258vAN</b>. Deixe em branco para manter a que já estiver salva.</small>
+
+  <label>Remetente (e-mail autenticado)</label>
+  <input id="from" value="contato@vertticonsultoria.com.br">
+
+  <label>Nome do remetente</label>
+  <input id="fromName" value="CMDDI — Sala de Imprensa">
+
+  <label>Chave Claude (Anthropic)</label>
+  <input id="claude" type="password" placeholder="sk-ant-api03-...">
+  <small class="dica">Termina em <b>gAAA</b>. Deixe em branco para manter a que já estiver salva.</small>
+
+  <button onclick="salvar()">💾 Salvar Configuração</button>
+  <div id="status"></div>
+  <div id="atual"></div>
+</div>
+<script>
+var KEY='cmddi_si_cfg';
+function ler(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+function mask(v){ return v ? '•••'+v.slice(-6) : '(vazio)'; }
+function mostrarAtual(){
+  var c=ler();
+  document.getElementById('atual').textContent =
+    'Configuração atual neste navegador ('+location.hostname+'):\n'+
+    'Brevo: '+mask(c.brevo||'')+'\nRemetente: '+(c.from||'(vazio)')+'\nNome: '+(c.fromName||'(vazio)')+'\nClaude: '+mask(c.claude||'');
+}
+function salvar(){
+  var ex=ler();
+  var brevo=document.getElementById('brevo').value.trim()||ex.brevo||'';
+  var from=document.getElementById('from').value.trim()||ex.from||'';
+  var fromName=document.getElementById('fromName').value.trim()||ex.fromName||'CMDDI — Sala de Imprensa';
+  var claude=document.getElementById('claude').value.trim()||ex.claude||'';
+  var st=document.getElementById('status');
+  if(!brevo&&!claude){ st.className='erro'; st.textContent='⚠ Preencha ao menos uma das chaves.'; return; }
+  localStorage.setItem(KEY, JSON.stringify({brevo:brevo,from:from,fromName:fromName,claude:claude}));
+  st.className='ok';
+  st.textContent='✅ Salvo com sucesso!\nBrevo: '+mask(brevo)+'\nRemetente: '+from+'\nClaude: '+mask(claude)+'\n\nAgora volte ao painel e teste o envio.';
+  mostrarAtual();
+}
+mostrarAtual();
+</script>
+</body>
+</html>

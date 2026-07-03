@@ -3163,6 +3163,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           </div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem">
             <button class="si-btn pri" onclick="siAdicionarMidia()">➕ Adicionar Contato</button>
+            <button class="si-btn" onclick="siEtiquetarExistentes()">🏷 Etiquetar Contatos (IA)</button>
             <button class="si-btn" onclick="siExportarCSV()">📥 Exportar CSV</button>
             <label class="si-btn" for="si-csv-file" style="cursor:pointer">📂 Importar CSV</label>
             <input type="file" id="si-csv-file" accept=".csv" style="display:none" onchange="siCarregarCSV(this)">
@@ -3388,6 +3389,12 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           </select>
           <select class="adm-select" id="si-env-filtro-lista" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
             <option value="">Todas as listas</option>
+          </select>
+          <select class="adm-select" id="si-env-filtro-grupo" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
+            <option value="">Todos os grupos</option>
+          </select>
+          <select class="adm-select" id="si-env-filtro-tag" style="font-size:.77rem;padding:.3rem .5rem" onchange="siRenderEnvLista()">
+            <option value="">Todas as etiquetas</option>
           </select>
         </div>
 
@@ -6757,14 +6764,27 @@ function siRenderPreviewLang(r, lang, cfg) {
 // --- Seleção de destinatários ---
 function siRenderEnvLista() {
   var el = document.getElementById('si-env-destinatarios'); if (!el) return;
+  // Popular filtros dinâmicos (grupos e etiquetas existentes nos contatos), preservando a seleção
+  var todos = siMidia();
+  var gruposSet = {}, tagsSet = {};
+  todos.forEach(function(c){
+    if (c.grupo) gruposSet[c.grupo]=1;
+    (c.tags||[]).forEach(function(tg){ tagsSet[tg]=1; });
+  });
+  siPopularSelectDin('si-env-filtro-grupo', Object.keys(gruposSet).sort(), 'Todos os grupos');
+  siPopularSelectDin('si-env-filtro-tag', Object.keys(tagsSet).sort(), 'Todas as etiquetas');
   var busca = ((document.getElementById('si-env-busca')||{}).value||'').toLowerCase();
   var filtro = (document.getElementById('si-env-filtro-tipo')||{}).value||'';
   var filtroLista = (document.getElementById('si-env-filtro-lista')||{}).value||'';
+  var filtroGrupo = (document.getElementById('si-env-filtro-grupo')||{}).value||'';
+  var filtroTag = (document.getElementById('si-env-filtro-tag')||{}).value||'';
   var listas = siListas(); var listaMap = {};
   listas.forEach(function(l){ listaMap[l.id]=l; });
-  var arr = siMidia().filter(function(c){
+  var arr = todos.filter(function(c){
     if (filtro && c.tipo!==filtro) return false;
     if (filtroLista && !(c.listas||[]).includes(filtroLista)) return false;
+    if (filtroGrupo && c.grupo!==filtroGrupo) return false;
+    if (filtroTag && !(c.tags||[]).includes(filtroTag)) return false;
     if (busca && !c.nome.toLowerCase().includes(busca) && !c.email.toLowerCase().includes(busca)) return false;
     return true;
   });
@@ -6779,6 +6799,7 @@ function siRenderEnvLista() {
       (_tipoIco[c.tipo]||'📄')+' <strong>'+escH(c.nome)+'</strong> '+
       '<span style="color:rgba(249,245,237,.82);font-size:.75rem">'+escH(c.email)+'</span> '+
       (_langIco[c.lang]||'')+tagsListas+
+      (c.tags||[]).slice(0,3).map(function(tg){ return '<span style="font-size:.66rem;padding:.08rem .35rem;border-radius:8px;background:rgba(212,149,74,.15);color:var(--am);margin-left:.3rem">🏷 '+escH(tg)+'</span>'; }).join('')+
     '</label>';
   }).join('');
   siAtualizarCount();
@@ -6837,6 +6858,88 @@ function siAdicionarBloco() {
 // ─── Adição em Bloco Inteligente: extrai, deduplica e classifica automaticamente ───
 function siNormTxt(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 
+// ─── Etiquetas Inteligentes: taxonomia de sala de imprensa em 2 dimensões (segmento + pauta) ───
+var SI_TAGS_VOCAB = ['Etnom\u00eddia','Movimento Ind\u00edgena','Grande Imprensa','Imprensa Independente','\u00d3rg\u00e3o P\u00fablico','Academia/Pesquisa','Igreja/Pastoral','ONG/Terceiro Setor','Sa\u00fade Ind\u00edgena','Direitos Humanos','Territ\u00f3rio/Demarca\u00e7\u00e3o','Meio Ambiente/Clima','Cultura/Arte','Educa\u00e7\u00e3o','Justi\u00e7a/Jur\u00eddico','Pol\u00edtica/Poder','Economia/Inova\u00e7\u00e3o'];
+
+function siTagsHeuristica(nome, email, grupo) {
+  var t = siNormTxt((nome||'')+' '+(email||''));
+  var tags = [];
+  function add(tag){ if (tags.indexOf(tag)===-1 && tags.length<4) tags.push(tag); }
+  // Dimens\u00e3o SEGMENTO (quem \u00e9 o destinat\u00e1rio)
+  if (grupo==='Imprensa Ind\u00edgena' || /yande|etnomidi|midia ?indigena|wayuri|radio ?indigena/.test(t)) add('Etnom\u00eddia');
+  if (/apib|coiab|apoinme|arpin|aty ?guasu|anmiga|articulacao|federacao ?indigena|movimento ?indigena|conselho ?do ?povo/.test(t)) add('Movimento Ind\u00edgena');
+  if (/globo|folha|estadao|\buol\b|cnn|band\b|record|sbt|veja\b|metropoles|correio ?braziliense|g1\b/.test(t)) add('Grande Imprensa');
+  if (/agencia ?publica|reporter ?brasil|amazonia ?real|sumauma|infoamazonia|marco ?zero|alma ?preta|jornalismo ?independente|coletivo/.test(t)) add('Imprensa Independente');
+  if (/\.gov\.|funai|sesai\b|prefeitura|camara|assembleia|ministerio|defensoria|\bmpf\b|procuradoria/.test(t)) add('\u00d3rg\u00e3o P\u00fablico');
+  if (/universidade|\.edu\b|ufms|ufgd|uems|ucdb|\bifms\b|faculdade|pesquis|academi/.test(t)) add('Academia/Pesquisa');
+  if (/\bcimi\b|pastoral|diocese|cnbb|igreja|missionari/.test(t)) add('Igreja/Pastoral');
+  if (/\bong\b|fundacao|associacao|socioambiental|survival|greenpeace|\bwwf\b|iwgia|cultural ?survival/.test(t)) add('ONG/Terceiro Setor');
+  // Dimens\u00e3o PAUTA (que assunto cobre / interessa)
+  if (/saude|sesai|dsei|hospital|enferm|epidemi/.test(t)) add('Sa\u00fade Ind\u00edgena');
+  if (/direitos ?humanos|human ?rights|violencia|denunci/.test(t)) add('Direitos Humanos');
+  if (/demarcac|territori|terra ?indigena|fundiari|retomada/.test(t)) add('Territ\u00f3rio/Demarca\u00e7\u00e3o');
+  if (/ambiente|clima|climate|floresta|amazoni|pantanal|cerrado|sustentab|desmatamento/.test(t)) add('Meio Ambiente/Clima');
+  if (/cultura|\barte\b|musica|cinema|literatura|artesanato|ceramica|museu/.test(t)) add('Cultura/Arte');
+  if (/educac|escola\b|universitari|ensino/.test(t)) add('Educa\u00e7\u00e3o');
+  if (/juridic|justica|advoca|tribunal|\bstf\b|\boab\b/.test(t)) add('Justi\u00e7a/Jur\u00eddico');
+  if (/politic|congresso|senado|eleic|deputad|vereador/.test(t)) add('Pol\u00edtica/Poder');
+  if (/economi|propriedade ?intelectual|\binpi\b|marca[s]?\b|patente|inovac|bioeconomi|empreended/.test(t)) add('Economia/Inova\u00e7\u00e3o');
+  return tags;
+}
+
+// Preenche um select din\u00e2mico preservando a sele\u00e7\u00e3o atual
+function siPopularSelectDin(id, valores, rotuloTodos) {
+  var el = document.getElementById(id); if (!el) return;
+  var atual = el.value;
+  el.innerHTML = '<option value="">'+rotuloTodos+'</option>' + valores.map(function(v){
+    return '<option value="'+escH(v)+'">'+escH(v)+'</option>';
+  }).join('');
+  if (valores.indexOf(atual)!==-1) el.value = atual;
+}
+
+// Etiquetar retroativamente todos os contatos que ainda n\u00e3o t\u00eam etiquetas (heur\u00edstica + IA em lote)
+async function siEtiquetarExistentes() {
+  var arr = siMidia();
+  var pendentes = arr.filter(function(c){ return !(c.tags && c.tags.length); });
+  if (!pendentes.length) { notif('\u2705 Todos os contatos j\u00e1 possuem etiquetas inteligentes.'); return; }
+  notif('\ud83c\udff7 Etiquetando '+pendentes.length+' contatos...');
+  pendentes.forEach(function(c){ c.tags = siTagsHeuristica(c.nome, c.email, c.grupo); });
+  var cfg = siCfg();
+  if ((cfg.claude||'').trim()) {
+    try {
+      var lote = pendentes.slice(0,150).map(function(c){ return {nome:c.nome, email:c.email, grupo:c.grupo||''}; });
+      var prompt = 'Voc\u00ea organiza o mailing da sala de imprensa de um conselho municipal ind\u00edgena de Campo Grande-MS.\n'+
+        'Para cada contato, escolha at\u00e9 4 etiquetas desta lista fixa (copie exatamente): '+JSON.stringify(SI_TAGS_VOCAB)+'\n'+
+        'Considere segmento (quem \u00e9: etnom\u00eddia, grande imprensa, \u00f3rg\u00e3o p\u00fablico, academia...) e pauta prov\u00e1vel (sa\u00fade ind\u00edgena, territ\u00f3rio, cultura...).\n'+
+        'Responda APENAS com um array JSON [{"email":"...","tags":["...","..."]}], sem mais nada.\n\n'+JSON.stringify(lote);
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','x-api-key':cfg.claude.trim()},
+        body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:4000, messages:[{role:'user',content:prompt}] })
+      });
+      var data = await resp.json();
+      if (resp.ok) {
+        var raw = ((data.content&&data.content[0]&&data.content[0].text)||'').replace(/```json|```/g,'').trim();
+        var lista = JSON.parse(raw);
+        var porEmail = {};
+        lista.forEach(function(x){ if (x && x.email) porEmail[String(x.email).toLowerCase()] = x; });
+        pendentes.forEach(function(c){
+          var x = porEmail[(c.email||'').toLowerCase()];
+          if (x && Array.isArray(x.tags)) {
+            var ok = x.tags.filter(function(tg){ return SI_TAGS_VOCAB.indexOf(tg)!==-1; }).slice(0,4);
+            if (ok.length) c.tags = ok;
+          }
+        });
+      }
+    } catch(e) { console.warn('Etiquetagem IA indispon\u00edvel, mantendo heur\u00edstica.', e); }
+  }
+  siSalvarMidia(arr);
+  siRenderBanco(); siRenderEnvLista(); siRenderStats();
+  notif('\ud83c\udff7 '+pendentes.length+' contatos etiquetados automaticamente!');
+}
+
+
+
 function siClassificaHeuristica(nome, email) {
   var t = siNormTxt(nome+' '+email);
   var dom = (email.split('@')[1]||'').toLowerCase();
@@ -6884,7 +6987,7 @@ async function siBlocoAuto() {
     }
   });
   if (!candidatos.length) { if(st) st.textContent='\u274c Nenhum e-mail novo encontrado ('+duplicatas+' j\u00e1 cadastrados).'; return; }
-  candidatos.forEach(function(c){ var h = siClassificaHeuristica(c.nome, c.email); c.tipo=h.tipo; c.grupo=h.grupo; c.lang=h.lang; });
+  candidatos.forEach(function(c){ var h = siClassificaHeuristica(c.nome, c.email); c.tipo=h.tipo; c.grupo=h.grupo; c.lang=h.lang; c.tags=siTagsHeuristica(c.nome, c.email, c.grupo); });
   var cfg = siCfg();
   if ((cfg.claude||'').trim()) {
     try {
@@ -6894,7 +6997,8 @@ async function siBlocoAuto() {
         'grupo (um de: Imprensa Ind\u00edgena, Imprensa Local MS, Imprensa Nacional, Internacional), '+
         'lang (pt, en, es ou fr) e nome (nome limpo e leg\u00edvel do ve\u00edculo ou contato).\n'+
         'Crit\u00e9rios: ve\u00edculos, organiza\u00e7\u00f5es e comunicadores ind\u00edgenas ou indigenistas = Imprensa Ind\u00edgena; ve\u00edculos de Mato Grosso do Sul = Imprensa Local MS; ve\u00edculos estrangeiros = Internacional; demais brasileiros = Imprensa Nacional.\n'+
-        'Responda APENAS com um array JSON no formato [{"email":"...","nome":"...","tipo":"...","grupo":"...","lang":"..."}], sem mais nada.\n\n'+
+        'Inclua tamb\u00e9m "tags": at\u00e9 4 etiquetas desta lista fixa (copie exatamente): '+JSON.stringify(SI_TAGS_VOCAB)+'\n'+
+        'Responda APENAS com um array JSON no formato [{"email":"...","nome":"...","tipo":"...","grupo":"...","lang":"...","tags":["..."]}], sem mais nada.\n\n'+
         JSON.stringify(candidatos.map(function(c){ return {nome:c.nome, email:c.email}; }));
       var resp = await fetch('https://api.anthropic.com/v1/messages', {
         method:'POST',
@@ -6917,13 +7021,17 @@ async function siBlocoAuto() {
           if (gruposOk[x.grupo]) c.grupo = x.grupo;
           if (/^(pt|en|es|fr)$/.test(x.lang||'')) c.lang = x.lang;
           if (x.nome && String(x.nome).trim()) c.nome = String(x.nome).trim().slice(0,70);
+          if (Array.isArray(x.tags)) {
+            var tgOk = x.tags.filter(function(tg){ return SI_TAGS_VOCAB.indexOf(tg)!==-1; }).slice(0,4);
+            if (tgOk.length) c.tags = tgOk;
+          }
         });
       }
     } catch(e) { console.warn('Classifica\u00e7\u00e3o IA indispon\u00edvel, mantendo heur\u00edstica.', e); }
   }
   var agora = Date.now();
   candidatos.forEach(function(c,i){
-    arr.push({ id:'mid_'+agora+'_'+i, nome:c.nome, email:c.email, tipo:c.tipo, grupo:c.grupo, lang:c.lang, listas:[], ts:agora });
+    arr.push({ id:'mid_'+agora+'_'+i, nome:c.nome, email:c.email, tipo:c.tipo, grupo:c.grupo, lang:c.lang, tags:c.tags||[], listas:[], ts:agora });
   });
   siSalvarMidia(arr);
   siRenderBanco(); siRenderEnvLista(); siRenderStats(); if (typeof siRenderListas==='function') siRenderListas();

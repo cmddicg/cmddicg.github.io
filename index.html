@@ -3342,9 +3342,11 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         </div>
         <div class="adm-form-group">
           <label class="adm-label">Arquivo anexo (opcional)</label>
-          <input type="file" class="adm-input" id="si-r-arquivo" accept=".pdf,.doc,.docx,image/*" onchange="siUploadAnexo(this)" style="padding:.4rem">
+          <input type="file" class="adm-input" id="si-r-arquivo" accept="*/*" multiple onchange="siUploadAnexos(this)" style="padding:.4rem">
+          <div style="font-size:.7rem;color:rgba(249,245,237,.55);margin-top:.25rem">Qualquer tipo de mídia (PDF, Word, imagem, vídeo, áudio...). Pode selecionar vários de uma vez, ou adicionar mais depois.</div>
           <div id="si-r-arq-status" style="font-size:.78rem;margin-top:.3rem;display:none"></div>
-          <input type="hidden" id="si-r-arq-url"><input type="hidden" id="si-r-arq-nome">
+          <div id="si-r-anexos-lista" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem"></div>
+          <input type="hidden" id="si-r-arq-json" value="[]"><input type="hidden" id="si-r-arq-url"><input type="hidden" id="si-r-arq-nome">
         </div>
 
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
@@ -4920,6 +4922,7 @@ async function siPublicarNoSite() {
       tags: r.tags||'',
       arqUrl: r.arqUrl||'',
       arqNome: r.arqNome||'',
+      anexos: r.anexos||[],
       contatoEmail: r.contatoEmail||'',
       contatoTel: r.contatoTel||'',
       ts: Date.now()
@@ -6639,28 +6642,61 @@ async function siTraduzirTudo() {
   else { notif('⚠ Tradução incompleta: '+falhas+' de 3 idiomas falharam. Verifique a chave Claude e tente novamente.'); }
 }
 
-// --- Upload de Anexo ---
-function siUploadAnexo(input) {
-  if (!input||!input.files||!input.files[0]) return;
-  var file = input.files[0];
+// --- Anexos múltiplos (qualquer tipo de mídia, com remoção) ---
+function siAnexosLer() {
+  try { return JSON.parse((document.getElementById('si-r-arq-json')||{}).value||'[]'); } catch(e){ return []; }
+}
+function siAnexosGravar(lista) {
+  var j = document.getElementById('si-r-arq-json'); if (j) j.value = JSON.stringify(lista);
+  // Compatibilidade: primeiro anexo espelhado nos campos antigos
+  var u = document.getElementById('si-r-arq-url'), n = document.getElementById('si-r-arq-nome');
+  if (u) u.value = lista.length ? lista[0].url : '';
+  if (n) n.value = lista.length ? lista[0].nome : '';
+  siAnexosRender();
+}
+function siAnexosRender() {
+  var el = document.getElementById('si-r-anexos-lista'); if (!el) return;
+  var lista = siAnexosLer();
+  el.innerHTML = lista.map(function(a,i){
+    return '<span style="display:inline-flex;align-items:center;gap:.35rem;font-size:.74rem;padding:.25rem .55rem;border-radius:12px;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am)">📎 '+escH(a.nome)+
+      ' <button onclick="siRemoverAnexo('+i+')" title="Remover anexo" style="border:none;background:rgba(248,113,113,.25);color:#f87171;border-radius:50%;width:16px;height:16px;line-height:1;font-size:.7rem;cursor:pointer;padding:0">✕</button></span>';
+  }).join('');
+}
+function siRemoverAnexo(i) {
+  var lista = siAnexosLer();
+  var rem = lista.splice(i,1)[0];
+  siAnexosGravar(lista);
+  notif('🗑 Anexo removido: '+(rem&&rem.nome||''));
+}
+function siUploadAnexos(input) {
+  if (!input||!input.files||!input.files.length) return;
+  var arquivos = Array.prototype.slice.call(input.files);
   var st = document.getElementById('si-r-arq-status');
-  if (st) { st.style.display='block'; st.style.color='var(--am)'; st.textContent='⏳ Enviando anexo...'; }
-  var isImg = /^image\//.test(file.type);
-  var fd = new FormData(); fd.append('file',file); fd.append('upload_preset','cmddi_galeria');
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST','https://api.cloudinary.com/v1_1/dn1ubybc0/'+(isImg?'image':'raw')+'/upload',true);
-  xhr.onload = function() {
-    try {
-      var d = JSON.parse(xhr.responseText);
-      if (d.secure_url) {
-        document.getElementById('si-r-arq-url').value = d.secure_url;
-        document.getElementById('si-r-arq-nome').value = file.name;
-        if (st) { st.style.color='#7bc67e'; st.textContent='✅ Anexo: '+file.name; }
-      } else { if (st) { st.style.color='#f87171'; st.textContent='❌ Erro no upload'; } }
-    } catch(e) { if (st) { st.style.color='#f87171'; st.textContent='❌ Erro'; } }
-  };
-  xhr.onerror = function(){ if(st){ st.style.color='#f87171'; st.textContent='❌ Falha de conexão'; } };
-  xhr.send(fd);
+  var total = arquivos.length, feitos = 0, erros = 0;
+  if (st) { st.style.display='block'; st.style.color='var(--am)'; st.textContent='⏳ Enviando '+total+' arquivo(s)...'; }
+  arquivos.forEach(function(file){
+    var fd = new FormData(); fd.append('file',file); fd.append('upload_preset','cmddi_galeria');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST','https://api.cloudinary.com/v1_1/dn1ubybc0/auto/upload',true);
+    xhr.onload = function() {
+      feitos++;
+      try {
+        var d = JSON.parse(xhr.responseText);
+        if (d.secure_url) {
+          var lista = siAnexosLer();
+          lista.push({ url:d.secure_url, nome:file.name });
+          siAnexosGravar(lista);
+        } else { erros++; console.warn('Upload sem URL', d); }
+      } catch(e) { erros++; }
+      if (st && feitos===total) {
+        if (erros) { st.style.color='#f87171'; st.textContent='⚠ '+(total-erros)+' de '+total+' anexados ('+erros+' falharam)'; }
+        else { st.style.color='#7bc67e'; st.textContent='✅ '+total+' anexo(s) adicionados'; }
+      }
+    };
+    xhr.onerror = function(){ feitos++; erros++; if(st&&feitos===total){ st.style.color='#f87171'; st.textContent='❌ Falha de conexão em '+erros+' arquivo(s)'; } };
+    xhr.send(fd);
+  });
+  input.value = '';
 }
 
 // --- Rascunhos ---
@@ -6689,7 +6725,8 @@ function siCapturarRelease() {
     contatoTel: (document.getElementById('si-r-contato-tel')||{}).value||'',
     tags: (document.getElementById('si-r-tags')||{}).value||'',
     arqUrl: (document.getElementById('si-r-arq-url')||{}).value||'',
-    arqNome: (document.getElementById('si-r-arq-nome')||{}).value||''
+    arqNome: (document.getElementById('si-r-arq-nome')||{}).value||'',
+    anexos: siAnexosLer()
   };
 }
 
@@ -6753,7 +6790,7 @@ function siRenderPreviewLang(r, lang, cfg) {
     '<h2 style="color:#C9A24A;font-family:Georgia,serif;font-size:1.1rem;line-height:1.4;margin-bottom:.3rem">'+escH(tit)+'</h2>'+
     (sub ? '<div style="font-style:italic;color:#b0b0b0;font-size:.9rem;margin-bottom:.7rem">'+escH(sub)+'</div>' : '')+
     '<div style="line-height:1.75;color:#e0d8cc;white-space:pre-line;font-size:.88rem;margin-bottom:.8rem">'+escH(txt)+'</div>'+
-    (r.arqNome ? '<div style="border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:.5rem .8rem;font-size:.78rem;color:#a0a0a0;margin-bottom:.6rem">📎 Anexo: <a href="'+r.arqUrl+'" style="color:#C9A24A">'+escH(r.arqNome)+'</a></div>' : '')+
+    (function(){ var axs = (r.anexos && r.anexos.length) ? r.anexos : (r.arqNome ? [{url:r.arqUrl, nome:r.arqNome}] : []); return axs.map(function(a){ return '<div style="border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:.5rem .8rem;font-size:.78rem;color:#a0a0a0;margin-bottom:.4rem">📎 Anexo: <a href="'+a.url+'" style="color:#C9A24A">'+escH(a.nome)+'</a></div>'; }).join(''); })()+
     (r.tags ? '<div style="font-size:.75rem;color:#5F9ECC;margin-bottom:.7rem">'+escH(r.tags)+'</div>' : '')+
     (r.contatoEmail||r.contatoTel ? '<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:.6rem;font-size:.78rem;color:#888">'+
       '<strong style="color:#C9A24A">'+h.contact+':</strong> '+escH(r.contatoEmail)+(r.contatoTel?' · '+escH(r.contatoTel):'')+'</div>' : '')+
@@ -7149,8 +7186,9 @@ async function siEnviarEmail(cfg, r, lang, tos, cc, isTeste) {
     htmlContent: htmlBody
   };
   if (cc) payload.cc = [{email:cc}];
-  if (r.arqUrl && r.arqNome) {
-    payload.attachment = [{ url: r.arqUrl, name: r.arqNome }];
+  var _anexos = (r.anexos && r.anexos.length) ? r.anexos : (r.arqUrl && r.arqNome ? [{url:r.arqUrl, nome:r.arqNome}] : []);
+  if (_anexos.length) {
+    payload.attachment = _anexos.map(function(a){ return { url: a.url, name: a.nome }; });
   }
   try {
     var resp = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -7198,7 +7236,7 @@ function siGerarHtmlEmail(r, lang, cfg) {
       (sub?'<p style="color:#a0987a;font-style:italic;font-size:15px;margin:0 0 18px;border-left:3px solid #5C1E0A;padding-left:12px">'+sub+'</p>':'')+
       '<div style="color:#d8cfc0;font-size:15px;line-height:1.8;margin-bottom:20px">'+txt+'</div>'+
       (r.tags?'<div style="color:#5F9ECC;font-size:12px;margin-bottom:16px">'+escH(r.tags)+'</div>':'')+
-      (r.arqUrl?'<table cellpadding="0" cellspacing="0" style="margin-bottom:16px"><tr><td style="background:rgba(90,62,0,.3);border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:8px 14px"><a href="'+r.arqUrl+'" style="color:#C9A24A;font-size:13px;text-decoration:none">📎 '+escH(r.arqNome||'Anexo')+'</a></td></tr></table>':'')+
+      (function(){ var axs = (r.anexos && r.anexos.length) ? r.anexos : (r.arqUrl ? [{url:r.arqUrl, nome:r.arqNome||'Anexo'}] : []); return axs.map(function(a){ return '<table cellpadding="0" cellspacing="0" style="margin-bottom:8px"><tr><td style="background:rgba(90,62,0,.3);border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:8px 14px"><a href="'+a.url+'" style="color:#C9A24A;font-size:13px;text-decoration:none">📎 '+escH(a.nome||'Anexo')+'</a></td></tr></table>'; }).join(''); })()+
       (r.contatoEmail||r.contatoTel?'<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px;color:#888;font-size:12px;font-family:Arial,sans-serif"><strong style="color:#C9A24A">'+escH(h.contact)+':</strong> '+escH(r.contatoEmail)+(r.contatoTel?' · '+escH(r.contatoTel):'')+'</div>':'')+
     '</td></tr>'+
     // Rodapé

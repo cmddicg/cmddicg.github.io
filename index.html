@@ -3065,7 +3065,10 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
         <!-- ===== SALA DE IMPRENSA ADM ===== -->
     <div class="adm-panel" id="painel-sala-imprensa" style="margin-top:2rem">
-      <div class="adm-panel-t">📡 Sala de Imprensa — Agência de Notícias CMDDI</div>
+      <div class="adm-panel-t" style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap">
+        <span>📡 Sala de Imprensa — Agência de Notícias CMDDI</span>
+        <button class="si-btn" style="font-size:.75rem;padding:.35rem .7rem" onclick="var a=document.getElementById('si-config-area'); if(a){ a.style.display = (a.style.display==='none'?'block':'none'); var k=document.getElementById('si-claude-key'); if(k) k.value=''; var b=document.getElementById('si-brevo-key'); if(b) b.value=''; }">⚙ Editar configuração (Brevo / Claude)</button>
+      </div>
 
       <!-- Configuração de APIs (oculta após salvar) -->
       <div id="si-config-area" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:.9rem 1rem;margin-bottom:1rem">
@@ -6401,16 +6404,17 @@ function siInit() {
 
 // --- Config ---
 function siSalvarConfig() {
-  var brevo = (document.getElementById('si-brevo-key')||{}).value||'';
-  var from = (document.getElementById('si-from-email')||{}).value||'';
-  var fromName = (document.getElementById('si-from-name')||{}).value||'CMDDI — Sala de Imprensa';
-  var claude = (document.getElementById('si-claude-key')||{}).value||'';
-  if (!brevo || !from) { notif('⚠ Informe a chave Brevo e o e-mail remetente.'); return; }
+  var existente = siCfg();
+  var brevo = (document.getElementById('si-brevo-key')||{}).value.trim() || existente.brevo || '';
+  var from = (document.getElementById('si-from-email')||{}).value.trim() || existente.from || '';
+  var fromName = (document.getElementById('si-from-name')||{}).value.trim() || existente.fromName || 'CMDDI — Sala de Imprensa';
+  var claude = (document.getElementById('si-claude-key')||{}).value.trim() || existente.claude || '';
+  if (!brevo && !claude) { notif('⚠ Preencha ao menos a chave Brevo ou a chave Claude.'); return; }
   var cfg = { brevo, from, fromName, claude };
   localStorage.setItem(SI.CFG_KEY, JSON.stringify(cfg));
   var ar = document.getElementById('si-config-area');
   if (ar) ar.style.display = 'none';
-  notif('✅ Configuração salva com sucesso!');
+  notif('✅ Configuração salva com sucesso!' + (claude ? ' Tradução automática ativa.' : ''));
 }
 
 // --- Abas ---

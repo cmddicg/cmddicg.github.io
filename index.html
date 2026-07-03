@@ -3210,7 +3210,8 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <!-- SUB-ABA: ADIÇÃO EM BLOCO -->
         <div id="si-sub-bloco" class="si-editor-pane">
           <div style="font-size:.84rem;color:rgba(249,245,237,.88);margin-bottom:.8rem;line-height:1.6">
-            Cole um e-mail por linha. Formatos aceitos:<br>
+            <b style="color:var(--am)">🤖 Modo automático:</b> cole QUALQUER texto (páginas, tabelas, listas bagunçadas) e clique no botão 🤖 — os e-mails são extraídos, duplicados são ignorados e cada contato é classificado sozinho por tipo de mídia e grupo (Imprensa Indígena / Local MS / Nacional / Internacional), sem você precisar preencher nada.<br><br>
+            <b>Modo manual:</b> cole um e-mail por linha. Formatos aceitos:<br>
             <code style="font-size:.78rem;color:var(--am)">email@dominio.com</code> &nbsp;ou&nbsp;
             <code style="font-size:.78rem;color:var(--am)">Nome do Veículo &lt;email@dominio.com&gt;</code> &nbsp;ou&nbsp;
             <code style="font-size:.78rem;color:var(--am)">email@dominio.com | Nome do Veículo</code>
@@ -3249,6 +3250,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           </div>
           <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
             <button class="si-btn pri" onclick="siAdicionarBloco()">📥 Adicionar em Bloco</button>
+            <button class="si-btn" onclick="siBlocoAuto()">🤖 Colar e Classificar Automaticamente</button>
             <span id="si-bloco-status" style="font-size:.78rem;color:rgba(249,245,237,.82)"></span>
           </div>
           <div style="margin-top:1rem;font-size:.75rem;color:rgba(249,245,237,.82)">
@@ -6830,6 +6832,107 @@ function siAdicionarBloco() {
     document.querySelectorAll('#si-bloco-listas-chk .si-lista-chk').forEach(function(cb){ cb.checked=false; });
   }
   notif('✅ '+adicionados+' contatos adicionados em bloco!');
+}
+
+// ─── Adição em Bloco Inteligente: extrai, deduplica e classifica automaticamente ───
+function siNormTxt(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+
+function siClassificaHeuristica(nome, email) {
+  var t = siNormTxt(nome+' '+email);
+  var dom = (email.split('@')[1]||'').toLowerCase();
+  var tipo = 'digital';
+  if (/podcast/.test(t)) tipo='podcast';
+  else if (/radio|\bfm\b/.test(t)) tipo='radio';
+  else if (/\btv\b|televis/.test(t)) tipo='tv';
+  else if (/jornal|diario|folha|correio|gazeta|tribuna|impresso/.test(t)) tipo='impresso';
+  else if (/agencia|agency/.test(t)) tipo='agencia';
+  var generico = /gmail|yahoo|hotmail|outlook|uol\.com|bol\.com|terra\.com|icloud|proton/.test(dom);
+  var estrangeiro = dom && !/\.br$/.test(dom) && !generico;
+  var indig = /indigen|yande|apib|coiab|cimi\b|apoinme|guarani|kaiowa|terena|kinikinau|kadiweu|tupinamb|xingu|yanomami|socioambiental|anmiga|etnomidi|pataxo|munduruku|wayuri|foirn|porantim|arpin|aty ?guasu|krenak|xavante|guajajara|baniwa|tukano|originari/.test(t);
+  var localMS = /douradosnews|campograndenews|campo ?grande|midiamax|perfilnews|correiodoestado|tres ?lagoas|treslagoas|dourados|topmidia|capitalnews|rcn67|hojemais|jpnews|ponta ?pora|aquidauana|corumba|miranda\b|mato ?grosso ?do ?sul|\bms\b/.test(t);
+  var grupo, lang='pt';
+  if (indig) grupo = 'Imprensa Ind\u00edgena';
+  else if (localMS) grupo = 'Imprensa Local MS';
+  else if (estrangeiro) {
+    grupo='Internacional';
+    if (tipo==='digital') tipo='internacional';
+    lang = /\.pe$|\.ar$|\.mx$|\.co$|\.bo$|\.py$|\.es$|\.cl$|servindi/.test(dom) ? 'es' : (/\.fr$/.test(dom) ? 'fr' : 'en');
+  }
+  else grupo = 'Imprensa Nacional';
+  return { tipo:tipo, grupo:grupo, lang:lang };
+}
+
+async function siBlocoAuto() {
+  var txt = ((document.getElementById('si-bloco-txt')||{}).value||'').trim();
+  if (!txt) { notif('\u26a0 Cole qualquer texto com e-mails na \u00e1rea acima.'); return; }
+  var st = document.getElementById('si-bloco-status');
+  if (st) st.textContent = '\ud83e\udd16 Extraindo e-mails...';
+  var arr = siMidia();
+  var vistos = {};
+  arr.forEach(function(c){ vistos[(c.email||'').toLowerCase()] = true; });
+  var candidatos = [], duplicatas = 0;
+  txt.split(/\n/).forEach(function(linha){
+    var re = /[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/g, m;
+    while ((m = re.exec(linha)) !== null) {
+      var email = m[0].replace(/^mailto:/i,'').toLowerCase();
+      if (vistos[email]) { duplicatas++; continue; }
+      vistos[email] = true;
+      var nome = linha.replace(/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/g,' ').replace(/[<>|,;:"'()\[\]]/g,' ').replace(/\s+/g,' ').trim();
+      if (nome.length > 70) nome = nome.slice(0,70).trim();
+      if (!nome) { var base = email.split('@')[1].split('.')[0]; nome = base.charAt(0).toUpperCase()+base.slice(1); }
+      candidatos.push({ nome:nome, email:email });
+    }
+  });
+  if (!candidatos.length) { if(st) st.textContent='\u274c Nenhum e-mail novo encontrado ('+duplicatas+' j\u00e1 cadastrados).'; return; }
+  candidatos.forEach(function(c){ var h = siClassificaHeuristica(c.nome, c.email); c.tipo=h.tipo; c.grupo=h.grupo; c.lang=h.lang; });
+  var cfg = siCfg();
+  if ((cfg.claude||'').trim()) {
+    try {
+      if (st) st.textContent = '\ud83e\udd16 Classificando '+candidatos.length+' contatos com IA...';
+      var prompt = 'Classifique contatos de imprensa para a assessoria de um conselho municipal ind\u00edgena de Campo Grande-MS.\n'+
+        'Para cada item devolva: tipo (um de: tv, radio, digital, impresso, agencia, internacional, podcast), '+
+        'grupo (um de: Imprensa Ind\u00edgena, Imprensa Local MS, Imprensa Nacional, Internacional), '+
+        'lang (pt, en, es ou fr) e nome (nome limpo e leg\u00edvel do ve\u00edculo ou contato).\n'+
+        'Crit\u00e9rios: ve\u00edculos, organiza\u00e7\u00f5es e comunicadores ind\u00edgenas ou indigenistas = Imprensa Ind\u00edgena; ve\u00edculos de Mato Grosso do Sul = Imprensa Local MS; ve\u00edculos estrangeiros = Internacional; demais brasileiros = Imprensa Nacional.\n'+
+        'Responda APENAS com um array JSON no formato [{"email":"...","nome":"...","tipo":"...","grupo":"...","lang":"..."}], sem mais nada.\n\n'+
+        JSON.stringify(candidatos.map(function(c){ return {nome:c.nome, email:c.email}; }));
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','x-api-key':cfg.claude.trim()},
+        body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:4000, messages:[{role:'user',content:prompt}] })
+      });
+      var data = await resp.json();
+      if (resp.ok) {
+        var raw = (data.content&&data.content[0]&&data.content[0].text)||'';
+        raw = raw.replace(/```json|```/g,'').trim();
+        var lista = JSON.parse(raw);
+        var porEmail = {};
+        lista.forEach(function(x){ if (x && x.email) porEmail[String(x.email).toLowerCase()] = x; });
+        var tiposOk = {tv:1,radio:1,digital:1,impresso:1,agencia:1,internacional:1,podcast:1};
+        var gruposOk = {'Imprensa Ind\u00edgena':1,'Imprensa Local MS':1,'Imprensa Nacional':1,'Internacional':1};
+        candidatos.forEach(function(c){
+          var x = porEmail[c.email];
+          if (!x) return;
+          if (tiposOk[x.tipo]) c.tipo = x.tipo;
+          if (gruposOk[x.grupo]) c.grupo = x.grupo;
+          if (/^(pt|en|es|fr)$/.test(x.lang||'')) c.lang = x.lang;
+          if (x.nome && String(x.nome).trim()) c.nome = String(x.nome).trim().slice(0,70);
+        });
+      }
+    } catch(e) { console.warn('Classifica\u00e7\u00e3o IA indispon\u00edvel, mantendo heur\u00edstica.', e); }
+  }
+  var agora = Date.now();
+  candidatos.forEach(function(c,i){
+    arr.push({ id:'mid_'+agora+'_'+i, nome:c.nome, email:c.email, tipo:c.tipo, grupo:c.grupo, lang:c.lang, listas:[], ts:agora });
+  });
+  siSalvarMidia(arr);
+  siRenderBanco(); siRenderEnvLista(); siRenderStats(); if (typeof siRenderListas==='function') siRenderListas();
+  var porGrupo = {};
+  candidatos.forEach(function(c){ porGrupo[c.grupo] = (porGrupo[c.grupo]||0)+1; });
+  var resumo = Object.keys(porGrupo).map(function(g){ return porGrupo[g]+' '+g; }).join(' \u00b7 ');
+  if (st) st.textContent = '\u2705 '+candidatos.length+' adicionados ('+resumo+') \u00b7 \u26a0 '+duplicatas+' duplicados ignorados';
+  document.getElementById('si-bloco-txt').value='';
+  notif('\ud83e\udd16 '+candidatos.length+' contatos adicionados e classificados automaticamente!');
 }
 
 function siSelecionarTodos(sel) {

@@ -4449,18 +4449,29 @@ function carregarDoGitHubPrivado() {
 function salvarNoGitHubPrivado() {
   var dados = dbLerPrivado();
   var conteudo = btoa(unescape(encodeURIComponent(JSON.stringify(dados))));
-  fetch(GH_API_PRIVADO, { headers: { 'Authorization': 'token ' + GH_TOKEN } })
-  .then(function(r){ return r.json(); })
-  .then(function(res){
-    var sha = res.sha || _ghShaPrivado;
-    var body = { message: 'Atualizar dados privados do CMDDI', content: conteudo, sha: sha };
+  function shaFresco() {
+    return fetch(GH_API_PRIVADO + '?t=' + Date.now(), { cache:'no-store', headers: { 'Authorization': 'token ' + GH_TOKEN } })
+      .then(function(r){ return r.json(); })
+      .then(function(res){ return res.sha || null; });
+  }
+  function tentarPut(sha) {
+    var body = { message: 'Atualizar dados privados do CMDDI', content: conteudo };
+    if (sha) body.sha = sha;
     return fetch(GH_API_PRIVADO, {
       method: 'PUT',
       headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
-    });
+    }).then(function(r){ return r.json(); });
+  }
+  shaFresco()
+  .then(function(sha){ return tentarPut(sha); })
+  .then(function(res){
+    if (res.content) return res;
+    if (res.message && res.message.indexOf('does not match') !== -1) {
+      return shaFresco().then(function(sha2){ return tentarPut(sha2); });
+    }
+    return res;
   })
-  .then(function(r){ return r.json(); })
   .then(function(res){
     if (res.content) { _ghShaPrivado = res.content.sha; _admConexaoOk = true; notif('🔒 Dados privados salvos com segurança!'); }
     else { _admConexaoOk = false; admBanner('erro', 'FALHA AO SALVAR DADOS PRIVADOS: ' + (res.message||'verifique a conexão') + '.'); }
@@ -4564,8 +4575,8 @@ async function admVerificarConexaoGitHub() {
 function salvarNoGitHub() {
   var dados = dbLer();
   var conteudo = btoa(unescape(encodeURIComponent(JSON.stringify(dados))));
-  // Buscar SHA atual antes de salvar
-  fetch(GH_API, { headers: { 'Authorization': 'token ' + GH_TOKEN } })
+  // Buscar SHA atual antes de salvar (sempre fresco, sem cache do navegador)
+  fetch(GH_API + '?t=' + Date.now(), { cache:'no-store', headers: { 'Authorization': 'token ' + GH_TOKEN } })
   .then(function(r){ return r.json(); })
   .then(function(res){
     var sha = res.sha || _ghSha;

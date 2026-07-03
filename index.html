@@ -2320,6 +2320,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 .lang-switch button:hover{border-color:var(--am,#D4954A);color:var(--am,#D4954A)}
 .lang-switch button.lang-on{background:var(--am,#D4954A);color:#1a1a1a;border-color:var(--am,#D4954A)}
 </style>
+<style>.fixa-del{display:none;align-items:center;gap:.3rem;background:rgba(248,113,113,.15);color:#c0392b;border:1px solid rgba(248,113,113,.4);border-radius:6px;padding:.25rem .6rem;font-size:.72rem;cursor:pointer;margin-top:.5rem}body.adm-ok .fixa-del{display:inline-flex}</style>
 </head>
 <body>
 
@@ -2663,7 +2664,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
     <p class="sec-lead sec-lead-dark" data-i18n="noticias.desc">Acompanhe as ações do CMDDI na imprensa e os comunicados oficiais do Conselho.</p>
 
     <div class="noticias-grid">
-      <div class="noticia-principal rv">
+      <div class="noticia-principal rv" data-fixa="not1">
         <div class="noticia-thumb">
           <div class="noticia-thumb-placeholder">
             <span>📰</span>
@@ -2675,9 +2676,10 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           <div class="noticia-t" data-i18n="not1.tit">CMDDI pressiona Prefeitura por lotes para Comunidade Índio Forte no Jardim Inápolis</div>
           <div class="noticia-resumo" data-i18n="not1.txt">Representantes do Conselho Municipal dos Direitos e Defesa dos Povos Indígenas levaram ao MPMS a demanda por regularização fundiária para famílias da Comunidade Índio Forte.</div>
           <div class="noticia-data" data-i18n="not1.fonte">📅 16 fev. 2026 · JD1 Notícias</div>
+          <button class="fixa-del" onclick="removerNoticiaFixa('not1', this)">🗑 Excluir matéria fixa</button>
         </div>
       </div>
-      <div class="noticia-sec rv">
+      <div class="noticia-sec rv" data-fixa="not2">
         <div class="noticia-thumb">
           <div class="noticia-thumb-placeholder" style="font-size:2rem">🎓</div>
         </div>
@@ -2686,9 +2688,10 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           <div class="noticia-t" data-i18n="not2.tit">Seminário do MEC debate criação de universidades indígenas em MS</div>
           <div class="noticia-resumo" data-i18n="not2.txt">CMDDI representou os indígenas urbanos e solicitou campus universitário em Campo Grande.</div>
           <div class="noticia-data" style="color:var(--tx3)" data-i18n="not2.fonte">📅 Jul. 2024 · Campo Grande News</div>
+          <button class="fixa-del" onclick="removerNoticiaFixa('not2', this)">🗑 Excluir matéria fixa</button>
         </div>
       </div>
-      <div class="noticia-sec rv">
+      <div class="noticia-sec rv" data-fixa="not3">
         <div class="noticia-thumb">
           <div class="noticia-thumb-placeholder" style="font-size:2rem">📋</div>
         </div>
@@ -2697,6 +2700,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           <div class="noticia-t" data-i18n="not3.tit">Apenas 1% dos 18,4 mil indígenas em CG têm etnia documentada</div>
           <div class="noticia-resumo" data-i18n="not3.txt">CMDDI pede ajuda ao MPMS para garantir o direito de indígenas urbanos à comprovação de pertencimento étnico.</div>
           <div class="noticia-data" style="color:var(--tx3)" data-i18n="not3.fonte">📅 Mai. 2024 · Primeira Página</div>
+          <button class="fixa-del" onclick="removerNoticiaFixa('not3', this)">🗑 Excluir matéria fixa</button>
         </div>
       </div>
     </div>
@@ -3072,6 +3076,28 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 
 
         <!-- ===== SALA DE IMPRENSA ADM ===== -->
+    <div class="adm-panel" id="painel-relatorio" style="margin-top:2rem">
+      <div class="adm-panel-t">📊 Relatório Mensal de Atividades — CMDDI</div>
+      <div style="font-size:.78rem;color:rgba(249,245,237,.75);margin-bottom:.8rem">Compila automaticamente todas as ações oficiais registradas na plataforma no mês selecionado — notícias, releases enviados à imprensa, novos contatos de mídia e documentos oficiais — em um relatório institucional com a identidade do CMDDI, pronto para envio mensal aos conselheiros e demais cadastrados.</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem">
+        <label style="font-size:.75rem;color:var(--am)">Mês de referência:</label>
+        <input type="month" class="adm-input" id="rel-mes" style="max-width:180px">
+        <button class="si-btn pri" onclick="relGerar()">📊 Gerar Relatório</button>
+        <button class="si-btn" onclick="relBaixar()">⬇ Baixar HTML</button>
+        <button class="si-btn" onclick="relEnviar()">📧 Enviar aos Destinatários</button>
+      </div>
+      <div style="border-top:1px solid rgba(212,149,74,.2);padding-top:.7rem;margin-bottom:.8rem">
+        <div style="font-size:.75rem;color:var(--am);margin-bottom:.4rem">👥 Destinatários do relatório (conselheiros e demais cadastrados):</div>
+        <div id="rel-dest-lista" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem"></div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <input class="adm-input" id="rel-dest-novo" placeholder="email@exemplo.com" style="max-width:280px">
+          <button class="si-btn" onclick="relAddDest()">➕ Cadastrar</button>
+        </div>
+      </div>
+      <div id="rel-status" style="font-size:.78rem;margin-bottom:.6rem;color:rgba(249,245,237,.85)"></div>
+      <div id="rel-preview" style="background:#fff;border-radius:8px;overflow:hidden;display:none"></div>
+    </div>
+
     <div class="adm-panel" id="painel-sala-imprensa" style="margin-top:2rem">
       <div class="adm-panel-t" style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap">
         <span>📡 Sala de Imprensa — Agência de Notícias CMDDI</span>
@@ -7111,6 +7137,225 @@ async function siBlocoAuto() {
   document.getElementById('si-bloco-txt').value='';
   notif('\ud83e\udd16 '+candidatos.length+' contatos adicionados e classificados automaticamente!');
 }
+
+// ─── Notícias fixas: exclusão permanente pelo ADM ───
+function aplicarFixasOcultas() {
+  var db = dbLer();
+  (db.fixasOcultas||[]).forEach(function(id){
+    var el = document.querySelector('[data-fixa="'+id+'"]');
+    if (el) el.style.display = 'none';
+  });
+}
+function removerNoticiaFixa(id, btn) {
+  if (!confirm('Excluir permanentemente esta mat\u00e9ria fixa do site (todos os idiomas)?')) return;
+  var db = dbLer();
+  db.fixasOcultas = db.fixasOcultas || [];
+  if (db.fixasOcultas.indexOf(id) === -1) db.fixasOcultas.push(id);
+  dbSalvar(db);
+  if (typeof salvarNoGitHub === 'function') salvarNoGitHub();
+  var el = document.querySelector('[data-fixa="'+id+'"]');
+  if (el) el.style.display = 'none';
+  notif('\ud83d\uddd1 Mat\u00e9ria fixa exclu\u00edda do site.');
+}
+document.addEventListener('DOMContentLoaded', function(){ aplicarFixasOcultas(); setTimeout(aplicarFixasOcultas, 2500); });
+
+// ─── Relatório Mensal de Atividades ───
+function relDest() { var db = dbLerPrivado(); return db.relatorioDest || []; }
+function relSalvarDest(arr) { var db = dbLerPrivado(); db.relatorioDest = arr; dbSalvarPrivado(db); if (typeof salvarNoGitHubPrivado==='function') salvarNoGitHubPrivado(); }
+function relRenderDest() {
+  var el = document.getElementById('rel-dest-lista'); if (!el) return;
+  var arr = relDest();
+  el.innerHTML = arr.length ? arr.map(function(e,i){
+    return '<span style="display:inline-flex;align-items:center;gap:.35rem;font-size:.75rem;padding:.25rem .55rem;border-radius:12px;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am)">\ud83d\udce7 '+escH(e)+
+      ' <button onclick="relRemDest('+i+')" style="border:none;background:rgba(248,113,113,.25);color:#f87171;border-radius:50%;width:16px;height:16px;line-height:1;font-size:.7rem;cursor:pointer;padding:0">\u2715</button></span>';
+  }).join('') : '<span style="font-size:.75rem;color:rgba(249,245,237,.5)">Nenhum destinat\u00e1rio cadastrado ainda.</span>';
+}
+function relAddDest() {
+  var inp = document.getElementById('rel-dest-novo');
+  var e = (inp.value||'').trim().toLowerCase();
+  if (!/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(e)) { notif('\u26a0 Informe um e-mail v\u00e1lido.'); return; }
+  var arr = relDest();
+  if (arr.indexOf(e)!==-1) { notif('\u26a0 E-mail j\u00e1 cadastrado.'); return; }
+  arr.push(e); relSalvarDest(arr); relRenderDest(); inp.value='';
+  notif('\u2705 Destinat\u00e1rio cadastrado.');
+}
+function relRemDest(i) {
+  var arr = relDest(); arr.splice(i,1); relSalvarDest(arr); relRenderDest();
+}
+
+function relMesTexto(ano, mes) {
+  var nomes = ['Janeiro','Fevereiro','Mar\u00e7o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  return nomes[mes-1] + ' de ' + ano;
+}
+function relTsDoItem(item, chave) {
+  if (item && item.ts) return item.ts;
+  if (chave) { var m = String(chave).match(/_(\d{12,14})/); if (m) return parseInt(m[1],10); }
+  if (item && item.data) { var d = new Date(item.data + 'T12:00:00'); if (!isNaN(d)) return d.getTime(); }
+  if (item && item.id) { var m2 = String(item.id).match(/_(\d{12,14})/); if (m2) return parseInt(m2[1],10); }
+  return null;
+}
+function relNoMes(ts, ano, mes) {
+  if (!ts) return false;
+  var d = new Date(ts);
+  return d.getFullYear()===ano && (d.getMonth()+1)===mes;
+}
+function relItens(colecao) {
+  if (!colecao) return [];
+  if (Array.isArray(colecao)) return colecao.map(function(v){ return {k:null, v:v}; });
+  return Object.keys(colecao).map(function(k){ return {k:k, v:colecao[k]}; });
+}
+function relColeta(ano, mes) {
+  var pub = dbLer();
+  var c = { noticias:[], releasesPub:[], docs:[], envios:[], contatos:{}, contatosTotal:0,
+            totNoticias:0, totEnvios:0, totContatos:0, totDocs:0, alcance:0 };
+  relItens(pub.noticias).forEach(function(x){
+    c.totNoticias++;
+    var ts = relTsDoItem(x.v, x.k);
+    if (relNoMes(ts, ano, mes)) c.noticias.push({ ts:ts, titulo:(x.v&&x.v.titulo)||'(sem t\u00edtulo)' });
+  });
+  relItens(pub.releases).forEach(function(x){
+    var ts = relTsDoItem(x.v, x.k);
+    if (relNoMes(ts, ano, mes)) c.releasesPub.push({ ts:ts, titulo:(x.v&&(x.v.titulo||x.v.tituloPt))||'(release)' });
+  });
+  relItens(pub.documentosPublicados).forEach(function(x){
+    c.totDocs++;
+    var ts = relTsDoItem(x.v, x.k);
+    if (relNoMes(ts, ano, mes)) c.docs.push({ ts:ts, titulo:(x.v&&(x.v.titulo||x.v.nome))||'(documento)' });
+  });
+  (typeof siHist==='function'?siHist():[]).forEach(function(h){
+    c.totEnvios++;
+    if (relNoMes(h.ts, ano, mes)) { c.envios.push(h); c.alcance += (h.total||0); }
+  });
+  (typeof siMidia==='function'?siMidia():[]).forEach(function(m){
+    c.totContatos++;
+    if (relNoMes(m.ts, ano, mes)) {
+      var g = m.grupo || 'Sem grupo';
+      c.contatos[g] = (c.contatos[g]||0) + 1;
+      c.contatosTotal++;
+    }
+  });
+  return c;
+}
+function relLinhaData(ts) {
+  var d = new Date(ts);
+  return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
+}
+function relGerar() {
+  var mv = (document.getElementById('rel-mes')||{}).value||'';
+  if (!/^\d{4}-\d{2}$/.test(mv)) { notif('\u26a0 Selecione o m\u00eas do relat\u00f3rio.'); return null; }
+  var ano = parseInt(mv.slice(0,4),10), mes = parseInt(mv.slice(5,7),10);
+  var c = relColeta(ano, mes);
+  var TER='#8B3A2A', OURO='#C9A24A', MAR='#3D1A0A', CRE='#FAF5EE';
+  function card(num, rot){ return '<td style="padding:6px"><div style="background:'+CRE+';border:1px solid '+OURO+'55;border-radius:10px;padding:16px 10px;text-align:center"><div style="font-size:30px;font-weight:800;color:'+TER+'">'+num+'</div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:'+MAR+';opacity:.75;margin-top:4px">'+rot+'</div></div></td>'; }
+  function tabela(titulo, linhas) {
+    if (!linhas.length) return '';
+    return '<h3 style="color:'+TER+';font-size:15px;border-bottom:2px solid '+OURO+';padding-bottom:6px;margin:26px 0 10px">'+titulo+'</h3>'+
+      '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">'+linhas.join('')+'</table>';
+  }
+  function tr(a,b){ return '<tr><td style="padding:7px 10px;border-bottom:1px solid '+OURO+'33;font-size:12px;color:'+MAR+';white-space:nowrap;vertical-align:top">'+a+'</td><td style="padding:7px 10px;border-bottom:1px solid '+OURO+'33;font-size:13px;color:#222">'+b+'</td></tr>'; }
+  var agora = new Date();
+  var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relat\u00f3rio Mensal CMDDI \u2014 '+relMesTexto(ano,mes)+'</title></head>'+
+  '<body style="margin:0;background:#efe9df;font-family:Georgia,\'Times New Roman\',serif">'+
+  '<div style="max-width:720px;margin:0 auto;background:#fff">'+
+  '<div style="background:linear-gradient(135deg,'+MAR+','+TER+');padding:28px 30px;text-align:center">'+
+    '<img src="https://cmddicg.com.br/assets/img/logo-cmddi-pt.jpg" alt="CMDDI" style="height:84px;border-radius:8px">'+
+    '<div style="color:'+OURO+';font-size:11px;letter-spacing:.3em;text-transform:uppercase;margin-top:14px">Relat\u00f3rio Mensal de Atividades</div>'+
+    '<div style="color:#fff;font-size:24px;font-weight:700;margin-top:4px">'+relMesTexto(ano,mes)+'</div>'+
+    '<div style="color:'+CRE+'aa;font-size:11px;margin-top:6px">Conselho Municipal dos Direitos e Defesa dos Povos Ind\u00edgenas \u00b7 Campo Grande, MS</div>'+
+  '</div>'+
+  '<div style="padding:26px 30px">'+
+    '<p style="font-size:13px;line-height:1.7;color:#333">Este relat\u00f3rio consolida, de forma autom\u00e1tica e audit\u00e1vel, as a\u00e7\u00f5es oficiais registradas na plataforma digital do CMDDI durante o per\u00edodo de refer\u00eancia \u2014 publica\u00e7\u00f5es institucionais, comunica\u00e7\u00e3o com a imprensa, gest\u00e3o do banco de m\u00eddia e documentos oficiais.</p>'+
+    '<table width="100%" cellpadding="0" cellspacing="0"><tr>'+
+      card(c.noticias.length,'Not\u00edcias publicadas')+
+      card(c.envios.length,'Envios \u00e0 imprensa')+
+      card(c.alcance,'Destinat\u00e1rios alcan\u00e7ados')+
+    '</tr><tr>'+
+      card(c.contatosTotal,'Novos contatos de m\u00eddia')+
+      card(c.docs.length,'Documentos oficiais')+
+      card(c.releasesPub.length,'Releases publicados')+
+    '</tr></table>'+
+    tabela('\ud83d\udcf0 Not\u00edcias publicadas no per\u00edodo', c.noticias.map(function(n){ return tr(relLinhaData(n.ts), escH(n.titulo)); }))+
+    tabela('\ud83d\udce4 Envios \u00e0 imprensa (releases)', c.envios.map(function(h){ return tr(relLinhaData(h.ts), escH(h.titulo||'(sem t\u00edtulo)')+' \u2014 \u2705 '+(h.enviados||0)+' de '+(h.total||0)+' destinat\u00e1rios'+(h.erros?' \u00b7 \u274c '+h.erros+' erros':'')); }))+
+    tabela('\ud83d\udcc4 Documentos oficiais publicados', c.docs.map(function(d){ return tr(relLinhaData(d.ts), escH(d.titulo)); }))+
+    tabela('\ud83d\udc65 Novos contatos de imprensa por grupo', Object.keys(c.contatos).map(function(g){ return tr(String(c.contatos[g])+' contato(s)', escH(g)); }))+
+    '<h3 style="color:'+TER+';font-size:15px;border-bottom:2px solid '+OURO+';padding-bottom:6px;margin:26px 0 10px">\u2699 Fun\u00e7\u00f5es oficiais ativas na plataforma</h3>'+
+    '<ul style="font-size:13px;line-height:1.9;color:#333;padding-left:20px;margin:0">'+
+      '<li>Portal quadril\u00edngue (PT/EN/ES/FR) com tradu\u00e7\u00e3o autom\u00e1tica por intelig\u00eancia artificial</li>'+
+      '<li>Sala de Imprensa com banco de m\u00eddia, classifica\u00e7\u00e3o inteligente de contatos e envio de releases</li>'+
+      '<li>Central de Documentos Oficiais e Sala de Confer\u00eancias</li>'+
+      '<li>Arquitetura de dados com separa\u00e7\u00e3o p\u00fablico/privado e privacidade por padr\u00e3o</li>'+
+      '<li>Registro audit\u00e1vel de todas as publica\u00e7\u00f5es e envios institucionais</li>'+
+    '</ul>'+
+    '<div style="background:'+CRE+';border-left:4px solid '+OURO+';padding:12px 16px;margin-top:24px;font-size:11.5px;color:'+MAR+';line-height:1.6">'+
+      '<b>Acumulado hist\u00f3rico da plataforma:</b> '+c.totNoticias+' not\u00edcias \u00b7 '+c.totEnvios+' envios \u00e0 imprensa \u00b7 '+c.totContatos+' contatos de m\u00eddia cadastrados \u00b7 '+c.totDocs+' documentos oficiais.<br>'+
+      '<b>Nota metodol\u00f3gica:</b> dados extra\u00eddos automaticamente dos registros da plataforma em '+relLinhaData(agora.getTime())+'. M\u00e9tricas de visita\u00e7\u00e3o p\u00fablica do portal dependem de integra\u00e7\u00e3o com servi\u00e7o externo de analytics e podem ser incorporadas em edi\u00e7\u00f5es futuras.'+
+    '</div>'+
+  '</div>'+
+  '<div style="background:'+MAR+';padding:16px 30px;text-align:center;font-size:10.5px;color:'+CRE+'99;line-height:1.7">CMDDI \u2014 Conselho Municipal dos Direitos e Defesa dos Povos Ind\u00edgenas \u00b7 Gest\u00e3o Lisio Lili<br>Plataforma implantada por Instituto Cacique Enir Terena (ICET) e VERTTI Consulting \u00b7 cmddicg.com.br</div>'+
+  '</div></body></html>';
+  window._relHtml = html;
+  window._relMesTxt = relMesTexto(ano,mes);
+  var pv = document.getElementById('rel-preview');
+  if (pv) {
+    pv.style.display='block';
+    pv.innerHTML='';
+    var ifr = document.createElement('iframe');
+    ifr.style.cssText='width:100%;height:460px;border:none';
+    ifr.src = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+    pv.appendChild(ifr);
+  }
+  var st = document.getElementById('rel-status');
+  if (st) st.textContent = '\u2705 Relat\u00f3rio de '+window._relMesTxt+' gerado. Revise a pr\u00e9via e envie ou baixe.';
+  return html;
+}
+function relBaixar() {
+  if (!window._relHtml) { if(!relGerar()) return; }
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([window._relHtml], {type:'text/html'}));
+  var mv = (document.getElementById('rel-mes')||{}).value||'relatorio';
+  a.download = 'relatorio-cmddi-'+mv+'.html';
+  a.click();
+}
+async function relEnviar() {
+  if (!window._relHtml) { if(!relGerar()) return; }
+  var dest = relDest();
+  if (!dest.length) { notif('\u26a0 Cadastre ao menos um destinat\u00e1rio.'); return; }
+  var cfg = siCfg();
+  if (!cfg.brevo || !cfg.from) { notif('\u26a0 Configure a chave Brevo e o remetente na Sala de Imprensa.'); return; }
+  if (!confirm('Enviar o relat\u00f3rio de '+window._relMesTxt+' para '+dest.length+' destinat\u00e1rio(s)?')) return;
+  var st = document.getElementById('rel-status');
+  var ok = 0, erros = 0;
+  for (var i=0; i<dest.length; i++) {
+    if (st) st.textContent = '\ud83d\udce7 Enviando '+(i+1)+' de '+dest.length+'...';
+    try {
+      var resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method:'POST',
+        headers:{'api-key':cfg.brevo,'Content-Type':'application/json'},
+        body: JSON.stringify({
+          sender:{ email:cfg.from, name:cfg.fromName||'CMDDI' },
+          to:[{ email:dest[i] }],
+          subject:'\ud83d\udcca Relat\u00f3rio Mensal de Atividades CMDDI \u2014 '+window._relMesTxt,
+          htmlContent: window._relHtml
+        })
+      });
+      if (resp.ok || resp.status===201) ok++; else erros++;
+    } catch(e) { erros++; }
+  }
+  var hist = siHist();
+  hist.unshift({ ts:Date.now(), titulo:'[RELAT\u00d3RIO] '+window._relMesTxt, enviados:ok, erros:erros, total:dest.length });
+  if (typeof siSalvarHist==='function') siSalvarHist(hist);
+  if (typeof siRenderHistorico==='function') siRenderHistorico();
+  if (st) st.textContent = (erros? '\u26a0 ':'\u2705 ')+'Relat\u00f3rio enviado: '+ok+' de '+dest.length+' destinat\u00e1rio(s)'+(erros?' ('+erros+' falharam)':'')+'.';
+  notif((erros?'\u26a0':'\u2705')+' Relat\u00f3rio de '+window._relMesTxt+' enviado a '+ok+' destinat\u00e1rio(s).');
+}
+document.addEventListener('DOMContentLoaded', function(){
+  var m = document.getElementById('rel-mes');
+  if (m && !m.value) {
+    var d = new Date(); d.setMonth(d.getMonth()-1);
+    m.value = d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2);
+  }
+  setTimeout(relRenderDest, 800);
+});
 
 function siSelecionarTodos(sel) {
   document.querySelectorAll('input[name="si-dest"]').forEach(function(cb){ cb.checked=sel; });

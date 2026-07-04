@@ -1952,6 +1952,25 @@ body.adm-ok .cac-del-btn { display: flex !important; }
 /* CORREÇÃO CRÍTICA: este painel foi projetado com paleta escura, mas está
    dentro de <section class="sec-palha"> (fundo claro). Força um fundo
    escuro sólido e auto-contido, independente da seção que o envolve. */
+#painel-relatorio {
+  background: #14100a !important;
+  border: 1px solid rgba(212,149,74,.3) !important;
+  border-radius: 10px;
+  padding: 1.5rem 1.6rem !important;
+  color: rgba(249,245,237,.92);
+}
+#painel-relatorio .adm-panel-t { color: var(--am) !important; }
+#painel-relatorio .adm-label { color: rgba(249,245,237,.90) !important; }
+#painel-relatorio .adm-input,
+#painel-relatorio .adm-textarea,
+#painel-relatorio .adm-select {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--cr) !important;
+  border-color: rgba(212,149,74,.35) !important;
+  color-scheme: dark;
+}
+#painel-relatorio .adm-select option { background: #1e1208 !important; color: #EDE5CF !important; }
+#painel-relatorio label:not(.si-check-label):not(.si-tab):not(.si-btn) { color: rgba(249,245,237,.90) !important; }
 #painel-sala-imprensa {
   background: #14100a !important;
   border: 1px solid rgba(212,149,74,.3) !important;
@@ -6291,8 +6310,8 @@ function renderDocumentosPublicados() {
     lista.innerHTML = itens.map(function(d){
       var info = cdTipoInfo(d.tipo);
       var dataFmt = d.data ? new Date(d.data+'T12:00:00').toLocaleDateString('pt-BR') : '';
-      return '<div class="doc-item"><div class="doc-ico">'+info.ico+'</div>'+
-        '<div><div class="doc-nome">'+info.nome+' CMDDI Nº '+escH(d.numero)+' — '+escH(d.titulo)+'</div><div class="doc-meta">Publicado em '+dataFmt+'</div></div>'+
+      return '<div class="doc-item"><div class="doc-ico" style="background:#fff;padding:5px;border-radius:6px"><img src="assets/img/logo-cmddi-pt.jpg" alt="CMDDI" style="width:100%;height:100%;object-fit:contain;border-radius:3px" title="'+info.nome+'"></div>'+
+        '<div><div class="doc-nome">'+info.ico+' '+info.nome+' CMDDI Nº '+escH(d.numero)+' — '+escH(d.titulo)+'</div><div class="doc-meta">Publicado em '+dataFmt+'</div></div>'+
         (d.arquivoAssinadoUrl ? '<a href="'+d.arquivoAssinadoUrl+'" target="_blank" class="doc-dl">⬇ Baixar</a>' : '<div class="doc-dl" style="opacity:.4">Sem arquivo</div>')+
         '</div>';
     }).join('');
@@ -7160,28 +7179,203 @@ function removerNoticiaFixa(id, btn) {
 document.addEventListener('DOMContentLoaded', function(){ aplicarFixasOcultas(); setTimeout(aplicarFixasOcultas, 2500); });
 
 // ─── Relatório Mensal de Atividades ───
-function relDest() { var db = dbLerPrivado(); return db.relatorioDest || []; }
-function relSalvarDest(arr) { var db = dbLerPrivado(); db.relatorioDest = arr; dbSalvarPrivado(db); if (typeof salvarNoGitHubPrivado==='function') salvarNoGitHubPrivado(); }
-function relRenderDest() {
-  var el = document.getElementById('rel-dest-lista'); if (!el) return;
-  var arr = relDest();
-  el.innerHTML = arr.length ? arr.map(function(e,i){
-    return '<span style="display:inline-flex;align-items:center;gap:.35rem;font-size:.75rem;padding:.25rem .55rem;border-radius:12px;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am)">\ud83d\udce7 '+escH(e)+
-      ' <button onclick="relRemDest('+i+')" style="border:none;background:rgba(248,113,113,.25);color:#f87171;border-radius:50%;width:16px;height:16px;line-height:1;font-size:.7rem;cursor:pointer;padding:0">\u2715</button></span>';
-  }).join('') : '<span style="font-size:.75rem;color:rgba(249,245,237,.5)">Nenhum destinat\u00e1rio cadastrado ainda.</span>';
+// ─── Destinatários do Relatório Mensal: contatos + listas + adição em bloco ───
+// (mesma lógica e inteligência do Banco de Mídia da Sala de Imprensa)
+var REL_LISTAS_PADRAO = [
+  { id:'conselheiros', nome:'Conselheiros', fixa:true },
+  { id:'mesa-diretora', nome:'Mesa Diretora', fixa:true },
+  { id:'comissoes', nome:'Comissões Especiais e Permanentes', fixa:true },
+  { id:'convidados', nome:'Convidados', fixa:true },
+  { id:'individual', nome:'Individual', fixa:true }
+];
+
+function relListas() {
+  var db = dbLerPrivado();
+  if (!db.relListas || !db.relListas.length) {
+    db.relListas = REL_LISTAS_PADRAO.slice();
+    dbSalvarPrivado(db);
+  }
+  return db.relListas;
 }
-function relAddDest() {
-  var inp = document.getElementById('rel-dest-novo');
-  var e = (inp.value||'').trim().toLowerCase();
-  if (!/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(e)) { notif('\u26a0 Informe um e-mail v\u00e1lido.'); return; }
-  var arr = relDest();
-  if (arr.indexOf(e)!==-1) { notif('\u26a0 E-mail j\u00e1 cadastrado.'); return; }
-  arr.push(e); relSalvarDest(arr); relRenderDest(); inp.value='';
-  notif('\u2705 Destinat\u00e1rio cadastrado.');
+function relSalvarListas(arr) { var db = dbLerPrivado(); db.relListas = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
+function relContatos() { var db = dbLerPrivado(); return db.relContatos || []; }
+function relSalvarContatos(arr) { var db = dbLerPrivado(); db.relContatos = arr; dbSalvarPrivado(db); salvarNoGitHubPrivado(); }
+
+// Migração automática: destinatários antigos (array simples de e-mails) viram contatos na lista "Individual"
+function relMigrarAntigos() {
+  var db = dbLerPrivado();
+  if (db.relatorioDest && db.relatorioDest.length && !db._relMigrado) {
+    var contatos = relContatos();
+    var vistos = {}; contatos.forEach(function(c){ vistos[c.email]=true; });
+    db.relatorioDest.forEach(function(email){
+      if (!vistos[email]) { contatos.push({ id:'relc_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), nome:email.split('@')[0], email:email, listas:['individual'], ts:Date.now() }); vistos[email]=true; }
+    });
+    db.relContatos = contatos;
+    db._relMigrado = true;
+    dbSalvarPrivado(db);
+    salvarNoGitHubPrivado();
+  }
 }
-function relRemDest(i) {
-  var arr = relDest(); arr.splice(i,1); relSalvarDest(arr); relRenderDest();
+
+// ── Sub-abas (Contatos / Listas / Bloco) ──
+function relTrocarAba(el, paneId) {
+  var tabs = el.parentElement.querySelectorAll('.si-tab');
+  tabs.forEach(function(t){ t.classList.remove('ativo'); });
+  el.classList.add('ativo');
+  var paineis = document.querySelectorAll('#rel-destinatarios-area .si-pane');
+  paineis.forEach(function(p){ p.classList.remove('ativo'); });
+  var alvo = document.getElementById(paneId);
+  if (alvo) alvo.classList.add('ativo');
 }
+
+// ── Render: chips de listas para seleção de envio ──
+function relRenderChkListas() {
+  var el = document.getElementById('rel-listas-envio'); if (!el) return;
+  var listas = relListas();
+  var contatos = relContatos();
+  el.innerHTML = listas.map(function(l){
+    var n = contatos.filter(function(c){ return (c.listas||[]).indexOf(l.id) !== -1; }).length;
+    return '<label class="si-check-label"><input type="checkbox" class="rel-chk-lista" value="'+l.id+'" onchange="relAtualizarContagem()"> '+escH(l.nome)+' <span style="color:rgba(249,245,237,.55)">('+n+')</span></label>';
+  }).join('') || '<span style="font-size:.78rem;color:rgba(249,245,237,.55)">Nenhuma lista cadastrada.</span>';
+  relAtualizarContagem();
+}
+function relDestinatariosSelecionados() {
+  var marcadas = Array.prototype.slice.call(document.querySelectorAll('.rel-chk-lista:checked')).map(function(c){ return c.value; });
+  var contatos = relContatos();
+  var vistos = {}, out = [];
+  contatos.forEach(function(c){
+    if (!c.email) return;
+    var pertence = marcadas.length ? (c.listas||[]).some(function(l){ return marcadas.indexOf(l)!==-1; }) : false;
+    if (pertence && !vistos[c.email.toLowerCase()]) { vistos[c.email.toLowerCase()] = true; out.push(c); }
+  });
+  return out;
+}
+function relAtualizarContagem() {
+  var n = relDestinatariosSelecionados().length;
+  var el = document.getElementById('rel-contagem-envio');
+  if (el) el.textContent = n ? ('✅ '+n+' destinatário(s) selecionado(s) para este envio.') : '⚠ Nenhuma lista marcada — selecione ao menos uma lista acima para enviar.';
+}
+function relSelecionarTodasListas() {
+  document.querySelectorAll('.rel-chk-lista').forEach(function(c){ c.checked = true; });
+  relAtualizarContagem();
+}
+
+// ── Aba Contatos: cadastro individual ──
+function relRenderContatos() {
+  var el = document.getElementById('rel-contatos-lista'); if (!el) return;
+  var selBloco = document.getElementById('rel-bloco-lista');
+  if (selBloco) { var atual = selBloco.value; selBloco.innerHTML = relListas().map(function(l){ return '<option value="'+l.id+'">'+escH(l.nome)+'</option>'; }).join(''); if (Array.prototype.some.call(selBloco.options, function(o){ return o.value===atual; })) selBloco.value = atual; }
+  var contatos = relContatos();
+  var listas = relListas(); var mapaListas = {}; listas.forEach(function(l){ mapaListas[l.id] = l.nome; });
+  el.innerHTML = contatos.length ? contatos.map(function(c,i){
+    var tagsHtml = (c.listas||[]).map(function(lid){ return '<span class="si-grupo-tag">'+escH(mapaListas[lid]||lid)+'</span>'; }).join('');
+    return '<div class="si-card"><div class="si-card-info"><div class="si-card-nome">'+escH(c.nome||c.email)+'</div>'+
+      '<div class="si-card-meta">'+escH(c.email)+'</div><div>'+tagsHtml+'</div></div>'+
+      '<div class="si-card-acoes"><button class="si-btn del" onclick="relRemoverContato('+i+')">🗑</button></div></div>';
+  }).join('') : '<div style="font-size:.8rem;color:rgba(249,245,237,.55);padding:.6rem 0">Nenhum destinatário cadastrado ainda.</div>';
+  // popula os checkboxes de listas do formulário de cadastro
+  var chkEl = document.getElementById('rel-form-listas-chk');
+  if (chkEl) chkEl.innerHTML = listas.map(function(l){ return '<label class="si-check-label"><input type="checkbox" class="rel-form-chk" value="'+l.id+'"> '+escH(l.nome)+'</label>'; }).join('');
+  relRenderChkListas();
+}
+function relAdicionarContato() {
+  var nome = (document.getElementById('rel-c-nome')||{}).value.trim();
+  var email = (document.getElementById('rel-c-email')||{}).value.trim().toLowerCase();
+  var marcadas = Array.prototype.slice.call(document.querySelectorAll('.rel-form-chk:checked')).map(function(c){ return c.value; });
+  if (!/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(email)) { notif('⚠ Informe um e-mail válido.'); return; }
+  var contatos = relContatos();
+  if (contatos.some(function(c){ return c.email.toLowerCase()===email; })) { notif('⚠ Este e-mail já está cadastrado.'); return; }
+  contatos.push({ id:'relc_'+Date.now(), nome: nome||email.split('@')[0], email:email, listas: marcadas.length?marcadas:['individual'], ts:Date.now() });
+  relSalvarContatos(contatos);
+  document.getElementById('rel-c-nome').value=''; document.getElementById('rel-c-email').value='';
+  document.querySelectorAll('.rel-form-chk').forEach(function(c){ c.checked=false; });
+  relRenderContatos();
+  notif('✅ Destinatário cadastrado.');
+}
+function relRemoverContato(i) {
+  var contatos = relContatos();
+  var rem = contatos.splice(i,1)[0];
+  relSalvarContatos(contatos);
+  relRenderContatos();
+  notif('🗑 Removido: '+(rem&&rem.email||''));
+}
+
+// ── Aba Listas: gerenciar listas (as 5 padrão + customizadas) ──
+function relRenderListasTab() {
+  var el = document.getElementById('rel-listas-gerenciar'); if (!el) return;
+  var listas = relListas();
+  var contatos = relContatos();
+  el.innerHTML = listas.map(function(l,i){
+    var n = contatos.filter(function(c){ return (c.listas||[]).indexOf(l.id)!==-1; }).length;
+    return '<div class="si-card"><div class="si-card-info"><div class="si-card-nome">📋 '+escH(l.nome)+'</div>'+
+      '<div class="si-card-meta">'+n+' contato(s)'+(l.fixa?' · lista padrão':'')+'</div></div>'+
+      (l.fixa ? '' : '<div class="si-card-acoes"><button class="si-btn del" onclick="relRemoverLista('+i+')">🗑</button></div>') +
+      '</div>';
+  }).join('');
+}
+function relAdicionarLista() {
+  var inp = document.getElementById('rel-nova-lista');
+  var nome = (inp.value||'').trim();
+  if (!nome) { notif('⚠ Digite o nome da lista.'); return; }
+  var listas = relListas();
+  var id = 'rel_' + nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') + '_' + Date.now().toString(36);
+  listas.push({ id:id, nome:nome, fixa:false });
+  relSalvarListas(listas);
+  inp.value='';
+  relRenderListasTab(); relRenderContatos();
+  notif('✅ Lista "'+nome+'" criada.');
+}
+function relRemoverLista(i) {
+  var listas = relListas();
+  var alvo = listas[i];
+  if (alvo.fixa) { notif('⚠ Listas padrão não podem ser excluídas.'); return; }
+  if (!confirm('Excluir a lista "'+alvo.nome+'"? Os contatos permanecem cadastrados, apenas perdem esta etiqueta.')) return;
+  listas.splice(i,1);
+  relSalvarListas(listas);
+  var contatos = relContatos();
+  contatos.forEach(function(c){ c.listas = (c.listas||[]).filter(function(l){ return l!==alvo.id; }); });
+  relSalvarContatos(contatos);
+  relRenderListasTab(); relRenderContatos();
+  notif('🗑 Lista removida.');
+}
+
+// ── Aba Bloco: colar muitos e-mails de uma vez, atribuindo a uma lista ──
+function relBlocoAdicionar() {
+  var txt = ((document.getElementById('rel-bloco-txt')||{}).value||'').trim();
+  var listaId = (document.getElementById('rel-bloco-lista')||{}).value||'individual';
+  if (!txt) { notif('⚠ Cole um texto com e-mails na área acima.'); return; }
+  var contatos = relContatos();
+  var vistos = {}; contatos.forEach(function(c){ vistos[c.email.toLowerCase()]=true; });
+  var novos = 0, jaExistiam = 0, atualizados = 0;
+  txt.split(/\n/).forEach(function(linha){
+    var re = /[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/g, m;
+    while ((m = re.exec(linha)) !== null) {
+      var email = m[0].replace(/^mailto:/i,'').toLowerCase();
+      if (vistos[email]) {
+        // já existe: apenas garante que a lista selecionada seja incluída
+        var existente = contatos.filter(function(c){ return c.email.toLowerCase()===email; })[0];
+        if (existente && (existente.listas||[]).indexOf(listaId)===-1) { existente.listas = (existente.listas||[]).concat([listaId]); atualizados++; }
+        else { jaExistiam++; }
+        continue;
+      }
+      vistos[email] = true; novos++;
+      var nome = linha.replace(/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/g,' ').replace(/[<>|,;:"'()\[\]]/g,' ').replace(/\s+/g,' ').trim();
+      if (nome.length > 70) nome = nome.slice(0,70).trim();
+      if (!nome) nome = email.split('@')[0];
+      contatos.push({ id:'relc_'+Date.now()+'_'+novos, nome:nome, email:email, listas:[listaId], ts:Date.now() });
+    }
+  });
+  relSalvarContatos(contatos);
+  document.getElementById('rel-bloco-txt').value='';
+  var st = document.getElementById('rel-bloco-status');
+  if (st) st.textContent = '✅ '+novos+' novo(s) adicionado(s) · '+atualizados+' já existiam e entraram na lista · '+jaExistiam+' sem alteração.';
+  relRenderContatos(); relRenderListasTab();
+  notif('🤖 '+novos+' contato(s) adicionados em bloco.');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(function(){ relMigrarAntigos(); relRenderContatos(); relRenderListasTab(); }, 900);
+});
 
 function relMesTexto(ano, mes) {
   var nomes = ['Janeiro','Fevereiro','Mar\u00e7o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -7318,8 +7512,9 @@ function relBaixar() {
 }
 async function relEnviar() {
   if (!window._relHtml) { if(!relGerar()) return; }
-  var dest = relDest();
-  if (!dest.length) { notif('\u26a0 Cadastre ao menos um destinat\u00e1rio.'); return; }
+  var destObjs = relDestinatariosSelecionados();
+  if (!destObjs.length) { notif('\u26a0 Selecione ao menos uma lista com destinat\u00e1rios, na se\u00e7\u00e3o abaixo dos bot\u00f5es.'); return; }
+  var dest = destObjs.map(function(c){ return c.email; });
   var cfg = siCfg();
   if (!cfg.brevo || !cfg.from) { notif('\u26a0 Configure a chave Brevo e o remetente na Sala de Imprensa.'); return; }
   if (!confirm('Enviar o relat\u00f3rio de '+window._relMesTxt+' para '+dest.length+' destinat\u00e1rio(s)?')) return;
@@ -7354,7 +7549,6 @@ document.addEventListener('DOMContentLoaded', function(){
     var d = new Date(); d.setMonth(d.getMonth()-1);
     m.value = d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2);
   }
-  setTimeout(relRenderDest, 800);
 });
 
 function siSelecionarTodos(sel) {
@@ -7498,9 +7692,10 @@ function siGerarHtmlEmail(r, lang, cfg) {
   '<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:20px 10px">'+
   '<table width="640" align="center" cellpadding="0" cellspacing="0" style="max-width:640px;background:#1a1a1a;border-radius:8px;overflow:hidden">'+
     // Cabeçalho
-    '<tr><td style="background:#5C1E0A;padding:18px 30px">'+
+    '<tr><td style="background:#5C1E0A;padding:16px 30px">'+
       '<table width="100%" cellpadding="0" cellspacing="0"><tr>'+
-        '<td><div style="color:#C9A24A;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">CMDDI</div>'+
+        '<td style="width:52px"><img src="https://cmddicg.com.br/assets/img/logo-cmddi-pt.jpg" alt="CMDDI" style="height:44px;border-radius:6px;display:block"></td>'+
+        '<td style="padding-left:12px"><div style="color:#C9A24A;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">CMDDI</div>'+
         '<div style="color:rgba(255,255,255,.90);font-size:11px;font-family:Arial,sans-serif">'+escH(h.from)+'</div></td>'+
         '<td align="right" style="color:rgba(255,255,255,.85);font-size:11px;font-family:Arial,sans-serif">Campo Grande/MS — Brasil<br>'+dataFmt+'</td>'+
       '</tr></table></td></tr>'+

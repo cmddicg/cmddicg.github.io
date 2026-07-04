@@ -1952,6 +1952,25 @@ body.adm-ok .cac-del-btn { display: flex !important; }
 /* CORREÇÃO CRÍTICA: este painel foi projetado com paleta escura, mas está
    dentro de <section class="sec-palha"> (fundo claro). Força um fundo
    escuro sólido e auto-contido, independente da seção que o envolve. */
+#painel-central-docs {
+  background: #14100a !important;
+  border: 1px solid rgba(212,149,74,.3) !important;
+  border-radius: 10px;
+  padding: 1.5rem 1.6rem !important;
+  color: rgba(249,245,237,.92);
+}
+#painel-central-docs .adm-panel-t { color: var(--am) !important; }
+#painel-central-docs .adm-label { color: rgba(249,245,237,.90) !important; }
+#painel-central-docs .adm-input,
+#painel-central-docs .adm-textarea,
+#painel-central-docs .adm-select {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--cr) !important;
+  border-color: rgba(212,149,74,.35) !important;
+  color-scheme: dark;
+}
+#painel-central-docs .adm-select option { background: #1e1208 !important; color: #EDE5CF !important; }
+#painel-central-docs label:not(.si-check-label):not(.si-tab):not(.si-btn) { color: rgba(249,245,237,.90) !important; }
 #painel-relatorio {
   background: #14100a !important;
   border: 1px solid rgba(212,149,74,.3) !important;
@@ -4002,7 +4021,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
             </div>
             <div class="adm-form-group">
               <label class="adm-label">Deliberações e encaminhamentos</label>
-              <textarea class="adm-input" id="cd-ata-deliberacoes" rows="6" placeholder="Descreva o que foi discutido e decidido em cada item da pauta..."></textarea>
+              <textarea class="adm-input" id="cd-ata-deliberacoes" rows="12" style="min-height:190px;resize:vertical" placeholder="Descreva o que foi discutido e decidido em cada item da pauta..."></textarea>
             </div>
           </div>
 
@@ -4020,7 +4039,7 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
             </div>
             <div class="adm-form-group">
               <label class="adm-label">Corpo do texto</label>
-              <textarea class="adm-input" id="cd-corr-corpo" rows="8" placeholder="Prezado(a) Senhor(a),&#10;&#10;Vimos por meio deste..."></textarea>
+              <textarea class="adm-input" id="cd-corr-corpo" rows="14" style="min-height:220px;resize:vertical" placeholder="Prezado(a) Senhor(a),&#10;&#10;Vimos por meio deste..."></textarea>
             </div>
           </div>
 
@@ -4053,8 +4072,9 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           <!-- Campo: Corpo livre (Parecer, Nota Técnica, Declaração, Convênio, Minuta) -->
           <div class="cd-campo cd-campo-livre" style="display:none">
             <div class="adm-form-group">
-              <label class="adm-label">Corpo do documento</label>
-              <textarea class="adm-input" id="cd-livre-corpo" rows="12" placeholder="Redija o conteúdo completo do documento aqui..."></textarea>
+              <label class="adm-label">Corpo do documento <span style="font-weight:400;opacity:.75;font-size:.72rem">— sem limite de tamanho; use quantos parágrafos precisar</span></label>
+              <textarea class="adm-input" id="cd-livre-corpo" rows="26" style="min-height:420px;resize:vertical;font-family:Georgia,'Times New Roman',serif;line-height:1.7" placeholder="Redija o conteúdo completo do documento aqui — quantas páginas forem necessárias.&#10;&#10;Dica: para forçar uma quebra de página específica (ex: antes de um novo capítulo ou anexo), coloque em uma linha isolada apenas:&#10;///pagina///"></textarea>
+              <div style="font-size:.7rem;color:rgba(249,245,237,.55);margin-top:.3rem">O timbrado e o rodapé institucional se repetem automaticamente em todas as páginas ao gerar o PDF — não é preciso reinseri-los no texto.</div>
             </div>
           </div>
 
@@ -5972,7 +5992,11 @@ function cdGerarHTMLDocumento(d) {
     corpoHtml += '<p style="text-align:justify;margin-bottom:14px">Com base em '+escH(c.base||'')+', ficam convocados os membros do CMDDI para reunião a realizar-se em <strong>'+ (c.data? new Date(c.data+'T12:00:00').toLocaleDateString('pt-BR'):'') +'</strong>, às <strong>'+escH(c.hora||'')+'</strong>, em <strong>'+escH(c.local||'')+'</strong>, com a seguinte pauta:</p>';
     corpoHtml += '<ol>'+(c.pauta||'').split('\n').filter(Boolean).map(function(l){return '<li style="margin-bottom:6px">'+escH(l.replace(/^\d+\.\s*/,''))+'</li>';}).join('')+'</ol>';
   } else if (d.campos === 'livre') {
-    corpoHtml += '<div style="text-align:justify;white-space:pre-line;line-height:1.8">'+escH(c.texto||'')+'</div>';
+    var blocosPag = (c.texto||'').split(/\n\s*\/\/\/pagina\/\/\/\s*\n/);
+    corpoHtml += blocosPag.map(function(bloco, idx){
+      return (idx>0 ? '<div class="quebra-pagina"></div>' : '') +
+        '<div style="text-align:justify;white-space:pre-line;line-height:1.8">'+escH(bloco)+'</div>';
+    }).join('');
   }
   var assinHtml = '';
   if (d.assinatura && d.assinatura.signatarios && d.assinatura.signatarios.length) {
@@ -5982,21 +6006,33 @@ function cdGerarHTMLDocumento(d) {
     }).join('') + '<p style="text-align:center;font-size:.72em;color:#888;margin-top:10px">Documento a ser assinado eletronicamente via gov.br</p></div>';
   }
   return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>'+escH(d.titulo)+'</title>'+
-  '<style>@page{margin:2.5cm 2cm}body{font-family:Georgia,"Times New Roman",serif;color:#1a1a1a;font-size:12.5pt;line-height:1.6;max-width:720px;margin:0 auto;padding:20px}'+
-  '.timbre{display:flex;align-items:center;gap:16px;border-bottom:3px solid #5C1E0A;padding-bottom:14px;margin-bottom:22px}'+
-  '.timbre img{height:64px}.timbre-tx{font-family:Arial,sans-serif}.timbre-tx b{display:block;font-size:13px;color:#5C1E0A}'+
-  '.timbre-tx span{font-size:10px;color:#666}'+
+  '<style>'+
+  '@page{size:A4;margin:3.6cm 2cm 2.4cm 2cm}'+
+  'body{font-family:Georgia,"Times New Roman",serif;color:#1a1a1a;font-size:12.5pt;line-height:1.6;max-width:720px;margin:0 auto;padding:20px 0 0}'+
+  /* Timbre fixo: repete no topo de TODAS as páginas impressas (a margem superior de 3.6cm reserva o espaço) */
+  '.timbre{display:flex;align-items:center;gap:16px;border-bottom:3px solid #5C1E0A;padding:.3cm 2cm .35cm;background:#fff;'+
+    'position:fixed;top:0;left:0;right:0;margin-top:-3.6cm;box-sizing:border-box;max-width:none}'+
+  '.timbre img{height:58px;flex-shrink:0}.timbre-tx{font-family:Arial,sans-serif}.timbre-tx b{display:block;font-size:12.5px;color:#5C1E0A;line-height:1.3}'+
+  '.timbre-tx span{font-size:9.5px;color:#666}'+
+  /* No topo da tela (fora da impressão) o timbre volta ao fluxo normal, para não sobrepor o conteúdo */
+  '@media screen{.timbre{position:static;margin-top:0;margin-bottom:22px;border-radius:6px}}'+
   'h1{font-size:15pt;text-align:center;text-transform:uppercase;letter-spacing:.03em;margin:18px 0 6px}'+
   '.ementa{text-align:center;font-style:italic;color:#444;margin-bottom:26px;font-size:11pt}'+
-  '.rodape-doc{margin-top:50px;padding-top:10px;border-top:1px solid #ccc;font-size:9pt;color:#888;text-align:center;font-family:Arial,sans-serif}'+
-  '@media print{.no-print{display:none}}</style></head><body>'+
+  /* Rodapé fixo: repete ao final de TODAS as páginas impressas */
+  '.rodape-doc{font-size:8.5pt;color:#888;text-align:center;font-family:Arial,sans-serif;'+
+    'position:fixed;bottom:0;left:0;right:0;margin-bottom:-2.4cm;padding:.25cm 2cm;border-top:1px solid #ccc;background:#fff;box-sizing:border-box}'+
+  '@media screen{.rodape-doc{position:static;margin:50px 0 0;padding-top:10px}}'+
+  '.quebra-pagina{page-break-before:always;break-before:page;height:0;margin:0;border:0}'+
+  '@media print{.no-print{display:none}}'+
+  '</style></head><body>'+
   '<div class="timbre"><img src="assets/img/logo-cmddi-pt.jpg" alt="CMDDI"><div class="timbre-tx"><b>CONSELHO MUNICIPAL DOS DIREITOS E DEFESA DOS POVOS INDÍGENAS</b><span>Campo Grande — Mato Grosso do Sul — Brasil</span></div></div>'+
   '<h1>'+info.nome+' CMDDI Nº '+escH(d.numero)+'</h1>'+
   '<div class="ementa">'+escH(d.titulo)+'</div>'+
   '<p style="text-align:right;font-size:10pt;color:#555;margin-bottom:20px">Campo Grande/MS, '+dataFmt+'.</p>'+
   corpoHtml + assinHtml +
   '<div class="rodape-doc">CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas · cmddicg.github.io</div>'+
-  '<div class="no-print" style="text-align:center;margin-top:30px"><button onclick="window.print()" style="background:#5C1E0A;color:#fff;border:none;padding:10px 22px;border-radius:5px;font-size:13px;cursor:pointer">🖨️ Imprimir / Salvar como PDF</button></div>'+
+  '<div class="no-print" style="text-align:center;margin-top:30px;padding-bottom:30px"><button onclick="window.print()" style="background:#5C1E0A;color:#fff;border:none;padding:10px 22px;border-radius:5px;font-size:13px;cursor:pointer">🖨️ Imprimir / Salvar como PDF</button>'+
+  '<div style="font-size:11px;color:#888;margin-top:10px;font-family:Arial,sans-serif">O timbre e o rodapé institucional se repetem automaticamente em todas as páginas ao imprimir ou salvar como PDF.</div></div>'+
   '</body></html>';
 }
 

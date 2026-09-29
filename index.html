@@ -2152,6 +2152,8 @@ body.adm-ok .galeria-leg:hover::after {
 .nc-ler-btn:hover { background:var(--vd,#2a4a1c); color:#fff; }
 .nc-del-btn { display:none; }
 body.adm-ok .nc-del-btn { display:inline-block !important; }
+.nc-edit-btn { display:none; }
+body.adm-ok .nc-edit-btn { display:inline-block !important; }
 
 
 /* === CONSELHEIROS: acoes ADM === */
@@ -2876,7 +2878,8 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
     <!-- ADM: adicionar foto -->
     
     <div class="adm-panel" id="painel-noticia">
-      <div class="adm-panel-t">📝 Publicar Notícia</div>
+      <div class="adm-panel-t" id="nc-painel-titulo">📝 Publicar Notícia</div>
+      <div id="nc-editando-aviso" style="display:none;background:rgba(212,149,74,.12);border:1px solid rgba(212,149,74,.35);color:var(--am);font-size:.78rem;padding:.5rem .75rem;border-radius:4px;margin-bottom:.75rem">✏️ Editando uma notícia já publicada — as alterações substituem a versão atual.</div>
       <div class="adm-form-group">
         <label class="adm-label">Categoria</label>
         <select class="adm-input" id="nc-cat">
@@ -2903,10 +2906,11 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <input type="hidden" id="nc-resumo-en"><input type="hidden" id="nc-resumo-es"><input type="hidden" id="nc-resumo-fr">
       </div>
       <div class="adm-form-group">
-        <label class="adm-label">&#128247; Foto da not&#237;cia (opcional)</label>
-        <input class="adm-input" id="nc-foto" type="file" accept="image/*" style="padding:.4rem" onchange="uploadFotoNoticia(this)">
+        <label class="adm-label">&#128247; Fotos da not&#237;cia (opcional &#8212; pode escolher v&#225;rias)</label>
+        <input class="adm-input" id="nc-foto" type="file" accept="image/*" multiple style="padding:.4rem" onchange="adicionarFotosNoticia(this)">
         <div id="nc-foto-status" style="font-size:.8rem;margin-top:.4rem;padding:.4rem .6rem;border-radius:4px;display:none"></div>
-        <input type="hidden" id="nc-foto-url">
+        <div style="font-size:.72rem;color:var(--tx3,#8a8a7a);margin-top:.5rem">A primeira foto da lista &#233; a capa. Use &#9650;&#9660; para reordenar e &#11088; para definir outra como capa.</div>
+        <div id="nc-fotos-lista" style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.6rem"></div>
       </div>
       <div class="adm-form-group">
         <label class="adm-label">&#128206; Anexo &#8212; PDF, Word ou imagem (opcional)</label>
@@ -2918,7 +2922,10 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
         <label class="adm-label">Link externo (opcional)</label>
         <input class="adm-input" id="nc-link" placeholder="https://... (mat&#233;ria na imprensa)">
       </div>
-      <button class="btn-primario" onclick="pubNoticia()" style="margin-top:.5rem;font-size:.75rem;padding:.6rem 1.2rem">&#128240; Publicar Not&#237;cia</button>
+      <div style="display:flex;gap:.6rem;align-items:center;margin-top:.5rem">
+        <button class="btn-primario" id="nc-btn-publicar" onclick="pubNoticia()" style="font-size:.75rem;padding:.6rem 1.2rem">&#128240; Publicar Not&#237;cia</button>
+        <button type="button" id="nc-btn-cancelar" onclick="cancelarEdicaoNoticia()" style="display:none;font-size:.72rem;padding:.6rem 1rem;background:transparent;border:1px solid rgba(255,255,255,.25);color:var(--tx2,#ccc);border-radius:4px;cursor:pointer">Cancelar edição</button>
+      </div>
     </div>
     
   </div>
@@ -3707,19 +3714,9 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
           <div><div class="doc-nome" data-i18n="leg.l1.tit">Lei nº 4.277/2005 — Criação do CMDDI</div><div class="doc-meta" data-i18n="leg.l1.txt">Prefeitura de Campo Grande · 11 mai. 2005 · Cria o Conselho Municipal Transitório dos Direitos e Defesa dos Povos Indígenas</div></div>
           <div class="doc-dl" style="color:var(--acl)" data-i18n="doc.pdf">📄 PDF</div>
         </a>
-        <a href="https://cmddicg.github.io/docs/BRNB422006C2966_080852.pdf" target="_blank" class="doc-item rv">
-          <div class="doc-ico" style="background:rgba(74,40,16,.3);font-size:1.1rem">⚖️</div>
-          <div><div class="doc-nome" data-i18n="leg.l15.tit">Regimento Interno do CMDDI: Deliberação nº 002/CMDDI/2005</div><div class="doc-meta" data-i18n="leg.l15.txt">DIOGRANDE nº 1.963 · 26 dez. 2005 · Aprovado pelo Plenário em 16 nov. 2005 · Define finalidade, competências, conselheiros e comissões do Conselho</div></div>
-          <div class="doc-dl" style="color:var(--acl)" data-i18n="doc.pdf">📄 PDF</div>
-        </a>
         <a href="https://cmddicg.github.io/docs/lei_8655_2017_cmddi.pdf" target="_blank" class="doc-item rv">
           <div class="doc-ico" style="background:rgba(74,40,16,.3);font-size:1.1rem">⚖️</div>
           <div><div class="doc-nome" data-i18n="leg.l2.tit">Lei nº 8.655/2017 — Reformulação do CMDDI</div><div class="doc-meta" data-i18n="leg.l2.txt">Prefeitura de Campo Grande · 27 set. 2017 · Garante composição 100% indígena, inclusive o representante da Prefeitura</div></div>
-          <div class="doc-dl" style="color:var(--acl)" data-i18n="doc.pdf">📄 PDF</div>
-        </a>
-        <a href="https://cmddicg.github.io/docs/BRNB422006C2966_080856.pdf" target="_blank" class="doc-item rv">
-          <div class="doc-ico" style="background:rgba(74,40,16,.3);font-size:1.1rem">⚖️</div>
-          <div><div class="doc-nome" data-i18n="leg.l16.tit">Lei nº 7.227/2024: Reformulação do CMDDI</div><div class="doc-meta" data-i18n="leg.l16.txt">Prefeitura de Campo Grande · 18 abr. 2024 · DIOGRANDE nº 7.468 · Lei vigente do Conselho: 21 membros titulares, 20 deles indígenas</div></div>
           <div class="doc-dl" style="color:var(--acl)" data-i18n="doc.pdf">📄 PDF</div>
         </a>
 
@@ -4905,9 +4902,11 @@ function renderNoticia(item, fbKey) {
     (item.meta ? '<div class="noticia-data" style="color:var(--tx3)">\uD83D\uDCC5 ' + item.meta + '</div>' : '') +
     '<div style="margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">' +
     '<button class="nc-ler-btn">\uD83D\uDCF0 Ler na integra</button>' +
+    '<button class="adm-panel nc-edit-btn" style="background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am,#d4954a);font-size:.68rem;cursor:pointer;padding:.3rem .7rem;border-radius:3px">\u270F\uFE0F Editar</button>' +
     '<button class="adm-panel nc-del-btn" style="background:rgba(180,30,30,.15);border:1px solid rgba(180,30,30,.3);color:#f87171;font-size:.68rem;cursor:pointer;padding:.3rem .7rem;border-radius:3px">\u2715 Excluir</button>' +
     '</div></div>';
   card.querySelector('.nc-ler-btn').addEventListener('click', function(){ abrirNoticiaModal(fbKey); });
+  card.querySelector('.nc-edit-btn').addEventListener('click', function(){ editarNoticia(fbKey); });
   card.querySelector('.nc-del-btn').addEventListener('click', function(){ excluirNoticia(fbKey, card); });
   var principal = grid.querySelector('.noticia-principal');
   if (principal && principal.nextSibling) grid.insertBefore(card, principal.nextSibling);
@@ -5136,34 +5135,131 @@ async function pubEvento() {
   if (btn) { btn.disabled = false; btn.textContent = txtOriginal || '✅ Publicar Evento'; }
 }
 
-function uploadFotoNoticia(input) {
-  if (!input || !input.files || !input.files[0]) return;
+/* \u2550\u2550 M\u00FAltiplas fotos por not\u00EDcia: capa + ordem + legenda \u2550\u2550
+   window._ncFotos guarda a lista em edi\u00E7\u00E3o, em mem\u00F3ria, como
+   [{src, leg}, ...] \u2014 o item de \u00EDndice 0 \u00E9 sempre a capa. */
+window._ncFotos = window._ncFotos || [];
+
+function adicionarFotosNoticia(input) {
+  if (!input || !input.files || !input.files.length) return;
+  var arquivos = Array.prototype.slice.call(input.files);
   var status = document.getElementById('nc-foto-status');
-  if (status) { status.style.display='block'; status.style.background='rgba(212,149,74,.1)'; status.style.color='var(--am)'; status.textContent='\u23F3 Enviando foto...'; }
-  var fd = new FormData();
-  fd.append('file', input.files[0]);
-  fd.append('upload_preset', 'cmddi_galeria');
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/image/upload', true);
-  xhr.onload = function() {
-    try {
-      var d = JSON.parse(xhr.responseText);
-      if (d.secure_url) {
-        document.getElementById('nc-foto-url').value = d.secure_url;
-        if (status) { status.style.background='rgba(42,74,28,.2)'; status.style.color='#7bc67e'; status.textContent='\u2705 Foto enviada!'; }
-      } else {
-        if (status) { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C Erro no envio'; }
+  var restantes = arquivos.length, enviados = 0;
+  if (status) { status.style.display='block'; status.style.background='rgba(212,149,74,.1)'; status.style.color='var(--am)'; status.textContent='\u23F3 Enviando foto 1 de ' + restantes + '...'; }
+  function enviarUma(i) {
+    if (i >= arquivos.length) {
+      if (status) {
+        if (enviados) { status.style.background='rgba(42,74,28,.2)'; status.style.color='#7bc67e'; status.textContent='\u2705 ' + enviados + ' foto(s) enviada(s)!'; }
+        else { status.style.background='rgba(180,30,30,.15)'; status.style.color='#f87171'; status.textContent='\u274C Nenhuma foto foi enviada.'; }
       }
-    } catch(e) { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro'; } }
-  };
-  xhr.onerror = function() { if (status) { status.style.color='#f87171'; status.textContent='\u274C Erro de conexao'; } };
-  xhr.send(fd);
+      input.value = '';
+      return;
+    }
+    var fd = new FormData();
+    fd.append('file', arquivos[i]);
+    fd.append('upload_preset', 'cmddi_galeria');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/dn1ubybc0/image/upload', true);
+    xhr.onload = function() {
+      try {
+        var d = JSON.parse(xhr.responseText);
+        if (d.secure_url) {
+          window._ncFotos.push({ src: d.secure_url, leg: '' });
+          enviados++;
+          renderFotosNoticiaAdm();
+        }
+      } catch(e) {}
+      if (status) status.textContent = '\u23F3 Enviando foto ' + Math.min(i+2, arquivos.length) + ' de ' + arquivos.length + '...';
+      enviarUma(i+1);
+    };
+    xhr.onerror = function() { enviarUma(i+1); };
+    xhr.send(fd);
+  }
+  enviarUma(0);
+}
+function renderFotosNoticiaAdm() {
+  var lista = document.getElementById('nc-fotos-lista');
+  if (!lista) return;
+  lista.innerHTML = window._ncFotos.map(function(f, i) {
+    return '<div style="position:relative;width:120px">' +
+      '<img src="' + f.src + '" style="width:120px;height:90px;object-fit:cover;border-radius:6px;display:block' + (i===0 ? ';box-shadow:0 0 0 3px var(--am,#d4954a)' : '') + '">' +
+      (i===0 ? '<div style="position:absolute;top:-8px;left:-8px;background:var(--am,#d4954a);color:#1a1a1a;font-size:.6rem;font-weight:800;padding:.1rem .4rem;border-radius:8px">\u2B50 CAPA</div>' : '') +
+      '<button type="button" onclick="removerFotoNoticia(' + i + ')" title="Remover" style="position:absolute;top:-8px;right:-8px;background:#B23A2E;color:#fff;border:2px solid var(--fd,#1a1a1a);width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer">\u2715</button>' +
+      '<input class="adm-input" placeholder="Legenda (opcional)" value="' + (f.leg||'').replace(/"/g,'&quot;') + '" oninput="window._ncFotos[' + i + '].leg=this.value" style="font-size:.68rem;padding:.3rem .4rem;margin-top:.3rem">' +
+      '<div style="display:flex;gap:.3rem;margin-top:.3rem">' +
+      '<button type="button" onclick="moverFotoNoticiaAdm(' + i + ',-1)" ' + (i===0?'disabled':'') + ' title="Mover para cima" style="flex:1;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am,#d4954a);font-size:.7rem;border-radius:3px;cursor:pointer;padding:.15rem 0">\u25B2</button>' +
+      '<button type="button" onclick="moverFotoNoticiaAdm(' + i + ',1)" ' + (i===window._ncFotos.length-1?'disabled':'') + ' title="Mover para baixo" style="flex:1;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am,#d4954a);font-size:.7rem;border-radius:3px;cursor:pointer;padding:.15rem 0">\u25BC</button>' +
+      (i!==0 ? '<button type="button" onclick="definirCapaFotoNoticia(' + i + ')" title="Definir como capa" style="flex:1;background:rgba(212,149,74,.15);border:1px solid rgba(212,149,74,.35);color:var(--am,#d4954a);font-size:.7rem;border-radius:3px;cursor:pointer;padding:.15rem 0">\u2B50</button>' : '') +
+      '</div></div>';
+  }).join('');
+}
+function moverFotoNoticiaAdm(i, dir) {
+  var novo = i + dir;
+  if (novo < 0 || novo >= window._ncFotos.length) return;
+  var tmp = window._ncFotos[i]; window._ncFotos[i] = window._ncFotos[novo]; window._ncFotos[novo] = tmp;
+  renderFotosNoticiaAdm();
+}
+function definirCapaFotoNoticia(i) {
+  if (i <= 0 || i >= window._ncFotos.length) return;
+  var item = window._ncFotos.splice(i, 1)[0];
+  window._ncFotos.unshift(item);
+  renderFotosNoticiaAdm();
+}
+function removerFotoNoticia(i) {
+  window._ncFotos.splice(i, 1);
+  renderFotosNoticiaAdm();
+  var st = document.getElementById('nc-foto-status'); if (st && !window._ncFotos.length) st.style.display = 'none';
 }
 
+var _ncEditandoKey = null;
+function editarNoticia(key) {
+  var db = dbLer();
+  var item = db.noticias && db.noticias[key];
+  if (!item) { notif('⚠ Notícia não encontrada.'); return; }
+  _ncEditandoKey = key;
+  var set = function(id, val){ var el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('nc-cat', item.cat || 'Notícia');
+  set('nc-tit', item.titulo || '');
+  set('nc-meta', item.meta || '');
+  set('nc-resumo', item.resumo || '');
+  set('nc-link', item.link || '');
+  set('nc-arq-url', item.arquivo || '');
+  set('nc-arq-nome', item.arquivoNome || '');
+  var i18n = item.i18n || {};
+  set('nc-tit-en', i18n.titulo && i18n.titulo.en); set('nc-tit-es', i18n.titulo && i18n.titulo.es); set('nc-tit-fr', i18n.titulo && i18n.titulo.fr);
+  set('nc-resumo-en', i18n.resumo && i18n.resumo.en); set('nc-resumo-es', i18n.resumo && i18n.resumo.es); set('nc-resumo-fr', i18n.resumo && i18n.resumo.fr);
+  /* Migração defensiva: notícias publicadas antes deste recurso só tinham
+     um campo "foto" único — aqui viram uma lista de 1 foto, sem perder nada. */
+  window._ncFotos = (item.fotos && item.fotos.length) ? item.fotos.slice() : (item.foto ? [{ src: item.foto, leg: '' }] : []);
+  renderFotosNoticiaAdm();
+  var arqSt = document.getElementById('nc-arq-status');
+  if (arqSt) { if (item.arquivo) { arqSt.style.display='block'; arqSt.style.background='rgba(42,74,28,.2)'; arqSt.style.color='#7bc67e'; arqSt.textContent='✅ Anexo atual: ' + (item.arquivoNome||'arquivo'); } else { arqSt.style.display='none'; } }
+  var titEl = document.getElementById('nc-painel-titulo'); if (titEl) titEl.textContent = '✏️ Editar Notícia';
+  var aviso = document.getElementById('nc-editando-aviso'); if (aviso) aviso.style.display = 'block';
+  var btn = document.getElementById('nc-btn-publicar'); if (btn) btn.textContent = '💾 Salvar alterações';
+  var btnCancel = document.getElementById('nc-btn-cancelar'); if (btnCancel) btnCancel.style.display = 'inline-block';
+  var painel = document.getElementById('painel-noticia');
+  if (painel) painel.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function cancelarEdicaoNoticia() {
+  _ncEditandoKey = null;
+  ['nc-tit','nc-tit-en','nc-tit-es','nc-tit-fr','nc-resumo','nc-resumo-en','nc-resumo-es','nc-resumo-fr','nc-meta','nc-link','nc-arq-url','nc-arq-nome'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
+  var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
+  var ffi = document.getElementById('nc-foto'); if (ffi) ffi.value='';
+  window._ncFotos = [];
+  renderFotosNoticiaAdm();
+  var fst = document.getElementById('nc-foto-status'); if (fst) fst.style.display='none';
+  var titEl = document.getElementById('nc-painel-titulo'); if (titEl) titEl.textContent = '📝 Publicar Notícia';
+  var aviso = document.getElementById('nc-editando-aviso'); if (aviso) aviso.style.display = 'none';
+  var btn = document.getElementById('nc-btn-publicar'); if (btn) btn.textContent = '📰 Publicar Notícia';
+  var btnCancel = document.getElementById('nc-btn-cancelar'); if (btnCancel) btnCancel.style.display = 'none';
+}
 async function pubNoticia() {
   var tit = v('nc-tit'), res = v('nc-resumo'), meta = v('nc-meta'), link = v('nc-link'), cat = v('nc-cat');
   if (!tit || !res) { alert('Preencha pelo menos o titulo e o texto em portugues.'); return; }
-  var btn = document.querySelector('button[onclick="pubNoticia()"]');
+  var editandoKey = _ncEditandoKey;
+  var btn = document.getElementById('nc-btn-publicar');
   var txtOriginal = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = '✨ Traduzindo para EN / ES / FR...'; }
   var tradOk = false;
@@ -5172,22 +5268,29 @@ async function pubNoticia() {
   } catch(e) {
     console.warn('Traducao automatica falhou, publicando so em portugues.', e);
   }
-  if (btn) { btn.textContent = '💾 Publicando...'; }
-  var key = 'not_' + Date.now();
-  var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link, foto: v('nc-foto-url'),
-    arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: Date.now(),
+  if (btn) { btn.textContent = editandoKey ? '💾 Salvando...' : '💾 Publicando...'; }
+  var db = dbLer(); if (!db.noticias) db.noticias = {};
+  var key = editandoKey || ('not_' + Date.now());
+  var tsOriginal = (editandoKey && db.noticias[editandoKey]) ? db.noticias[editandoKey].ts : Date.now();
+  var fotosLista = (window._ncFotos || []).filter(function(f){ return f && f.src; });
+  var item = { cat: cat || 'Noticia', titulo: tit, resumo: res, meta: meta, link: link,
+    foto: fotosLista.length ? fotosLista[0].src : '', fotos: fotosLista,
+    arquivo: v('nc-arq-url'), arquivoNome: v('nc-arq-nome'), ts: tsOriginal,
     i18n: {
       titulo: { pt: tit, en: v('nc-tit-en')||tit, es: v('nc-tit-es')||tit, fr: v('nc-tit-fr')||tit },
       resumo: { pt: res, en: v('nc-resumo-en')||res, es: v('nc-resumo-es')||res, fr: v('nc-resumo-fr')||res }
     } };
-  var db = dbLer(); if (!db.noticias) db.noticias = {};
   db.noticias[key] = item; dbSalvar(db); salvarNoGitHub();
+  var cardAntigo = document.querySelector('.noticias-grid [data-key="' + key + '"]');
+  if (cardAntigo) cardAntigo.remove();
   renderNoticia(item, key);
-  notif(tradOk ? '\u2705 Not\u00edcia publicada nos 4 idiomas automaticamente!' : '\u26a0 Not\u00edcia publicada SOMENTE em Portugu\u00eas \u2014 a tradu\u00e7\u00e3o autom\u00e1tica falhou. Configure a chave Claude na Sala de Imprensa e republique.');
-  ['nc-tit','nc-tit-en','nc-tit-es','nc-tit-fr','nc-resumo','nc-resumo-en','nc-resumo-es','nc-resumo-fr','nc-meta','nc-link','nc-arq-url','nc-arq-nome','nc-foto-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-  var st = document.getElementById('nc-arq-status'); if (st) st.style.display='none';
-  var fi = document.getElementById('nc-arq'); if (fi) fi.value='';
-  if (btn) { btn.disabled = false; btn.textContent = txtOriginal || '📰 Publicar Notícia'; }
+  if (editandoKey) {
+    notif(tradOk ? '✅ Notícia atualizada e traduzida nos 4 idiomas!' : '⚠ Notícia atualizada SOMENTE em Português — a tradução automática falhou.');
+  } else {
+    notif(tradOk ? '✅ Notícia publicada nos 4 idiomas automaticamente!' : '⚠ Notícia publicada SOMENTE em Português — a tradução automática falhou. Configure a chave Claude na Sala de Imprensa e republique.');
+  }
+  cancelarEdicaoNoticia();
+  if (btn) { btn.disabled = false; }
 }
 
 
@@ -5230,6 +5333,16 @@ function abrirNoticiaModal(key) {
   document.getElementById('mnc-texto').textContent = item.resumo || '';
   var ft = document.getElementById('mnc-foto');
   if (item.foto) { ft.src = item.foto; ft.style.display='block'; } else { ft.style.display='none'; }
+  var extra = document.getElementById('mnc-fotos-extra');
+  if (extra) {
+    var fotosModal = (item.fotos && item.fotos.length) ? item.fotos : (item.foto ? [{src:item.foto,leg:''}] : []);
+    if (fotosModal.length > 1) {
+      extra.innerHTML = fotosModal.map(function(f){
+        return '<img src="' + f.src + '" title="' + (f.leg||'').replace(/"/g,'&quot;') + '" onclick="document.getElementById(\'mnc-foto\').src=this.src" style="width:64px;height:64px;object-fit:cover;border-radius:5px;cursor:pointer;opacity:.85" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.85">';
+      }).join('');
+      extra.style.display = 'flex';
+    } else { extra.style.display = 'none'; extra.innerHTML=''; }
+  }
   var lk = document.getElementById('mnc-link');
   if (item.link) { lk.href = item.link; lk.style.display='inline-block'; } else { lk.style.display='none'; }
   var aq = document.getElementById('mnc-arquivo');
@@ -5246,6 +5359,7 @@ function excluirNoticia(key, el) {
   var db = dbLer();
   if (db.noticias && db.noticias[key]) { delete db.noticias[key]; dbSalvar(db); salvarNoGitHub(); }
   if (el) { el.style.opacity='0'; setTimeout(function(){ el.remove(); }, 250); }
+  if (_ncEditandoKey === key) cancelarEdicaoNoticia();
   notif('\uD83D\uDDD1 Noticia excluida.');
 }
 
@@ -8083,6 +8197,43 @@ function prevGalFoto(input) {
 
 
 // ══ REORDENAR FOTOS (troca de posição persistente) ══
+function definirCapaAlbum(btn) {
+  var el = btn.closest('.galeria-item');
+  if (!el || !el.dataset.fbkey) return;
+  var db = dbLer();
+  var key = el.dataset.fbkey;
+  var item = db.galeria && db.galeria[key];
+  if (!item || !item.ocasiao) { notif('⚠️ Esta foto não pertence a um álbum.'); return; }
+  if (item.tipo === 'video') { notif('⚠️ Um vídeo não pode ser a capa do álbum — escolha uma foto.'); return; }
+  var minTs = Infinity;
+  Object.keys(db.galeria).forEach(function(k){
+    var it = db.galeria[k];
+    if (it && it.ocasiao === item.ocasiao && typeof it.ts === 'number') minTs = Math.min(minTs, it.ts);
+  });
+  if (minTs === Infinity) minTs = item.ts || Date.now();
+  item.ts = minTs - 1;
+  dbSalvar(db); salvarNoGitHub();
+  renderAlbunsOcasiao();
+  abrirAlbum(item.ocasiao);
+  notif('⭐ Foto definida como capa do álbum!');
+}
+function marcarCapaNoModal(ocasiao) {
+  var grid = document.getElementById('modal-album-grid');
+  if (!grid || window._albumAtual !== ocasiao) return;
+  var db = dbLer();
+  var itens = [];
+  Object.keys(db.galeria).forEach(function(key) {
+    var it = db.galeria[key];
+    if (it && it.src && it.ocasiao === ocasiao) itens.push({ key: key, item: it });
+  });
+  itens.sort(function(a, b) { return (a.item.ts || 0) - (b.item.ts || 0); });
+  var capaItem = itens.filter(function(x){ return x.item.tipo !== 'video'; })[0];
+  grid.querySelectorAll('.galeria-item').forEach(function(el){
+    var selo = el.querySelector('.gal-capa-selo');
+    var ehCapa = capaItem && el.dataset.fbkey === capaItem.key;
+    if (selo) selo.style.display = ehCapa ? 'block' : 'none';
+  });
+}
 function moverFotoGal(btn, dir) {
   var el = btn.closest('.galeria-item');
   if (!el || !el.dataset.fbkey) return;
@@ -8093,12 +8244,18 @@ function moverFotoGal(btn, dir) {
   if (!viz) { notif('\u26A0\uFE0F A foto j\u00E1 est\u00E1 na ponta.'); return; }
   var db = dbLer();
   var a = el.dataset.fbkey, b = viz.dataset.fbkey;
+  var ocasiao = null;
   if (db.galeria && db.galeria[a] && db.galeria[b]) {
     var t = db.galeria[a].ts; db.galeria[a].ts = db.galeria[b].ts; db.galeria[b].ts = t;
     dbSalvar(db); salvarNoGitHub();
+    ocasiao = db.galeria[a].ocasiao || null;
   }
   var pai = el.parentNode;
   if (dir < 0) pai.insertBefore(el, viz); else pai.insertBefore(viz, el);
+  /* Se a foto pertence a um \u00E1lbum, a capa pode ter mudado de posi\u00E7\u00E3o \u2014
+     atualiza a miniatura do \u00E1lbum na grade principal na hora, sem
+     precisar recarregar a p\u00E1gina, e real\u00E7a a foto que \u00E9 a capa agora. */
+  if (ocasiao) { renderAlbunsOcasiao(); marcarCapaNoModal(ocasiao); }
   notif('\u2195\uFE0F Ordem das fotos atualizada e salva!');
 }
 
@@ -8240,7 +8397,7 @@ function publicarLote() {
 }
 
 // ══ ÁLBUNS DE OCASIÃO ══
-function _galItemHtmlAlbum(item, fbKey) {
+function _galItemHtmlAlbum(item, fbKey, ehCapa) {
   var leg = item.leg || '';
   var src = item.src || '';
   var ehVideo = item.tipo === 'video';
@@ -8251,14 +8408,20 @@ function _galItemHtmlAlbum(item, fbKey) {
       '<div style="width:48px;height:48px;border-radius:50%;background:rgba(212,149,74,.92);display:flex;align-items:center;justify-content:center;color:#0A0F08;font-size:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,.5)">\u25B6</div></div>' +
       '<div style="position:absolute;top:.4rem;left:50%;transform:translateX(-50%);background:rgba(180,30,30,.92);color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.12em;padding:.15rem .5rem;border-radius:10px;z-index:2">\uD83C\uDFAC V\u00CDDEO</div>'
     : '<img src="' + finalSrc + '" alt="" style="width:100%;height:170px;object-fit:cover;display:block" onerror="this.style.display=&quot;none&quot;">';
+  var seloCapa = '<div class="gal-capa-selo" style="display:' + (ehCapa ? 'block' : 'none') + ';position:absolute;top:.4rem;left:50%;transform:translateX(-50%);background:rgba(212,149,74,.95);color:#0A0F08;font-size:.6rem;font-weight:800;letter-spacing:.06em;padding:.18rem .6rem;border-radius:10px;z-index:2">\u2B50 CAPA</div>';
+  var btnCapa = (!ehVideo && !ehCapa)
+    ? '<button class="adm-panel" onclick="event.stopPropagation();definirCapaAlbum(this)" style="position:absolute;bottom:.4rem;right:.4rem;width:26px;height:26px;background:rgba(212,149,74,.95);border:none;color:#0A0F08;font-size:.72rem;cursor:pointer;border-radius:50%" title="Definir como capa do \u00E1lbum">\u2B50</button>'
+    : '';
   return '<div class="galeria-item lb-item" data-src="' + src + '" data-leg="' + leg.replace(/"/g, '&quot;') + '" data-fbkey="' + fbKey + '" data-tipo="' + (ehVideo ? 'video' : 'foto') + '" style="position:relative;overflow:hidden;border-radius:6px;cursor:pointer" onclick="abrirLightbox(event,this)">' +
     midia +
+    seloCapa +
     '<div class="galeria-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.85) 0%,transparent 55%);display:flex;align-items:flex-end;padding:.6rem"><div class="galeria-leg" style="font-size:.7rem;color:rgba(255,255,255,.85)" ondblclick="editarLegenda(event,this)">' + leg + '</div></div>' +
     '<button class="adm-panel" onclick="event.stopPropagation();excluirGalItem(this)" style="position:absolute;top:.4rem;right:.4rem;width:26px;height:26px;background:rgba(180,30,30,.85);border:none;color:white;font-size:.75rem;cursor:pointer;border-radius:50%">\u2715</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();editarLegenda(event,this.closest(\'.galeria-item\').querySelector(\'.galeria-leg\'))" style="position:absolute;top:.4rem;left:.4rem;width:26px;height:26px;background:rgba(42,74,28,.85);border:none;color:white;font-size:.72rem;cursor:pointer;border-radius:50%" title="Editar legenda">\u270F\uFE0F</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();substituirFotoGal(this)" style="position:absolute;top:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(27,58,92,.85);border:none;color:white;font-size:.68rem;cursor:pointer;border-radius:50%" title="Substituir foto">\uD83D\uDD04</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,-1)" style="position:absolute;bottom:.4rem;left:.4rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para tras">\u25C0</button>' +
     '<button class="adm-panel" onclick="event.stopPropagation();moverFotoGal(this,1)" style="position:absolute;bottom:.4rem;left:2.3rem;width:26px;height:26px;background:rgba(212,149,74,.85);border:none;color:#0A0F08;font-weight:800;font-size:.72rem;cursor:pointer;border-radius:50%" title="Mover para frente">\u25B6</button>' +
+    btnCapa +
     '</div>';
 }
 
@@ -8338,7 +8501,8 @@ function abrirAlbum(ocasiao) {
   document.getElementById('modal-album-sub').textContent = nF + ' foto(s)' + (nV ? ' e ' + nV + ' v\u00EDdeo(s)' : '') + ' \u2014 clique para ampliar';
   window._albumAtual = ocasiao;
   var grid = document.getElementById('modal-album-grid');
-  grid.innerHTML = itens.map(function(x) { return _galItemHtmlAlbum(x.item, x.key); }).join('');
+  var capaKeyAtual = (itens.filter(function(x){ return x.item.tipo !== 'video'; })[0] || {}).key;
+  grid.innerHTML = itens.map(function(x) { return _galItemHtmlAlbum(x.item, x.key, x.key === capaKeyAtual); }).join('');
   var add = document.getElementById('album-add-zone');
   if (add) {
     add.innerHTML =
@@ -9071,7 +9235,8 @@ document.addEventListener('keydown', function(e) {
         <span id="mnc-cat" style="background:var(--vd,#2a4a1c);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:3px"></span>
         <span id="mnc-meta" style="font-size:.78rem;color:var(--tx3,#8a8a7a)"></span>
       </div>
-      <img id="mnc-foto" src="" alt="" style="display:none;width:100%;max-height:340px;object-fit:cover;border-radius:8px;margin:0 0 1.1rem">
+      <img id="mnc-foto" src="" alt="" style="display:none;width:100%;max-height:340px;object-fit:cover;border-radius:8px;margin:0 0 .6rem">
+      <div id="mnc-fotos-extra" style="display:none;gap:.5rem;flex-wrap:wrap;margin:0 0 1.1rem"></div>
       <h2 id="mnc-titulo" style="font-size:1.4rem;line-height:1.3;color:var(--tx,#1d2415);margin:.4rem 0 1.2rem;font-weight:800"></h2>
       <div id="mnc-texto" style="font-size:.95rem;line-height:1.85;color:var(--tx2,#3a4030);text-align:justify;white-space:pre-wrap"></div>
       <div style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">
@@ -9630,10 +9795,6 @@ I18N["leg.l13.tit"] = {pt:"Convenção 169 OIT — Texto completo em português"
 I18N["leg.l13.txt"] = {pt:"OIT · 1989 · Ratificada pelo Brasil em 2002 · 44 artigos sobre direitos dos povos indígenas e tribais", en:"ILO · 1989 · Ratified by Brazil in 2002 · 44 articles on the rights of Indigenous and tribal peoples", es:"OIT · 1989 · Ratificada por Brasil en 2002 · 44 artículos sobre derechos de los pueblos indígenas y tribales", fr:"OIT · 1989 · Ratifiée par le Brésil en 2002 · 44 articles sur les droits des peuples autochtones et tribaux"};
 I18N["leg.l14.tit"] = {pt:"Declaração da ONU sobre Direitos dos Povos Indígenas (UNDRIP)", en:"UN Declaration on the Rights of Indigenous Peoples (UNDRIP)", es:"Declaración de la ONU sobre los Derechos de los Pueblos Indígenas (UNDRIP)", fr:"Déclaration de l'ONU sur les Droits des Peuples Autochtones (UNDRIP)"};
 I18N["leg.l14.txt"] = {pt:"ONU · 13 set. 2007 · Brasil votou a favor · 46 artigos sobre direitos coletivos e individuais dos povos indígenas", en:"UN · Sep. 13, 2007 · Brazil voted in favor · 46 articles on the collective and individual rights of Indigenous peoples", es:"ONU · 13 sep. 2007 · Brasil votó a favor · 46 artículos sobre derechos colectivos e individuales de los pueblos indígenas", fr:"ONU · 13 sept. 2007 · Le Brésil a voté pour · 46 articles sur les droits collectifs et individuels des peuples autochtones"};
-I18N["leg.l15.tit"] = {pt:"Regimento Interno do CMDDI: Deliberação nº 002/CMDDI/2005", en:"CMDDI Internal Rules: Resolution No. 002/CMDDI/2005", es:"Reglamento Interno del CMDDI: Deliberación nº 002/CMDDI/2005", fr:"Règlement Intérieur du CMDDI : Délibération nº 002/CMDDI/2005"};
-I18N["leg.l15.txt"] = {pt:"DIOGRANDE nº 1.963 · 26 dez. 2005 · Aprovado pelo Plenário em 16 nov. 2005 · Define finalidade, competências, conselheiros e comissões do Conselho", en:"DIOGRANDE No. 1,963 · Dec. 26, 2005 · Approved by the Plenary on Nov. 16, 2005 · Sets out the Council's purpose, powers, members and committees", es:"DIOGRANDE nº 1.963 · 26 dic. 2005 · Aprobado por el Pleno el 16 nov. 2005 · Define finalidad, competencias, consejeros y comisiones del Consejo", fr:"DIOGRANDE nº 1.963 · 26 déc. 2005 · Approuvé par l'Assemblée plénière le 16 nov. 2005 · Définit la finalité, les compétences, les conseillers et les commissions du Conseil"};
-I18N["leg.l16.tit"] = {pt:"Lei nº 7.227/2024: Reformulação do CMDDI", en:"Law No. 7,227/2024: Reform of the CMDDI", es:"Ley nº 7.227/2024: Reformulación del CMDDI", fr:"Loi nº 7.227/2024 : Réforme du CMDDI"};
-I18N["leg.l16.txt"] = {pt:"Prefeitura de Campo Grande · 18 abr. 2024 · DIOGRANDE nº 7.468 · Lei vigente do Conselho: 21 membros titulares, 20 deles indígenas", en:"Campo Grande City Government · Apr. 18, 2024 · DIOGRANDE No. 7,468 · The Council's current law: 21 full members, 20 of them Indigenous", es:"Alcaldía de Campo Grande · 18 abr. 2024 · DIOGRANDE nº 7.468 · Ley vigente del Consejo: 21 miembros titulares, 20 de ellos indígenas", fr:"Mairie de Campo Grande · 18 avr. 2024 · DIOGRANDE nº 7.468 · Loi en vigueur du Conseil : 21 membres titulaires, dont 20 autochtones"};
 I18N["leg.acessar"] = {pt:"🔗 Acessar", en:"🔗 Access", es:"🔗 Acceder", fr:"🔗 Accéder"};
 I18N["vid1.tit"] = {pt:"Posse da 5ª Gestão do CMDDI — Esplanada Ferroviária", en:"Inauguration of the CMDDI's 5th Term — Railway Esplanade", es:"Toma de posesión de la 5ª Gestión del CMDDI — Explanada Ferroviaria", fr:"Investiture du 5e Mandat du CMDDI — Esplanade Ferroviaire"};
 I18N["vid1.fonte"] = {pt:"📅 2019 · CMDDI Campo Grande, MS", en:"📅 2019 · CMDDI Campo Grande, MS", es:"📅 2019 · CMDDI Campo Grande, MS", fr:"📅 2019 · CMDDI Campo Grande, MS"};

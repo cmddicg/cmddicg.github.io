@@ -2361,6 +2361,250 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 .lang-switch button.lang-on{background:var(--am,#D4954A);color:#1a1a1a;border-color:var(--am,#D4954A)}
 </style>
 <style>.fixa-del{display:none;align-items:center;gap:.3rem;background:rgba(248,113,113,.15);color:#c0392b;border:1px solid rgba(248,113,113,.4);border-radius:6px;padding:.25rem .6rem;font-size:.72rem;cursor:pointer;margin-top:.5rem}body.adm-ok .fixa-del{display:inline-flex}</style>
+<style id="nt-estilo">
+/* janela de leitura das notícias: cores e fontes do CMDDI */
+#nt-modal,#nt-lb{--marfim:#F2EBD9;--carvao:#160E04;--carvao-suave:#4A3218;--mata:#2A4A1C;--barro:#6B3D1E;--areia:#E4D8BC;--agua:#1B3A2C;--disp:'Cinzel',serif;--corpo:Georgia,"Times New Roman",serif;--dado:Georgia,serif;--raio:10px;--anel:1px solid rgba(22,14,4,.14)}
+.nc-selo-rel{display:inline-block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--vm);background:rgba(196,122,58,.14);border:1px solid rgba(107,61,30,.3);padding:.25rem .6rem;border-radius:999px;margin-bottom:.5rem;line-height:1.3}
+/* ===== Notícias (releases do site e matérias na mídia) ===== */
+.nt-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 26px}
+.nt-tab{font:inherit;font-family:var(--corpo);font-size:.88rem;font-weight:700;cursor:pointer;color:var(--carvao);background:#fff;border:1px solid rgba(33,24,18,.16);padding:9px 16px;border-radius:999px;display:inline-flex;gap:9px;align-items:center;transition:background .25s,color .25s,border-color .25s,transform .25s}
+.nt-tab:hover{border-color:var(--barro);transform:translateY(-1px)}
+.nt-tab.on{background:var(--barro);color:#fff;border-color:var(--barro)}
+.nt-cont{font-size:.72rem;min-width:22px;text-align:center;padding:1px 7px;border-radius:999px;background:rgba(0,0,0,.09)}
+.nt-tab.on .nt-cont{background:rgba(255,255,255,.25)}
+.nt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:980px){.nt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.nt-grid{grid-template-columns:minmax(0,1fr)}}
+.nt-card{display:flex;flex-direction:column;background:#fff;border:var(--anel);border-radius:var(--raio);overflow:hidden;box-shadow:0 8px 24px rgba(33,24,18,.07);transition:transform .3s,box-shadow .3s}
+.nt-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(33,24,18,.13)}
+.nt-card.nt-destaque{grid-column:span 2;flex-direction:row}
+.nt-card.nt-destaque .nt-capa{width:52%;aspect-ratio:auto;min-height:300px}
+.nt-card.nt-destaque .nt-corpo{width:48%;padding:28px 30px}
+.nt-card.nt-destaque .nt-t{font-size:1.45rem}
+@media (max-width:620px){.nt-card.nt-destaque{grid-column:auto;flex-direction:column}.nt-card.nt-destaque .nt-capa,.nt-card.nt-destaque .nt-corpo{width:auto}.nt-card.nt-destaque .nt-capa{min-height:0;aspect-ratio:16/10}}
+.nt-capa{display:block;width:100%;aspect-ratio:16/10;border:0;padding:0;margin:0;cursor:pointer;background:var(--areia);overflow:hidden;position:relative}
+.nt-capa img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.nt-card:hover .nt-capa img{transform:scale(1.04)}
+.nt-capa-vazia{display:grid;place-items:center;width:100%;height:100%;font-size:2.4rem;color:var(--barro)}
+.nt-corpo{padding:20px 22px 22px;display:flex;flex-direction:column;gap:9px;flex:1}
+.nt-selo{display:inline-flex;align-self:flex-start;align-items:center;gap:7px;font-family:var(--dado);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:5px 10px;border-radius:999px;line-height:1.3}
+.nt-selo-release{background:rgba(181,96,42,.12);color:var(--barro);border:1px solid rgba(181,96,42,.3)}
+.nt-selo-midia{background:rgba(29,122,147,.1);color:var(--agua);border:1px solid rgba(29,122,147,.28)}
+.nt-t{font-family:var(--disp);font-size:1.12rem;line-height:1.3;color:var(--mata);margin:0;font-weight:600}
+.nt-resumo{font-size:.92rem;line-height:1.6;color:var(--carvao-suave);margin:0}
+.nt-meta{font-size:.8rem;color:var(--carvao-suave);margin-top:auto;padding-top:4px}
+.nt-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.nt-btn{font:inherit;font-family:var(--corpo);font-size:.84rem;font-weight:700;cursor:pointer;color:#fff;background:var(--mata);border:0;padding:10px 16px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;transition:background .25s,transform .25s;text-decoration:none}
+.nt-btn:hover{background:var(--barro);transform:translateY(-1px)}
+.nt-btn-ghost{background:transparent;color:var(--carvao);border:1px solid rgba(33,24,18,.2)}
+.nt-btn-ghost:hover{background:var(--areia);color:var(--carvao)}
+.nt-btn-perigo{background:transparent;color:#a3271b;border:1px solid rgba(163,39,27,.35)}
+.nt-btn-perigo:hover{background:rgba(163,39,27,.08);color:#a3271b}
+.nt-btn-mini{font-size:.74rem;padding:6px 12px}
+.nt-vazio{color:var(--carvao-suave);font-size:.95rem;padding:10px 0}
+.nt-so-adm{display:none !important}
+.nt-adm .nt-so-adm{display:inline-flex !important}
+.nt-adm .nt-painel.nt-so-adm{display:block !important}
+.nt-adm-rodape{margin-top:26px;text-align:right}
+.nt-adm-link{font:inherit;font-family:var(--corpo);font-size:.8rem;background:none;border:0;color:var(--carvao-suave);text-decoration:underline;cursor:pointer;opacity:.75}
+.nt-adm-link:hover{opacity:1;color:var(--barro)}
+/* janela da matéria */
+.nt-modal{position:fixed;inset:0;z-index:9000;background:rgba(17,12,8,.72);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:4vh 16px}
+.nt-modal[hidden]{display:none}
+.nt-art{position:relative;background:var(--marfim);color:var(--carvao);width:100%;max-width:820px;border-radius:var(--raio);padding:clamp(24px,5vw,48px);box-shadow:0 30px 80px rgba(0,0,0,.35);font-family:var(--corpo)}
+.nt-fechar{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(33,24,18,.18);background:#fff;font-size:1.4rem;line-height:1;cursor:pointer;color:var(--carvao)}
+.nt-fechar:hover{border-color:var(--barro);color:var(--barro)}
+.nt-art h3{font-family:var(--disp);font-size:clamp(1.5rem,3.8vw,2.3rem);line-height:1.16;color:var(--mata);margin:14px 0 12px;padding-right:36px}
+.nt-art-fina{font-size:1.1rem;line-height:1.55;color:var(--carvao-suave);margin:0 0 14px}
+.nt-art-meta{font-size:.86rem;color:var(--carvao-suave);padding:10px 0;border-top:1px solid rgba(33,24,18,.14);border-bottom:1px solid rgba(33,24,18,.14);display:flex;flex-wrap:wrap;gap:6px 18px}
+.nt-art-meta strong{color:var(--carvao)}
+.nt-art-capa{margin:22px 0 0}
+.nt-art-capa img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;border-radius:16px;cursor:zoom-in}
+.nt-art figcaption{font-size:.84rem;color:var(--carvao-suave);font-style:italic;line-height:1.45;margin-top:8px}
+.nt-art-texto{margin-top:22px}
+.nt-art-texto p{font-size:1.04rem;line-height:1.78;margin:0 0 1.1rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.nt-art-fotos-h{font-family:var(--disp);font-size:1.12rem;color:var(--mata);margin:26px 0 12px}
+.nt-art-fotos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.nt-art-fotos figure{margin:0}
+.nt-art-fotos img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;border-radius:12px;cursor:zoom-in}
+@media (max-width:620px){.nt-art-fotos{grid-template-columns:minmax(0,1fr)}.nt-art-texto p{text-align:left}}
+.nt-art-assina{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:26px;padding:12px 18px;background:#120d09;border-radius:16px;border-left:4px solid var(--barro)}
+.nt-art-assina img{height:42px;width:auto;display:block}
+.nt-art-assina span{color:#F3E7CC;font-size:.84rem;letter-spacing:.04em}
+.nt-art-aviso{margin-top:16px;font-size:.82rem;color:var(--carvao-suave);background:rgba(181,96,42,.08);border:1px dashed rgba(181,96,42,.35);border-radius:12px;padding:10px 14px}
+.nt-art-link{margin-top:22px}
+.nt-lb{position:fixed;inset:0;z-index:9500;background:rgba(8,6,4,.94);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:16px}
+.nt-lb[hidden]{display:none}
+.nt-lb img{max-width:96vw;max-height:80vh;border-radius:6px;display:block}
+.nt-lb p{color:#F3E7CC;font:.9rem/1.5 var(--corpo);max-width:760px;text-align:center;margin:14px 0 0}
+.nt-lb button{position:absolute;top:14px;right:18px;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer;line-height:1}
+/* painel do administrador */
+.nt-painel{margin-top:28px;background:#fff;border:1px solid rgba(181,96,42,.35);border-radius:var(--raio);padding:24px}
+.nt-painel h3{font-size:1.2rem;margin:0 0 4px}
+.nt-painel-dica{font-size:.86rem;color:var(--carvao-suave);margin:0 0 16px}
+.nt-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+.nt-form .nt-inteiro{grid-column:1/-1}
+@media (max-width:620px){.nt-form{grid-template-columns:minmax(0,1fr)}}
+.nt-form label{display:block;font-size:.78rem;font-weight:700;color:var(--carvao);margin-bottom:5px}
+.nt-in{width:100%;box-sizing:border-box;font:inherit;font-family:var(--corpo);font-size:.92rem;padding:10px 12px;border:1px solid rgba(33,24,18,.2);border-radius:10px;background:var(--marfim);color:var(--carvao)}
+.nt-in:focus{outline:2px solid rgba(181,96,42,.45);border-color:var(--barro)}
+textarea.nt-in{resize:vertical;line-height:1.55}
+.nt-form-acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.nt-status{font-size:.86rem;margin-top:12px;padding:8px 12px;border-radius:10px}
+.nt-status[hidden]{display:none}
+.nt-status.ok{background:rgba(47,125,66,.1);color:#1f5a2f}
+.nt-status.erro{background:rgba(163,39,27,.08);color:#a3271b}
+.nt-status.espera{background:rgba(201,151,63,.12);color:#7a5a1d}
+.nt-capa-previa{margin-top:8px;max-width:220px;border-radius:10px;display:block}
+.nt-capa-previa[hidden]{display:none}
+.nt-so-release,.nt-so-midia{}
+.nt-form[data-tipo="midia"] .nt-so-release{display:none}
+.nt-form[data-tipo="release"] .nt-so-midia{display:none}
+</style>
+<script>
+/* ===== Tradução automática (português -> inglês, espanhol e francês) =====
+   Usada quando o ADM insere ou altera um texto no site.
+   1) Se este navegador tiver a chave do Claude configurada (Sala de Imprensa ->
+      Configurações), traduz pelo Claude.
+   2) Sem chave, ou se o Claude falhar, usa o serviço gratuito MyMemory.
+   Se nenhum dos dois responder, devolve null e o texto fica em português. */
+(function(){
+if (window.TRAD_AUTO) return;
+var LINGUAS = ['en', 'es', 'fr'];
+var MM_LANG = {en:'en-GB', es:'es-ES', fr:'fr-FR'};
+
+function chaveClaude(){
+  try{
+    var direta = localStorage.getItem('trad_claude_key'); if (direta) return direta.trim();
+    var cfgs = ['cmddi_si_cfg', 'icet_si_cfg', 'aldeiaxp_si_cfg', 'focams_si_cfg'];
+    for (var i = 0; i < cfgs.length; i++){
+      var c = JSON.parse(localStorage.getItem(cfgs[i]) || '{}');
+      if (c && c.claude) return String(c.claude).trim();
+    }
+  }catch(e){}
+  return '';
+}
+
+function viaClaude(textos, chave){
+  var schema = {type:'object', additionalProperties:false, required:LINGUAS, properties:{}};
+  LINGUAS.forEach(function(l){ schema.properties[l] = {type:'array', items:{type:'string'}}; });
+  var corpo = {
+    model: 'claude-opus-5-5',
+    max_tokens: 16000,
+    fallbacks: 'default',
+    output_config: {effort: 'low', format: {type: 'json_schema', schema: schema}},
+    system: 'Você traduz textos de sites institucionais de organizações indígenas de Mato Grosso do Sul (Brasil) do português para inglês (en), espanhol latino-americano (es) e francês (fr). ' +
+      'Preserve intactos nomes próprios de pessoas, organizações, etnias, aldeias e lugares, siglas (ICET, CMDDI, FOCAMS, UNIPBRAS, IFMS, MPE/MS, COOPIMS, INPI, FUNAI etc.), números, datas e links. ' +
+      'Use tom formal e respeitoso. Cada lista de saída deve ter exatamente um item por texto de entrada, na mesma ordem; quebras de linha devem ser mantidas.',
+    messages: [{role: 'user', content: JSON.stringify({textos: textos})}]
+  };
+  return fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': chave,
+      'anthropic-version': '2023-06-01',
+      'anthropic-beta': 'server-side-fallback-2026-07-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(corpo)
+  }).then(function(r){
+    return r.json().then(function(j){
+      if (!r.ok) throw new Error((j && j.error && j.error.message) || ('HTTP ' + r.status));
+      if (j.stop_reason === 'refusal') throw new Error('recusado');
+      var bloco = (j.content || []).filter(function(b){ return b.type === 'text'; })[0];
+      if (!bloco) throw new Error('resposta vazia');
+      var out = JSON.parse(bloco.text);
+      LINGUAS.forEach(function(l){ if (!Array.isArray(out[l]) || out[l].length !== textos.length) throw new Error('resposta incompleta'); });
+      return out;
+    });
+  });
+}
+
+/* MyMemory aceita até ~500 caracteres por pedido: divide por parágrafo e frase */
+function pedacos(t){
+  var out = [];
+  String(t).split(/(\n+)/).forEach(function(par){
+    if (par.length <= 450){ out.push(par); return; }
+    var atual = '';
+    par.split(/(?<=[.!?;:])\s+/).forEach(function(fr){
+      while (fr.length > 450){ if (atual){ out.push(atual); atual = ''; } out.push(fr.slice(0, 450)); fr = fr.slice(450); }
+      if ((atual + ' ' + fr).trim().length > 450){ out.push(atual); atual = fr; }
+      else atual = atual ? atual + ' ' + fr : fr;
+    });
+    if (atual) out.push(atual);
+  });
+  return out;
+}
+function mmUm(trecho, l){
+  if (!trecho.trim()) return Promise.resolve(trecho);
+  var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(trecho) + '&langpair=' + encodeURIComponent('pt-BR|' + MM_LANG[l]);
+  return fetch(url).then(function(r){ return r.json(); }).then(function(j){
+    if (!j || j.responseStatus != 200 || !j.responseData) throw new Error((j && j.responseDetails) || 'MyMemory');
+    var t = j.responseData.translatedText || '';
+    if (/MYMEMORY WARNING|QUERY LENGTH LIMIT/i.test(t)) throw new Error(t.slice(0, 80));
+    var tmp = document.createElement('textarea'); tmp.innerHTML = t; return tmp.value;
+  });
+}
+function viaMyMemory(textos){
+  var out = {en: [], es: [], fr: []}, fila = Promise.resolve();
+  textos.forEach(function(texto, i){
+    LINGUAS.forEach(function(l){
+      fila = fila.then(function(){
+        var p = pedacos(texto), res = [], f2 = Promise.resolve();
+        p.forEach(function(tr){ f2 = f2.then(function(){ return mmUm(tr, l).then(function(x){ res.push(x); }); }); });
+        return f2.then(function(){ out[l][i] = res.join(''); });
+      });
+    });
+  });
+  return fila.then(function(){ return out; });
+}
+
+/* textos: lista de strings em português. Devolve {en:[...], es:[...], fr:[...]} ou null. */
+function traduzir(textos){
+  textos = (textos || []).map(function(t){ return String(t == null ? '' : t); });
+  if (!textos.some(function(t){ return t.trim(); })) return Promise.resolve({en: textos.slice(), es: textos.slice(), fr: textos.slice()});
+  var chave = chaveClaude();
+  var tentativa = chave ? viaClaude(textos, chave).catch(function(e){ console.warn('Tradução pelo Claude falhou, usando MyMemory:', e && e.message); return viaMyMemory(textos); })
+                        : viaMyMemory(textos);
+  return tentativa.catch(function(e){ console.warn('Tradução automática indisponível:', e && e.message); return null; });
+}
+
+/* Preenche campo_en / campo_es / campo_fr de um objeto a partir de campo (pt).
+   Só traduz o que falta ou o que mudou desde a última tradução automática
+   (traduções feitas à mão, sem registro em trad_src, não são sobrescritas). */
+function pendentes(item, campos){
+  return campos.filter(function(c){
+    var pt = item[c]; if (typeof pt !== 'string' || !pt.trim()) return false;
+    var src = item.trad_src && item.trad_src[c];
+    var falta = LINGUAS.some(function(l){ return !item[c + '_' + l]; });
+    return falta || (src != null && src !== pt);
+  });
+}
+function traduzirCampos(item, campos){
+  var cs = pendentes(item, campos); if (!cs.length) return Promise.resolve(false);
+  return traduzir(cs.map(function(c){ return item[c]; })).then(function(t){
+    if (!t) return false;
+    item.trad_src = item.trad_src || {};
+    cs.forEach(function(c, i){
+      var mudou = item.trad_src[c] != null && item.trad_src[c] !== item[c];
+      LINGUAS.forEach(function(l){ if (mudou || !item[c + '_' + l]) item[c + '_' + l] = t[l][i]; });
+      item.trad_src[c] = item[c];
+    });
+    return true;
+  });
+}
+
+window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendentes: pendentes, chaveClaude: chaveClaude, linguas: LINGUAS};
+})();
+</script>
+<meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="fr_FR">
+<link rel="alternate" hreflang="pt-BR" href="https://cmddicg.com.br/">
+<link rel="alternate" hreflang="en" href="https://cmddicg.com.br/?lang=en">
+<link rel="alternate" hreflang="es" href="https://cmddicg.com.br/?lang=es">
+<link rel="alternate" hreflang="fr" href="https://cmddicg.com.br/?lang=fr">
+<link rel="alternate" hreflang="x-default" href="https://cmddicg.com.br/">
 </head>
 <body>
 
@@ -2677,9 +2921,9 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
             <button class="cal-nav" onclick="calMes(1)">▶</button>
           </div>
           <div class="cal-dias-semana">
-            <div class="cal-ds">D</div><div class="cal-ds">S</div><div class="cal-ds">T</div>
-            <div class="cal-ds">Q</div><div class="cal-ds">Q</div><div class="cal-ds">S</div>
-            <div class="cal-ds">S</div>
+            <div class="cal-ds">Dom</div><div class="cal-ds">Seg</div><div class="cal-ds">Ter</div>
+            <div class="cal-ds">Qua</div><div class="cal-ds">Qui</div><div class="cal-ds">Sex</div>
+            <div class="cal-ds">Sáb</div>
           </div>
           <div class="cal-dias" id="cal-dias"></div>
         </div>
@@ -2699,6 +2943,10 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 </section>
 
 <!-- NOTÍCIAS -->
+<div class="nt-modal" id="nt-modal" role="dialog" aria-modal="true" hidden>
+  <article class="nt-art" id="nt-art"></article>
+</div>
+<div class="nt-lb" id="nt-lb" role="dialog" aria-modal="true" hidden><button type="button" id="nt-lb-x" aria-label="Fechar">&times;</button><img id="nt-lb-img" alt=""><p id="nt-lb-leg"></p></div>
 <section id="noticias" class="sec sec-clara">
   <div class="sec-w">
     <div class="eyb eyb-terra" data-i18n="eyb.transparencia">Informação e transparência</div>
@@ -4693,7 +4941,35 @@ async function admVerificarConexaoGitHub() {
 }
 
 
+// ══ TRADUÇÃO AUTOMÁTICA DAS LEGENDAS E NOMES DE ÁLBUM DA GALERIA ══
+var _galTradTimer = null, _galTradRodando = false;
+function galTraduzirPendentes() {
+  if (_galTradRodando || !window.TRAD_AUTO || !document.body.classList.contains('adm-ok')) return;
+  var db0 = dbLer(), g0 = db0.galeria || {};
+  var keys = Object.keys(g0).filter(function(k){ return g0[k] && TRAD_AUTO.pendentes(g0[k], ['leg','ocasiao']).length; });
+  if (!keys.length) return;
+  _galTradRodando = true; notif('🌐 Traduzindo ' + keys.length + ' legenda(s) da galeria para EN, ES e FR...');
+  var fila = Promise.resolve(), feitos = [];
+  keys.forEach(function(k){ fila = fila.then(function(){ var antes = {leg: g0[k].leg, ocasiao: g0[k].ocasiao};
+    return TRAD_AUTO.traduzirCampos(g0[k], ['leg','ocasiao']).then(function(ok){ if (ok) feitos.push({k: k, it: g0[k], antes: antes}); }); }); });
+  fila.then(function(){
+    _galTradRodando = false;
+    if (!feitos.length) { notif('⚠ Tradução automática indisponível agora; as legendas ficam em português.'); return; }
+    var db = dbLer(), g = db.galeria || {}, n = 0;   // aplica sobre a versão mais recente
+    feitos.forEach(function(f){
+      var at = g[f.k]; if (!at) return;
+      ['leg','ocasiao'].forEach(function(c){
+        if (at[c] !== f.antes[c] || !f.it.trad_src || f.it.trad_src[c] !== at[c]) return;
+        ['en','es','fr'].forEach(function(l){ if (f.it[c + '_' + l] != null) at[c + '_' + l] = f.it[c + '_' + l]; });
+        at.trad_src = at.trad_src || {}; at.trad_src[c] = at[c]; n++;
+      });
+    });
+    if (!n) return;
+    dbSalvar(db); galAtualizarIdioma(); salvarNoGitHub(); notif('🌐 Traduções da galeria salvas.');
+  }).catch(function(){ _galTradRodando = false; });
+}
 function salvarNoGitHub() {
+  if (window.TRAD_AUTO) { clearTimeout(_galTradTimer); _galTradTimer = setTimeout(galTraduzirPendentes, 1500); }
   var dados = dbLer();
   var conteudo = btoa(unescape(encodeURIComponent(JSON.stringify(dados))));
   // Buscar SHA atual antes de salvar (sempre fresco, sem cache do navegador)
@@ -4843,8 +5119,31 @@ function carregarDadosFirebase() {
   }).catch(function(){});
 }
 
+function galLang() { try { return localStorage.getItem('cmddi_lang') || 'pt'; } catch(e) { return 'pt'; } }
+function galTr(item, campo) { var l = galLang(); return (item && l !== 'pt' && item[campo + '_' + l]) ? item[campo + '_' + l] : ((item && item[campo]) || ''); }
+function galNomeOcasiao(oc) {
+  var l = galLang(); if (l === 'pt') return oc;
+  var db = dbLer(), g = db.galeria || {}, ks = Object.keys(g);
+  for (var i = 0; i < ks.length; i++) { var it = g[ks[i]]; if (it && it.ocasiao === oc && it['ocasiao_' + l]) return it['ocasiao_' + l]; }
+  return oc;
+}
+/* troca de idioma: atualiza legendas e nomes de álbum já exibidos */
+function galAtualizarIdioma() {
+  var db = dbLer(), g = db.galeria || {};
+  document.querySelectorAll('.galeria-item[data-fbkey]').forEach(function(el){
+    var it = g[el.getAttribute('data-fbkey')]; if (!it) return;
+    var leg = galTr(it, 'leg'), lg = el.querySelector('.galeria-leg'), im = el.querySelector('img');
+    if (lg) lg.textContent = leg; if (im) im.alt = leg; el.setAttribute('data-leg', leg);
+  });
+  document.querySelectorAll('.album-card[data-ocasiao]').forEach(function(el){
+    var n = el.querySelector('.album-nome'); if (n) n.textContent = galNomeOcasiao(el.dataset.ocasiao);
+  });
+  var tt = document.getElementById('modal-album-titulo');
+  if (tt && window._albumAtual) tt.textContent = galNomeOcasiao(window._albumAtual);
+}
+if (window.MutationObserver) new MutationObserver(galAtualizarIdioma).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
 function renderFotoGaleria(item, fbKey) {
-  var leg = item.leg || '';
+  var leg = galTr(item, 'leg');
   var src = item.src || '';
   var album = item.album || 'eventos';
   var finalSrc = src.includes('/upload/') ? src.replace('/upload/', '/upload/w_800,q_auto,f_auto/') : src;
@@ -5694,8 +5993,7 @@ async function admTraduzir(painel) {
   // Sem chave configurada NESTE navegador: nao tentar a API
   if (!claudeKey) {
     if (btn) btn.classList.remove('carregando');
-    admTraduzirFallback(painel, cfg, 'chave-ausente');
-    return false;
+    return await admTraduzirFallback(painel, cfg, 'chave-ausente');
   }
 
   // Montar campos para traduzir
@@ -5770,13 +6068,29 @@ async function admTraduzir(painel) {
     if (btn) btn.classList.remove('carregando');
     console.error('Erro tradução ADM', e);
     // Fallback: preencher com PT para nao bloquear, sinalizando a falha
-    admTraduzirFallback(painel, cfg, e.message);
-    return false;
+    return await admTraduzirFallback(painel, cfg, e.message);
   }
 }
 
 // Fallback leve para quando não há chave de API configurada
-function admTraduzirFallback(painel, cfg, erroMsg) {
+async function admTraduzirFallback(painel, cfg, erroMsg) {
+  // 1º: tradução automática (Claude, se houver chave; senão o serviço gratuito MyMemory)
+  var textos = cfg.campos.map(function(c){ var el = document.getElementById(c.pt); return el ? el.value.trim() : ''; });
+  var t = window.TRAD_AUTO ? await TRAD_AUTO.traduzir(textos) : null;
+  if (t) {
+    cfg.campos.forEach(function(c, i){
+      if (!textos[i]) return;
+      ['en','es','fr'].forEach(function(lang){
+        var id = c[lang]; if (!id) return;
+        var el = document.getElementById(id);
+        if (el) el.value = t[lang][i];
+        else { var elPt = document.getElementById(c.pt); if (elPt) elPt.dataset['trad_'+lang] = t[lang][i]; }
+      });
+    });
+    notif('✅ Tradução automática concluída em EN, ES e FR.');
+    return true;
+  }
+  // 2º: sem nenhum serviço disponível, mantém o comportamento anterior
   var aviso = (!erroMsg || /api.?key|authentication|autentica|401|chave/i.test(erroMsg))
       ? 'Tradução NÃO realizada: configure a chave Claude (sk-ant-...) na Sala de Imprensa → Configurações, NESTE navegador. Os campos EN/ES/FR receberão o texto em Português.'
       : 'Tradução falhou ('+erroMsg+'). Os campos EN/ES/FR receberão o texto em Português.';
@@ -8398,7 +8712,7 @@ function publicarLote() {
 
 // ══ ÁLBUNS DE OCASIÃO ══
 function _galItemHtmlAlbum(item, fbKey, ehCapa) {
-  var leg = item.leg || '';
+  var leg = galTr(item, 'leg');
   var src = item.src || '';
   var ehVideo = item.tipo === 'video';
   var poster = item.poster || (ehVideo && src.indexOf('/upload/') > -1 ? src.replace('/upload/', '/upload/w_800,so_0,q_auto/').replace(/\.(mp4|mov|webm|ogg)$/i, '.jpg') : '');
@@ -8452,7 +8766,7 @@ function renderAlbunsOcasiao() {
       '<img src="' + capaSrc + '" alt="" style="width:100%;display:block;object-fit:cover;min-height:160px">' +
       '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,11,7,.92) 0%,rgba(13,11,7,.25) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:.9rem">' +
       '<div style="font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#E8B86D">\uD83D\uDCC1 \u00C1lbum</div>' +
-      '<div style="font-size:.88rem;font-weight:700;color:#fff;line-height:1.3;margin-top:.15rem">' + oc + '</div>' +
+      '<div class="album-nome" style="font-size:.88rem;font-weight:700;color:#fff;line-height:1.3;margin-top:.15rem">' + galNomeOcasiao(oc) + '</div>' +
       '<div style="font-size:.7rem;color:rgba(255,255,255,.88);margin-top:.2rem">' + g.itens.length + ' foto(s) \u2014 clique para abrir</div>' +
       '</div>' +
       '<div style="position:absolute;top:.55rem;right:.55rem;background:rgba(212,149,74,.92);color:#0A0F08;font-size:.68rem;font-weight:800;padding:.2rem .55rem;border-radius:12px">' + g.itens.length + ' \uD83D\uDCF7</div>' +
@@ -8495,7 +8809,7 @@ function abrirAlbum(ocasiao) {
   });
   if (!itens.length) return;
   itens.sort(function(a, b) { return (a.item.ts || 0) - (b.item.ts || 0); });
-  document.getElementById('modal-album-titulo').textContent = ocasiao;
+  document.getElementById('modal-album-titulo').textContent = galNomeOcasiao(ocasiao);
   var nF = itens.filter(function(x){return x.item.tipo!=='video';}).length;
   var nV = itens.length - nF;
   document.getElementById('modal-album-sub').textContent = nF + ' foto(s)' + (nV ? ' e ' + nV + ' v\u00EDdeo(s)' : '') + ' \u2014 clique para ampliar';
@@ -10022,6 +10336,471 @@ var LOGO_CMDDI_I18N = {
     }
   }catch(e){}
   document.addEventListener('DOMContentLoaded', function(){ aplicar(inicial); });
+})();
+</script>
+<script type="application/json" id="nt-dados-iniciais">{"versao": 1, "itens": {"midia_jornaldiadia_programa_integrado_20261101": {"tipo": "midia", "data": "2026-11-01", "ts": 1793559600000, "titulo": {"pt": "Lideranças indígenas de MS aprovam programa com 155 metas para apresentar ao governo federal", "en": "Indigenous leaders of MS approve a program with 155 targets to present to the federal government", "es": "Liderazgos indígenas de MS aprueban un programa con 155 metas para presentar al gobierno federal", "fr": "Les dirigeants autochtones du MS approuvent un programme de 155 objectifs à présenter au gouvernement fédéral"}, "resumo": {"pt": "O Jornal Dia a Dia noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "en": "Jornal Dia a Dia reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "es": "El Jornal Dia a Dia informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "fr": "Le Jornal Dia a Dia a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral."}, "texto": {"pt": ["O Jornal Dia a Dia noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "O Programa foi aprovado por unanimidade e por aclamação em 31 de outubro de 2026, em Campo Grande, em reunião convocada pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planos nacionais, com 61 eixos de execução, e foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS. A matéria completa está no site do Jornal Dia a Dia."], "en": ["Jornal Dia a Dia reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "The Program was approved unanimously and by acclamation on October 31, 2026, in Campo Grande, at a meeting called by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS). It brings together six national plans, with 61 lines of action, and was prepared by the Cacique Enir Terena Institute (ICET) at the request of FOCAMS. The full story is on the Jornal Dia a Dia website."], "es": ["El Jornal Dia a Dia informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "El Programa fue aprobado por unanimidad y por aclamación el 31 de octubre de 2026, en Campo Grande, en una reunión convocada por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planes nacionales, con 61 ejes de ejecución, y fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS. La nota completa está en el sitio de Jornal Dia a Dia."], "fr": ["Le Jornal Dia a Dia a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral.", "Le Programme a été approuvé à l’unanimité et par acclamation le 31 octobre 2026, à Campo Grande, lors d’une réunion convoquée par le Forum des Caciques du Mato Grosso do Sul (FOCAMS). Il réunit six plans nationaux, avec 61 axes d’exécution, et a été élaboré par l’Institut Cacique Enir Terena (ICET) à la demande du FOCAMS. L’article complet est disponible sur le site de Jornal Dia a Dia."]}, "veiculo": "Jornal Dia a Dia", "link": "https://jornaldiadia.com.br/povos-indigenas-liderancas-indigenas-de-ms-aprovam-programa-com-155-metas-para-apresentar-ao-governo-federal/", "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030.", "en": "Integrated Program of Policies for Indigenous Peoples 2027 to 2030.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027 à 2030."}}, "midia_acritica_programa_integrado_20261101": {"tipo": "midia", "data": "2026-11-01", "ts": 1793556000000, "titulo": {"pt": "Caciques e lideranças de MS aprovam programa com 155 metas para os povos indígenas", "en": "Chiefs and leaders of MS approve a program with 155 targets for Indigenous peoples", "es": "Caciques y liderazgos de MS aprueban un programa con 155 metas para los pueblos indígenas", "fr": "Les caciques et dirigeants du MS approuvent un programme de 155 objectifs pour les peuples autochtones"}, "resumo": {"pt": "O jornal A Crítica noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "en": "A Crítica reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "es": "El diario A Crítica informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "fr": "Le journal A Crítica a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral."}, "texto": {"pt": ["O jornal A Crítica noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "O Programa foi aprovado por unanimidade e por aclamação em 31 de outubro de 2026, em Campo Grande, em reunião convocada pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planos nacionais, com 61 eixos de execução, e foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS. A matéria completa está no site do jornal A Crítica."], "en": ["A Crítica reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "The Program was approved unanimously and by acclamation on October 31, 2026, in Campo Grande, at a meeting called by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS). It brings together six national plans, with 61 lines of action, and was prepared by the Cacique Enir Terena Institute (ICET) at the request of FOCAMS. The full story is on the A Crítica website."], "es": ["El diario A Crítica informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "El Programa fue aprobado por unanimidad y por aclamación el 31 de octubre de 2026, en Campo Grande, en una reunión convocada por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planes nacionales, con 61 ejes de ejecución, y fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS. La nota completa está en el sitio del diario A Crítica."], "fr": ["Le journal A Crítica a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral.", "Le Programme a été approuvé à l’unanimité et par acclamation le 31 octobre 2026, à Campo Grande, lors d’une réunion convoquée par le Forum des Caciques du Mato Grosso do Sul (FOCAMS). Il réunit six plans nationaux, avec 61 axes d’exécution, et a été élaboré par l’Institut Cacique Enir Terena (ICET) à la demande du FOCAMS. L’article complet est disponible sur le site du journal A Crítica."]}, "veiculo": "A Crítica", "link": "https://acritica.net/politica/caciques-liderancas-ms-aprovam-programa-155-metas-povos-indigenas-governo-federal/", "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030.", "en": "Integrated Program of Policies for Indigenous Peoples 2027 to 2030.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027 à 2030."}}, "midia_jornaldoestado_programa_integrado_20261101": {"tipo": "midia", "data": "2026-11-01", "ts": 1793552400000, "titulo": {"pt": "Lideranças indígenas de MS aprovam programa com 155 metas para apresentar ao governo federal", "en": "Indigenous leaders of MS approve a program with 155 targets to present to the federal government", "es": "Liderazgos indígenas de MS aprueban un programa con 155 metas para presentar al gobierno federal", "fr": "Les dirigeants autochtones du MS approuvent un programme de 155 objectifs à présenter au gouvernement fédéral"}, "resumo": {"pt": "O Jornal do Estado MS noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "en": "Jornal do Estado MS reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "es": "El Jornal do Estado MS informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "fr": "Le Jornal do Estado MS a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral."}, "texto": {"pt": ["O Jornal do Estado MS noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "O Programa foi aprovado por unanimidade e por aclamação em 31 de outubro de 2026, em Campo Grande, em reunião convocada pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planos nacionais, com 61 eixos de execução, e foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS. A matéria completa está no site do Jornal do Estado MS."], "en": ["Jornal do Estado MS reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "The Program was approved unanimously and by acclamation on October 31, 2026, in Campo Grande, at a meeting called by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS). It brings together six national plans, with 61 lines of action, and was prepared by the Cacique Enir Terena Institute (ICET) at the request of FOCAMS. The full story is on the Jornal do Estado MS website."], "es": ["El Jornal do Estado MS informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "El Programa fue aprobado por unanimidad y por aclamación el 31 de octubre de 2026, en Campo Grande, en una reunión convocada por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planes nacionales, con 61 ejes de ejecución, y fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS. La nota completa está en el sitio de Jornal do Estado MS."], "fr": ["Le Jornal do Estado MS a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral.", "Le Programme a été approuvé à l’unanimité et par acclamation le 31 octobre 2026, à Campo Grande, lors d’une réunion convoquée par le Forum des Caciques du Mato Grosso do Sul (FOCAMS). Il réunit six plans nationaux, avec 61 axes d’exécution, et a été élaboré par l’Institut Cacique Enir Terena (ICET) à la demande du FOCAMS. L’article complet est disponible sur le site de Jornal do Estado MS."]}, "veiculo": "Jornal do Estado MS", "link": "https://jornaldoestadoms.com.br/noticia/53937-liderancas-indigenas-de-ms-aprovam-programa-com-155-metas-para-apresentar-ao-governo-federal", "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030.", "en": "Integrated Program of Policies for Indigenous Peoples 2027 to 2030.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027 à 2030."}}, "midia_redenews_programa_integrado_20261101": {"tipo": "midia", "data": "2026-11-01", "ts": 1793548800000, "titulo": {"pt": "Lideranças indígenas de MS aprovam programa com 155 metas para apresentar ao governo federal", "en": "Indigenous leaders of MS approve a program with 155 targets to present to the federal government", "es": "Liderazgos indígenas de MS aprueban un programa con 155 metas para presentar al gobierno federal", "fr": "Les dirigeants autochtones du MS approuvent un programme de 155 objectifs à présenter au gouvernement fédéral"}, "resumo": {"pt": "O portal Rede News MS noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "en": "The Rede News MS portal reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "es": "El portal Rede News MS informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "fr": "Le portail Rede News MS a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral."}, "texto": {"pt": ["O portal Rede News MS noticiou a aprovação, pelas lideranças indígenas de Mato Grosso do Sul, do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, com 155 metas, que será apresentado ao governo federal.", "O Programa foi aprovado por unanimidade e por aclamação em 31 de outubro de 2026, em Campo Grande, em reunião convocada pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planos nacionais, com 61 eixos de execução, e foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS. A matéria completa está no site do Rede News MS."], "en": ["The Rede News MS portal reported the approval, by the Indigenous leaders of Mato Grosso do Sul, of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030, with 155 targets, which will be presented to the federal government.", "The Program was approved unanimously and by acclamation on October 31, 2026, in Campo Grande, at a meeting called by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS). It brings together six national plans, with 61 lines of action, and was prepared by the Cacique Enir Terena Institute (ICET) at the request of FOCAMS. The full story is on the Rede News MS website."], "es": ["El portal Rede News MS informó sobre la aprobación, por los liderazgos indígenas de Mato Grosso do Sul, del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, con 155 metas, que será presentado al gobierno federal.", "El Programa fue aprobado por unanimidad y por aclamación el 31 de octubre de 2026, en Campo Grande, en una reunión convocada por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS). Reúne seis planes nacionales, con 61 ejes de ejecución, y fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS. La nota completa está en el sitio de Rede News MS."], "fr": ["Le portail Rede News MS a rendu compte de l’approbation, par les dirigeants autochtones du Mato Grosso do Sul, du Programme intégré de politiques pour les peuples autochtones 2027 à 2030, avec 155 objectifs, qui sera présenté au gouvernement fédéral.", "Le Programme a été approuvé à l’unanimité et par acclamation le 31 octobre 2026, à Campo Grande, lors d’une réunion convoquée par le Forum des Caciques du Mato Grosso do Sul (FOCAMS). Il réunit six plans nationaux, avec 61 axes d’exécution, et a été élaboré par l’Institut Cacique Enir Terena (ICET) à la demande du FOCAMS. L’article complet est disponible sur le site de Rede News MS."]}, "veiculo": "Rede News MS", "link": "https://redenewsms.com/noticia/85993-liderancas-indigenas-de-ms-aprovam-programa-com-155-metas-para-apresentar-ao-governo-federal", "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030.", "en": "Integrated Program of Policies for Indigenous Peoples 2027 to 2030.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027 à 2030."}}, "rel_programa_integrado_20261031": {"tipo": "release", "data": "2026-10-31", "ts": 1793484000000, "titulo": {"pt": "Programa Integrado aprovado pelas lideranças de MS incorpora propostas do CMDDI para a saúde indígena urbana", "en": "Integrated Program approved by Mato Grosso do Sul leaders incorporates CMDDI proposals for urban Indigenous health", "es": "El Programa Integrado aprobado por los liderazgos de MS incorpora propuestas del CMDDI para la salud indígena urbana", "fr": "Le Programme intégré approuvé par les dirigeants du MS reprend les propositions du CMDDI pour la santé autochtone en milieu urbain"}, "fina": {"pt": "Incentivador de políticas públicas para os povos indígenas de Campo Grande, o Conselho teve suas contribuições incorporadas ao Programa, que será levado à sua plenária.", "en": "A driver of public policies for the Indigenous peoples of Campo Grande, the Council saw its contributions incorporated into the Program, which will be brought before its plenary.", "es": "Impulsor de políticas públicas para los pueblos indígenas de Campo Grande, el Consejo tuvo sus contribuciones incorporadas al Programa, que será llevado a su pleno.", "fr": "Moteur des politiques publiques pour les peuples autochtones de Campo Grande, le Conseil a vu ses contributions intégrées au Programme, qui sera présenté en séance plénière."}, "local": {"pt": "Campo Grande (MS), 31 de outubro de 2026", "en": "Campo Grande (MS), October 31, 2026", "es": "Campo Grande (MS), 31 de octubre de 2026", "fr": "Campo Grande (MS), 31 octobre 2026"}, "texto": {"pt": ["O Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030 foi aprovado por unanimidade e por aclamação no sábado, 31 de outubro, em reunião convocada pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS) em Campo Grande, com a participação de 32 lideranças, caciques e instituições indígenas de todo o estado.", "O Conselho Municipal dos Direitos e Defesa dos Povos Indígenas de Campo Grande (CMDDI) atua como incentivador de políticas públicas para os povos indígenas da capital e contribuiu para o Programa. As contribuições do Conselho foram incorporadas ao texto, em especial a proposta técnica de saúde indígena urbana elaborada pelo CMDDI, que serviu de base para o piloto de atenção diferenciada aos indígenas que vivem nas cidades, começando por Campo Grande.", "O Programa é dirigido ao governo federal e propõe ações concretas para a Casa Civil da Presidência da República, o Ministério dos Povos Indígenas, a Fundação Nacional dos Povos Indígenas (Funai), o Ministério da Saúde e a Secretaria de Saúde Indígena (SESAI), o Ministério da Educação e os ministérios ligados à produção, ao empreendedorismo, ao meio ambiente e à mineração. Organiza programas federais que já existem e não cria cargos.", "São seis planos nacionais: saúde dos povos indígenas, nas aldeias e nas cidades; educação escolar indígena; proteção dos conhecimentos tradicionais; empreendedorismo indígena; produção agropecuária indígena cooperativa; e mineração em terras indígenas. Ao todo, são 61 áreas de ação e 155 metas que qualquer cidadão pode acompanhar.", "“O Programa nasceu nas aldeias e hoje foi aprovado por quem vive nelas. Agora vamos levar ao governo federal a palavra das comunidades de Mato Grosso do Sul”, afirmou o Presidente do FOCAMS, Aguinaldo de Arruda Areco.", "O Programa será apresentado à plenária do CMDDI, presidido por Lisio Lili, para que os conselheiros conheçam o texto, apresentem sugestões e deliberem sobre o apoio e a adesão. Em cada área, o Programa respeita as políticas já aprovadas pelas instâncias de participação social, como o CMDDI e o Conselho Distrital de Saúde Indígena (CONDISI-MS).", "A aprovação fortalece a Governança Indígena de Mato Grosso do Sul, que está se integrando em rede para reunir as instituições, aldeias e comunidades indígenas do estado, em busca de representatividade e união. O Programa será enviado às instituições indígenas constituídas que ainda não participaram, para que integrem suas propostas ao texto e subscrevam o Programa. Em seguida, o documento será encaminhado à Presidência da República, à Casa Civil, ao Ministério dos Povos Indígenas, à Funai e aos ministérios responsáveis por cada plano, antes da posse presidencial de 5 de janeiro de 2027.", "O texto foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS, sob a responsabilidade de Maria Auxiliadora Bezerra, presidente do ICET, e de Germano Coelho Ramos Rocha-Silva, indígena Terena, conselheiro do CMDDI e mestre em Propriedade Intelectual e Transferência de Tecnologia para a Inovação."], "en": ["The Integrated Program of Policies for Indigenous Peoples 2027–2030 was approved unanimously and by acclamation on Saturday, October 31, at a meeting called by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS) in Campo Grande, attended by 32 Indigenous leaders, chiefs and institutions from across the state.", "The Municipal Council for the Rights and Defense of Indigenous Peoples of Campo Grande (CMDDI) acts as a driver of public policies for the Indigenous peoples of the state capital and contributed to the Program. The Council’s contributions were incorporated into the text, especially the technical proposal on urban Indigenous health prepared by the CMDDI, which served as the basis for the pilot of differentiated care for Indigenous people living in cities, starting with Campo Grande.", "The Program is addressed to the federal government and proposes concrete actions for the Chief of Staff’s Office of the Presidency, the Ministry of Indigenous Peoples, the National Foundation of Indigenous Peoples (Funai), the Ministry of Health and its Indigenous Health Secretariat (SESAI), the Ministry of Education and the ministries responsible for production, entrepreneurship, the environment and mining. It builds on federal programs that already exist and creates no new posts.", "It brings together six national plans: health for Indigenous peoples, in villages and in cities; Indigenous school education; protection of traditional knowledge; Indigenous entrepreneurship; cooperative Indigenous agricultural production; and mining on Indigenous lands. In all, there are 61 areas of action and 155 targets that any citizen can follow.", "“The Program was born in the villages, and today it was approved by the people who live in them. Now we will take the voice of the communities of Mato Grosso do Sul to the federal government,” said FOCAMS President Aguinaldo de Arruda Areco.", "The Program will be presented to the plenary of the CMDDI, chaired by Lisio Lili, so that council members can review the text, make suggestions and decide on their support and adherence. In each area, the Program respects the policies already approved by social participation bodies, such as the CMDDI and the District Council for Indigenous Health (CONDISI-MS).", "The approval strengthens the Indigenous Governance of Mato Grosso do Sul, which is forming a network to bring together the state’s Indigenous institutions, villages and communities, seeking representativeness and unity. The Program will be sent to the established Indigenous institutions that have not yet taken part, so that they can add their proposals to the text and sign on to the Program. The document will then be sent to the Presidency of the Republic, the Chief of Staff’s Office, the Ministry of Indigenous Peoples, Funai and the ministries responsible for each plan, before the presidential inauguration on January 5, 2027.", "The text was prepared by the Cacique Enir Terena Institute (ICET), at the request of FOCAMS, under the responsibility of Maria Auxiliadora Bezerra, ICET’s president, and Germano Coelho Ramos Rocha-Silva, a Terena Indigenous man, CMDDI council member and holder of a master’s degree in Intellectual Property and Technology Transfer for Innovation."], "es": ["El Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030 fue aprobado por unanimidad y por aclamación el sábado 31 de octubre, en una reunión convocada por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS) en Campo Grande, con la participación de 32 liderazgos, caciques e instituciones indígenas de todo el estado.", "El Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas de Campo Grande (CMDDI) actúa como impulsor de políticas públicas para los pueblos indígenas de la capital y contribuyó al Programa. Las contribuciones del Consejo fueron incorporadas al texto, en especial la propuesta técnica de salud indígena urbana elaborada por el CMDDI, que sirvió de base para el piloto de atención diferenciada a los indígenas que viven en las ciudades, comenzando por Campo Grande.", "El Programa está dirigido al gobierno federal y propone acciones concretas para la Casa Civil de la Presidencia de la República, el Ministerio de los Pueblos Indígenas, la Fundación Nacional de los Pueblos Indígenas (Funai), el Ministerio de Salud y la Secretaría de Salud Indígena (SESAI), el Ministerio de Educación y los ministerios vinculados a la producción, el emprendimiento, el medio ambiente y la minería. Organiza programas federales que ya existen y no crea cargos.", "Son seis planes nacionales: salud de los pueblos indígenas, en las aldeas y en las ciudades; educación escolar indígena; protección de los conocimientos tradicionales; emprendimiento indígena; producción agropecuaria indígena cooperativa; y minería en tierras indígenas. En total, son 61 áreas de acción y 155 metas que cualquier ciudadano puede seguir.", "“El Programa nació en las aldeas y hoy fue aprobado por quienes viven en ellas. Ahora vamos a llevar al gobierno federal la palabra de las comunidades de Mato Grosso do Sul”, afirmó el presidente del FOCAMS, Aguinaldo de Arruda Areco.", "El Programa será presentado al pleno del CMDDI, presidido por Lisio Lili, para que los consejeros conozcan el texto, presenten sugerencias y deliberen sobre el apoyo y la adhesión. En cada área, el Programa respeta las políticas ya aprobadas por las instancias de participación social, como el CMDDI y el Consejo Distrital de Salud Indígena (CONDISI-MS).", "La aprobación fortalece la Gobernanza Indígena de Mato Grosso do Sul, que se está integrando en red para reunir a las instituciones, aldeas y comunidades indígenas del estado, en busca de representatividad y unión. El Programa será enviado a las instituciones indígenas constituidas que aún no participaron, para que integren sus propuestas al texto y suscriban el Programa. Luego, el documento será enviado a la Presidencia de la República, a la Casa Civil, al Ministerio de los Pueblos Indígenas, a la Funai y a los ministerios responsables de cada plan, antes de la toma de posesión presidencial del 5 de enero de 2027.", "El texto fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS, bajo la responsabilidad de Maria Auxiliadora Bezerra, presidenta del ICET, y de Germano Coelho Ramos Rocha-Silva, indígena terena, consejero del CMDDI y magíster en Propiedad Intelectual y Transferencia de Tecnología para la Innovación."], "fr": ["Le Programme intégré de politiques pour les peuples autochtones 2027-2030 a été approuvé à l’unanimité et par acclamation le samedi 31 octobre, lors d’une réunion convoquée par le Forum des caciques du Mato Grosso do Sul (FOCAMS) à Campo Grande, avec la participation de 32 dirigeants, caciques et institutions autochtones de tout l’État.", "Le Conseil municipal des droits et de la défense des peuples autochtones de Campo Grande (CMDDI) agit comme moteur des politiques publiques pour les peuples autochtones de la capitale et a contribué au Programme. Ses contributions ont été intégrées au texte, notamment la proposition technique sur la santé autochtone en milieu urbain élaborée par le CMDDI, qui a servi de base au projet pilote de soins différenciés pour les autochtones vivant en ville, à commencer par Campo Grande.", "Le Programme s’adresse au gouvernement fédéral et propose des actions concrètes à la Casa Civil de la Présidence de la République, au ministère des Peuples autochtones, à la Fondation nationale des peuples autochtones (Funai), au ministère de la Santé et à son Secrétariat à la santé autochtone (SESAI), au ministère de l’Éducation et aux ministères chargés de la production, de l’entrepreneuriat, de l’environnement et des mines. Il s’appuie sur des programmes fédéraux existants et ne crée aucun poste.", "Il réunit six plans nationaux : santé des peuples autochtones, dans les villages et dans les villes ; éducation scolaire autochtone ; protection des savoirs traditionnels ; entrepreneuriat autochtone ; production agricole autochtone coopérative ; et exploitation minière sur les terres autochtones. Au total, 61 domaines d’action et 155 objectifs que tout citoyen peut suivre.", "« Le Programme est né dans les villages et il a été approuvé aujourd’hui par ceux qui y vivent. Nous allons maintenant porter au gouvernement fédéral la parole des communautés du Mato Grosso do Sul », a déclaré le président du FOCAMS, Aguinaldo de Arruda Areco.", "Le Programme sera présenté en séance plénière du CMDDI, présidé par Lisio Lili, afin que les conseillers prennent connaissance du texte, formulent des suggestions et se prononcent sur leur soutien et leur adhésion. Dans chaque domaine, le Programme respecte les politiques déjà approuvées par les instances de participation sociale, comme le CMDDI et le Conseil de district de la santé autochtone (CONDISI-MS).", "Cette approbation renforce la Gouvernance autochtone du Mato Grosso do Sul, qui se constitue en réseau pour rassembler les institutions, les villages et les communautés autochtones de l’État, dans un esprit de représentativité et d’unité. Le Programme sera envoyé aux institutions autochtones constituées qui n’ont pas encore participé, afin qu’elles intègrent leurs propositions au texte et y apposent leur signature. Le document sera ensuite transmis à la Présidence de la République, à la Casa Civil, au ministère des Peuples autochtones, à la Funai et aux ministères chargés de chaque plan, avant l’investiture présidentielle du 5 janvier 2027.", "Le texte a été élaboré par l’Institut Cacique Enir Terena (ICET), à la demande du FOCAMS, sous la responsabilité de Maria Auxiliadora Bezerra, présidente de l’ICET, et de Germano Coelho Ramos Rocha-Silva, autochtone terena, conseiller du CMDDI et titulaire d’un master en propriété intellectuelle et transfert de technologie pour l’innovation."]}, "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030, aprovado por aclamação em Campo Grande.", "en": "Integrated Program of Policies for Indigenous Peoples 2027–2030, approved by acclamation in Campo Grande.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030, aprobado por aclamación en Campo Grande.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027-2030, approuvé par acclamation à Campo Grande."}, "fotos": [{"src": "assets/galeria/programa-integrado-01-capa.jpg", "leg": {"pt": "Capa do resumo executivo do Programa Integrado, com a identidade visual Terena.", "en": "Cover of the Integrated Program’s executive summary, with the Terena visual identity.", "es": "Portada del resumen ejecutivo del Programa Integrado, con la identidad visual terena.", "fr": "Couverture du résumé exécutif du Programme intégré, avec l’identité visuelle terena."}}, {"src": "assets/galeria/programa-integrado-02-roda.jpg", "leg": {"pt": "Os seis planos do Programa ligados em torno da decisão das comunidades.", "en": "The Program’s six plans, linked around the communities’ decisions.", "es": "Los seis planes del Programa, articulados en torno a la decisión de las comunidades.", "fr": "Les six plans du Programme, reliés autour de la décision des communautés."}}, {"src": "assets/galeria/programa-integrado-03-planos.jpg", "leg": {"pt": "Metas dos planos de saúde, educação e conhecimentos tradicionais.", "en": "Targets of the health, education and traditional knowledge plans.", "es": "Metas de los planes de salud, educación y conocimientos tradicionales.", "fr": "Objectifs des plans de santé, d’éducation et de savoirs traditionnels."}}], "assinatura": "Aldeia XP Comunicação", "assinaturaLogo": "assets/img/aldeiaxp-logo-escura.png"}, "rel_convenio_ifms_20261011": {"tipo": "release", "data": "2026-10-11", "titulo": {"pt": "ICET, CMDDI, FOCAMS e UNIPBRAS iniciam tratativas com o IFMS para firmar convênio", "en": "ICET, CMDDI, FOCAMS and UNIPBRAS open talks with IFMS toward a cooperation agreement", "es": "ICET, CMDDI, FOCAMS y UNIPBRAS inician conversaciones con el IFMS para firmar un convenio", "fr": "L’ICET, le CMDDI, le FOCAMS et l’UNIPBRAS ouvrent des discussions avec l’IFMS en vue d’une convention"}, "fina": {"pt": "Reitora, pró-reitor de Extensão e diretor-geral do Campus Campo Grande do Instituto Federal receberam lideranças indígenas para discutir um selo editorial de autoria indígena e um núcleo de propriedade intelectual e conhecimentos tradicionais.", "en": "The rector, the pro-rector for Outreach and the director-general of the Campo Grande Campus of the Federal Institute met with Indigenous leaders to discuss an Indigenous-authored publishing imprint and a center for intellectual property and traditional knowledge.", "es": "La rectora, el prorrector de Extensión y el director general del Campus Campo Grande del Instituto Federal recibieron a liderazgos indígenas para discutir un sello editorial de autoría indígena y un núcleo de propiedad intelectual y conocimientos tradicionales.", "fr": "La rectrice, le pro-recteur chargé de l'extension et le directeur général du campus de Campo Grande de l'Institut fédéral ont reçu des dirigeants autochtones pour discuter d'une marque éditoriale d'autorité autochtone et d'un pôle de propriété intellectuelle et de savoirs traditionnels."}, "local": {"pt": "Campo Grande (MS), 11 de outubro de 2026", "en": "Campo Grande (MS), October 11, 2026", "es": "Campo Grande (MS), 11 de octubre de 2026", "fr": "Campo Grande (MS), 11 octobre 2026"}, "texto": {"pt": ["Em reunião realizada na sexta-feira, 9 de outubro, começaram as tratativas para um convênio entre o Instituto Federal de Mato Grosso do Sul (IFMS) e quatro organizações indígenas do estado: o Instituto Cacique Enir Terena (ICET), o Conselho Municipal dos Direitos e Defesa dos Povos Indígenas (CMDDI), o Fórum dos Caciques de Mato Grosso do Sul (FOCAMS) e a União Nacional dos Produtores e Agricultores Indígenas do Brasil (UNIPBRAS).", "O encontro reuniu a reitora do IFMS, Dra. Elaine Borges Monteiro Cassiano; o pró-reitor de Extensão, Dr. Anderson Martins Corrêa; e o diretor-geral do Campus Campo Grande, Dejahyr Lopes Junior. Pelo lado indígena, participaram a presidente do ICET, Maria Auxiliadora Bezerra; o presidente do CMDDI e da Cooperativa Estadual dos Povos Indígenas de Mato Grosso do Sul (COOPIMS), Lisio Lili; e o presidente do FOCAMS e da UNIPBRAS, Aguinaldo Arruda Areco. Esteve presente ainda Germano Coelho Ramos Rocha-Silva, conselheiro do CMDDI, secretário-geral do ICET, mestre em Propriedade Intelectual e Transferência de Tecnologia para a Inovação e autor do projeto que embasa a proposta.", "O projeto apresentado ao IFMS tem duas frentes. A primeira é a expansão do selo editorial do ICET em uma biblioteca digital de autoria indígena, sem edição em papel, com curadoria técnica do próprio Instituto e publicação conjunta nos portais das instituições parceiras. A segunda é a criação de um núcleo permanente de propriedade intelectual, biotecnologia e conhecimentos tradicionais, que vai documentar, com consentimento prévio, livre e informado das comunidades, obras, elementos culturais e saberes de medicina tradicional dos povos indígenas do estado.", "Segundo o projeto, a documentação reunida pelo núcleo servirá de base para estudos técnicos que subsidiem pedidos de proteção junto ao Instituto Nacional da Propriedade Industrial (INPI), acordos de repartição de benefícios e, no médio prazo, propostas normativas em âmbito municipal e estadual.", "A autoria, a curadoria e a titularidade do selo permanecem com o ICET e com o CMDDI. Ao IFMS caberia oferecer respaldo técnico e acadêmico, por meio do Núcleo de Inovação Tecnológica e das pró-reitorias de Pesquisa e de Extensão. A proposta prevê, ainda, a cooperação do Ministério Público de Mato Grosso do Sul.", "O ICET já mantém editora, selo e conselho editorial próprios e tem uma obra publicada, Autodeterminação Cultural, sobre a cerâmica Terena, a ancestralidade Arawak e a propriedade intelectual coletiva, escrita por seis coautores. Pelas regras do selo, autores não indígenas só podem participar de uma publicação se ao menos um dos autores for indígena, e o Instituto arca com os custos de registro de direitos autorais e de ISBN.", "As tratativas estão em fase inicial. O instrumento jurídico da parceria e os termos da cooperação ainda serão definidos e dependem dos trâmites internos de cada instituição. A iniciativa parte de uma convicção registrada no próprio projeto: a história, a cultura e os conhecimentos de um povo ganham força, e proteção jurídica, quando são documentados, narrados e geridos por quem os vive."], "en": ["At a meeting held on Friday, October 9, talks began on a cooperation agreement between the Federal Institute of Mato Grosso do Sul (IFMS) and four Indigenous organizations of the state: the Instituto Cacique Enir Terena (ICET), the Municipal Council for the Rights and Defense of Indigenous Peoples (CMDDI), the Forum of Chiefs of Mato Grosso do Sul (FOCAMS) and the National Union of Indigenous Producers and Farmers of Brazil (UNIPBRAS).", "The meeting brought together the IFMS rector, Dr. Elaine Borges Monteiro Cassiano; the pro-rector for Outreach, Dr. Anderson Martins Corrêa; and the director-general of the Campo Grande Campus, Dejahyr Lopes Junior. On the Indigenous side, the participants were the president of ICET, Maria Auxiliadora Bezerra; the president of CMDDI and of the State Cooperative of Indigenous Peoples of Mato Grosso do Sul (COOPIMS), Lisio Lili; and the president of FOCAMS and UNIPBRAS, Aguinaldo Arruda Areco. Also present was Germano Coelho Ramos Rocha-Silva, CMDDI councilor, secretary-general of ICET, holder of a master's degree in Intellectual Property and Technology Transfer for Innovation and author of the project on which the proposal is based.", "The project submitted to IFMS has two fronts. The first is to expand ICET's publishing imprint into a digital library of Indigenous authorship, with no paper edition, curated technically by the Institute itself and published jointly on the partner institutions' portals. The second is to create a permanent center for intellectual property, biotechnology and traditional knowledge, which will document, with the prior, free and informed consent of the communities, works, cultural elements and traditional medicine knowledge of the Indigenous peoples of the state.", "According to the project, the documentation gathered by the center will support technical studies for protection requests before the National Institute of Industrial Property (INPI), benefit-sharing agreements and, in the medium term, regulatory proposals at the municipal and state levels.", "Authorship, curatorship and ownership of the imprint remain with ICET and CMDDI. IFMS would provide technical and academic support through its Technological Innovation Center and its Research and Extension deaneries. The proposal also foresees the cooperation of the Public Prosecutor's Office of Mato Grosso do Sul.", "ICET already runs its own publishing house, imprint and editorial board, and has one published work, Autodeterminação Cultural, on Terena ceramics, Arawak ancestry and collective intellectual property, written by six co-authors. Under the imprint's rules, non-Indigenous authors may take part in a publication only if at least one of the authors is Indigenous, and the Institute bears the costs of copyright registration and ISBN.", "The talks are at an early stage. The legal instrument of the partnership and the terms of cooperation are still to be defined and depend on the internal procedures of each institution. The initiative rests on a conviction stated in the project itself: the history, culture and knowledge of a people gain strength, and legal protection, when they are documented, narrated and managed by those who live them."], "es": ["En una reunión realizada el viernes 9 de octubre, comenzaron las conversaciones para un convenio entre el Instituto Federal de Mato Grosso do Sul (IFMS) y cuatro organizaciones indígenas del estado: el Instituto Cacique Enir Terena (ICET), el Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas (CMDDI), el Foro de Caciques de Mato Grosso do Sul (FOCAMS) y la Unión Nacional de los Productores y Agricultores Indígenas de Brasil (UNIPBRAS).", "El encuentro reunió a la rectora del IFMS, Dra. Elaine Borges Monteiro Cassiano; al prorrector de Extensión, Dr. Anderson Martins Corrêa; y al director general del Campus Campo Grande, Dejahyr Lopes Junior. Por el lado indígena, participaron la presidenta del ICET, Maria Auxiliadora Bezerra; el presidente del CMDDI y de la Cooperativa Estatal de los Pueblos Indígenas de Mato Grosso do Sul (COOPIMS), Lisio Lili; y el presidente del FOCAMS y de la UNIPBRAS, Aguinaldo Arruda Areco. También estuvo presente Germano Coelho Ramos Rocha-Silva, consejero del CMDDI, secretario general del ICET, magíster en Propiedad Intelectual y Transferencia de Tecnología para la Innovación y autor del proyecto que fundamenta la propuesta.", "El proyecto presentado al IFMS tiene dos frentes. El primero es la expansión del sello editorial del ICET en una biblioteca digital de autoría indígena, sin edición en papel, con curaduría técnica del propio Instituto y publicación conjunta en los portales de las instituciones socias. El segundo es la creación de un núcleo permanente de propiedad intelectual, biotecnología y conocimientos tradicionales, que documentará, con el consentimiento previo, libre e informado de las comunidades, obras, elementos culturales y saberes de medicina tradicional de los pueblos indígenas del estado.", "Según el proyecto, la documentación reunida por el núcleo servirá de base para estudios técnicos que respalden solicitudes de protección ante el Instituto Nacional de la Propiedad Industrial (INPI), acuerdos de distribución de beneficios y, a mediano plazo, propuestas normativas en el ámbito municipal y estatal.", "La autoría, la curaduría y la titularidad del sello permanecen con el ICET y el CMDDI. Al IFMS le correspondería aportar respaldo técnico y académico, por medio del Núcleo de Innovación Tecnológica y de las prorrectorías de Investigación y de Extensión. La propuesta prevé, además, la cooperación del Ministerio Público de Mato Grosso do Sul.", "El ICET ya cuenta con editorial, sello y consejo editorial propios y tiene una obra publicada, Autodeterminação Cultural, sobre la cerámica Terena, la ascendencia Arawak y la propiedad intelectual colectiva, escrita por seis coautores. Según las reglas del sello, los autores no indígenas solo pueden participar en una publicación si al menos uno de los autores es indígena, y el Instituto asume los costos de registro de derechos de autor y de ISBN.", "Las conversaciones están en una fase inicial. El instrumento jurídico de la alianza y los términos de la cooperación aún serán definidos y dependen de los trámites internos de cada institución. La iniciativa parte de una convicción registrada en el propio proyecto: la historia, la cultura y los conocimientos de un pueblo ganan fuerza, y protección jurídica, cuando son documentados, narrados y gestionados por quienes los viven."], "fr": ["Lors d’une réunion tenue le vendredi 9 octobre, des discussions ont commencé en vue d’une convention entre l’Institut fédéral du Mato Grosso do Sul (IFMS) et quatre organisations autochtones de l’État : l’Institut Cacique Enir Terena (ICET), le Conseil municipal des droits et de la défense des peuples autochtones (CMDDI), le Forum des caciques du Mato Grosso do Sul (FOCAMS) et l’Union nationale des producteurs et agriculteurs autochtones du Brésil (UNIPBRAS).", "La rencontre a réuni la rectrice de l'IFMS, Mme Elaine Borges Monteiro Cassiano ; le pro-recteur chargé de l'extension, M. Anderson Martins Corrêa ; et le directeur général du campus de Campo Grande, Dejahyr Lopes Junior. Du côté autochtone ont participé la présidente de l'ICET, Maria Auxiliadora Bezerra ; le président du CMDDI et de la Coopérative des peuples autochtones de l'État du Mato Grosso do Sul (COOPIMS), Lisio Lili ; et le président du FOCAMS et de l'UNIPBRAS, Aguinaldo Arruda Areco. Était également présent Germano Coelho Ramos Rocha-Silva, conseiller du CMDDI, secrétaire général de l'ICET, titulaire d'un master en propriété intellectuelle et transfert de technologie pour l'innovation et auteur du projet qui fonde la proposition.", "Le projet présenté à l’IFMS comporte deux volets. Le premier est l’extension du label éditorial de l’ICET en une bibliothèque numérique d’auteurs autochtones, sans édition papier, avec une curation technique assurée par l’Institut lui-même et une publication conjointe sur les portails des institutions partenaires. Le second est la création d’un pôle permanent de propriété intellectuelle, de biotechnologie et de savoirs traditionnels, qui documentera, avec le consentement préalable, libre et éclairé des communautés, des œuvres, des éléments culturels et des savoirs de médecine traditionnelle des peuples autochtones de l’État.", "Selon le projet, la documentation réunie par le pôle servira de base à des études techniques destinées à appuyer des demandes de protection auprès de l’Institut national de la propriété industrielle (INPI), des accords de partage des avantages et, à moyen terme, des propositions normatives aux niveaux municipal et de l’État.", "La paternité, la curation et la titularité du label restent à l’ICET et au CMDDI. L’IFMS apporterait un appui technique et académique, par l’intermédiaire de son Pôle d’innovation technologique et de ses prorrectorats de la Recherche et de l’Extension. La proposition prévoit en outre la coopération du Ministère public du Mato Grosso do Sul.", "L’ICET dispose déjà d’une maison d’édition, d’un label et d’un comité éditorial propres, et compte une œuvre publiée, Autodeterminação Cultural, consacrée à la céramique Terena, à l’ascendance Arawak et à la propriété intellectuelle collective, rédigée par six coauteurs. Selon les règles du label, des auteurs non autochtones ne peuvent participer à une publication que si au moins l’un des auteurs est autochtone, et l’Institut prend en charge les frais d’enregistrement du droit d’auteur et de l’ISBN.", "Les discussions en sont à un stade initial. L’instrument juridique du partenariat et les termes de la coopération restent à définir et dépendent des procédures internes de chaque institution. L’initiative repose sur une conviction inscrite dans le projet lui-même : l’histoire, la culture et les savoirs d’un peuple gagnent en force, et en protection juridique, lorsqu’ils sont documentés, racontés et gérés par ceux qui les vivent."]}, "capa": "assets/galeria/convenio-ifms-02-reuniao.jpg", "capaLeg": {"pt": "Reunião de trabalho sobre o convênio, realizada no IFMS.", "en": "Working meeting on the agreement, held at IFMS.", "es": "Reunión de trabajo sobre el convenio, realizada en el IFMS.", "fr": "Réunion de travail sur la convention, tenue à l’IFMS."}, "fotos": [{"src": "assets/galeria/convenio-ifms-01-grupo.jpg", "leg": {"pt": "Reitora e pró-reitores do IFMS e presidentes das instituições no encontro para o convênio entre CMDDI, ICET, FOCAMS, IFMS e MPE/MS.", "en": "The rector and deans of IFMS and the presidents of the institutions at the meeting on the agreement among CMDDI, ICET, FOCAMS, IFMS and MPE/MS.", "es": "La rectora y los prorrectores del IFMS y los presidentes de las instituciones en el encuentro para el convenio entre CMDDI, ICET, FOCAMS, IFMS y MPE/MS.", "fr": "La rectrice et les pro-recteurs de l’IFMS et les présidents des institutions lors de la rencontre pour la convention entre le CMDDI, l’ICET, le FOCAMS, l’IFMS et le MPE/MS."}}, {"src": "assets/galeria/convenio-ifms-02-reuniao.jpg", "leg": {"pt": "Reunião de trabalho sobre o convênio, realizada no IFMS.", "en": "Working meeting on the agreement, held at IFMS.", "es": "Reunión de trabajo sobre el convenio, realizada en el IFMS.", "fr": "Réunion de travail sur la convention, tenue à l’IFMS."}}, {"src": "assets/galeria/convenio-ifms-03-documento.jpg", "leg": {"pt": "Entrega de documento durante o encontro para o convênio.", "en": "Handing over of a document during the meeting on the agreement.", "es": "Entrega de un documento durante el encuentro para el convenio.", "fr": "Remise d’un document lors de la rencontre pour la convention."}}], "assinatura": "Aldeia XP Comunicação", "assinaturaLogo": "assets/img/aldeiaxp-logo-escura.png"}, "midia_cgn_programa_integrado_20261101": {"tipo": "midia", "data": "2026-11-01", "ts": 1793541600000, "titulo": {"pt": "Indígenas de MS aprovam plano com 155 metas para o quarto mandato de Lula", "en": "Indigenous peoples of MS approve plan with 155 targets for Lula’s fourth term", "es": "Indígenas de MS aprueban plan con 155 metas para el cuarto mandato de Lula", "fr": "Les autochtones du MS approuvent un plan de 155 objectifs pour le quatrième mandat de Lula"}, "resumo": {"pt": "O Campo Grande News noticiou a aprovação, pelo Fórum dos Caciques de Mato Grosso do Sul, do Programa Integrado com 155 metas, que será entregue à Casa Civil, ao Ministério dos Povos Indígenas e à Funai, com metas a cumprir até 2030.", "en": "Campo Grande News reported the approval, by the Forum of Chiefs of Mato Grosso do Sul, of the Integrated Program with 155 targets, which will be delivered to the Chief of Staff Office, the Ministry of Indigenous Peoples and Funai, with targets to be met by 2030.", "es": "Campo Grande News informó sobre la aprobación, por el Foro de los Caciques de Mato Grosso do Sul, del Programa Integrado con 155 metas, que será entregado a la Casa Civil, al Ministerio de los Pueblos Indígenas y a la Funai, con metas a cumplir hasta 2030.", "fr": "Campo Grande News a rendu compte de l’approbation, par le Forum des Caciques du Mato Grosso do Sul, du Programme intégré de 155 objectifs, qui sera remis à la Casa Civil, au ministère des Peuples autochtones et à la Funai, avec des objectifs à atteindre d’ici 2030."}, "texto": {"pt": ["O portal Campo Grande News publicou matéria sobre a aprovação do Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030 pelo Fórum dos Caciques de Mato Grosso do Sul (FOCAMS). O documento reúne 155 metas e será entregue à Casa Civil da Presidência da República, ao Ministério dos Povos Indígenas e à Funai, para que o governo federal as cumpra até 2030.", "A matéria destaca algumas das metas: reduzir a mortalidade de crianças de até cinco anos de 34,7 para no máximo 26 a cada mil nascidas vivas; elevar a alfabetização dos indígenas de 84,95% para 90%; e ampliar de 35.218 para 60 mil os produtores indígenas com cadastro da agricultura familiar.", "O texto também registra o atendimento de saúde para os indígenas que vivem nas cidades, a começar por Campo Grande, as propostas de empreendedorismo e a proteção dos conhecimentos tradicionais.", "O Programa foi aprovado por unanimidade e por aclamação em 31 de outubro de 2026, em Campo Grande, e foi elaborado pelo Instituto Cacique Enir Terena (ICET), a pedido do FOCAMS. A matéria completa está no site do Campo Grande News."], "en": ["The Campo Grande News portal published a story on the approval of the Integrated Program of Policies for Indigenous Peoples 2027 to 2030 by the Forum of Chiefs of Mato Grosso do Sul (FOCAMS). The document brings together 155 targets and will be delivered to the Chief of Staff Office of the Presidency, the Ministry of Indigenous Peoples and Funai, for the federal government to meet them by 2030.", "The story highlights some of the targets: reducing the mortality of children under five from 34.7 to at most 26 per thousand live births; raising Indigenous literacy from 84.95% to 90%; and increasing the number of Indigenous producers registered in family farming from 35,218 to 60,000.", "The story also covers health care for Indigenous people living in cities, starting with Campo Grande, the entrepreneurship proposals and the protection of traditional knowledge.", "The Program was approved unanimously and by acclamation on October 31, 2026, in Campo Grande, and was prepared by the Cacique Enir Terena Institute (ICET) at the request of FOCAMS. The full story is on the Campo Grande News website."], "es": ["El portal Campo Grande News publicó una nota sobre la aprobación del Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030 por el Foro de los Caciques de Mato Grosso do Sul (FOCAMS). El documento reúne 155 metas y será entregado a la Casa Civil de la Presidencia de la República, al Ministerio de los Pueblos Indígenas y a la Funai, para que el gobierno federal las cumpla hasta 2030.", "La nota destaca algunas de las metas: reducir la mortalidad de niños menores de cinco años de 34,7 a como máximo 26 por cada mil nacidos vivos; elevar la alfabetización de los indígenas del 84,95% al 90%; y ampliar de 35.218 a 60 mil los productores indígenas con registro de agricultura familiar.", "El texto también menciona la atención de salud para los indígenas que viven en las ciudades, comenzando por Campo Grande, las propuestas de emprendimiento y la protección de los conocimientos tradicionales.", "El Programa fue aprobado por unanimidad y por aclamación el 31 de octubre de 2026, en Campo Grande, y fue elaborado por el Instituto Cacique Enir Terena (ICET), a pedido del FOCAMS. La nota completa está en el sitio de Campo Grande News."], "fr": ["Le portail Campo Grande News a publié un article sur l’approbation du Programme intégré de politiques pour les peuples autochtones 2027 à 2030 par le Forum des Caciques du Mato Grosso do Sul (FOCAMS). Le document réunit 155 objectifs et sera remis à la Casa Civil de la Présidence de la République, au ministère des Peuples autochtones et à la Funai, afin que le gouvernement fédéral les atteigne d’ici 2030.", "L’article met en avant certains objectifs : réduire la mortalité des enfants de moins de cinq ans de 34,7 à 26 au maximum pour mille naissances vivantes ; porter l’alphabétisation des autochtones de 84,95 % à 90 % ; et faire passer de 35 218 à 60 000 le nombre de producteurs autochtones inscrits à l’agriculture familiale.", "Le texte évoque aussi les soins de santé pour les autochtones vivant en ville, à commencer par Campo Grande, les propositions d’entrepreneuriat et la protection des savoirs traditionnels.", "Le Programme a été approuvé à l’unanimité et par acclamation le 31 octobre 2026, à Campo Grande, et a été élaboré par l’Institut Cacique Enir Terena (ICET) à la demande du FOCAMS. L’article complet est disponible sur le site de Campo Grande News."]}, "veiculo": "Campo Grande News", "link": "https://www.campograndenews.com.br/brasil/cidades/indigenas-de-ms-aprovam-plano-com-155-metas-para-o-quarto-mandato-de-lula", "capa": "assets/galeria/programa-integrado-00-aprovacao.jpg", "capaLeg": {"pt": "Programa Integrado de Políticas para os Povos Indígenas 2027 a 2030.", "en": "Integrated Program of Policies for Indigenous Peoples 2027 to 2030.", "es": "Programa Integrado de Políticas para los Pueblos Indígenas 2027 a 2030.", "fr": "Programme intégré de politiques pour les peuples autochtones 2027 à 2030."}}}}</script>
+<script>
+/* ===== Notícias do CMDDI: release do site como cartão na grade de Notícias =====
+   Releases em #nt-dados-iniciais. As notícias do painel do ADM continuam
+   no sistema próprio do site (renderNoticia / abrirNoticiaModal). */
+(function(){
+var KEY = 'cmddi_lang';
+var UI = {
+  pt: {ler:'Ler na íntegra', ler_midia:'Ler a matéria em {v}', selo_release:'Release produzido para o site do CMDDI', selo_midia:'Na mídia · {v}',
+       aviso_release:'Este é um release produzido para o site do Conselho Municipal dos Direitos e Defesa dos Povos Indígenas (CMDDI). Veículos de comunicação podem reproduzi-lo, total ou parcialmente, citando a fonte.',
+       aviso_midia:'Matéria publicada por {v}. O texto completo está no site do veículo.', texto_por:'Texto', fotos:'Registros', fechar:'Fechar', veiculo:'Veículo', publicado:'Publicado em'},
+  en: {ler:'Read in full', ler_midia:'Read the story at {v}', selo_release:'Press release written for the CMDDI website', selo_midia:'In the media · {v}',
+       aviso_release:'This press release was written for the website of the Municipal Council for the Rights and Defense of Indigenous Peoples (CMDDI). Media outlets may reproduce it, in whole or in part, crediting the source.',
+       aviso_midia:'Story published by {v}. The full text is on the outlet’s website.', texto_por:'Text', fotos:'Photos', fechar:'Close', veiculo:'Outlet', publicado:'Published on'},
+  es: {ler:'Leer completa', ler_midia:'Leer la nota en {v}', selo_release:'Comunicado de prensa elaborado para el sitio del CMDDI', selo_midia:'En los medios · {v}',
+       aviso_release:'Este comunicado fue elaborado para el sitio del Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas (CMDDI). Los medios pueden reproducirlo, total o parcialmente, citando la fuente.',
+       aviso_midia:'Nota publicada por {v}. El texto completo está en el sitio del medio.', texto_por:'Texto', fotos:'Registros', fechar:'Cerrar', veiculo:'Medio', publicado:'Publicado el'},
+  fr: {ler:'Lire en entier', ler_midia:'Lire l’article sur {v}', selo_release:'Communiqué rédigé pour le site du CMDDI', selo_midia:'Dans les médias · {v}',
+       aviso_release:'Ce communiqué a été rédigé pour le site du Conseil municipal des droits et de la défense des peuples autochtones (CMDDI). Les médias peuvent le reproduire, en tout ou en partie, en citant la source.',
+       aviso_midia:'Article publié par {v}. Le texte intégral se trouve sur le site du média.', texto_por:'Texte', fotos:'Photos', fechar:'Fermer', veiculo:'Média', publicado:'Publié le'}
+};
+var LOCALE = {pt:'pt-BR', en:'en-US', es:'es-ES', fr:'fr-FR'};
+var REL = {};
+try{ REL = (JSON.parse(document.getElementById('nt-dados-iniciais').textContent).itens) || {}; }catch(e){}
+var MIDIA = {};
+
+function $(id){ return document.getElementById(id); }
+function lang(){ try{ var l = localStorage.getItem(KEY) || 'pt'; return UI[l] ? l : 'pt'; }catch(e){ return 'pt'; } }
+function u(k, v){ var d = UI[lang()], s = d[k] != null ? d[k] : UI.pt[k]; if (v) for (var x in v) s = s.split('{' + x + '}').join(v[x]); return s; }
+function tx(v){ if (v == null) return ''; if (typeof v === 'string') return v; var l = lang(); return v[l] != null ? v[l] : (v.pt || ''); }
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function urlSegura(s){ s = String(s || '').trim(); return /^(https?:\/\/|imgs\/|assets\/)/i.test(s) ? s : ''; }
+function pick(n, c){ return n[c]; }
+function dataFmt(iso){
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); if (!m) return '';
+  try{ return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString(LOCALE[lang()], {day:'numeric', month:'long', year:'numeric'}); }catch(e){ return m[3] + '/' + m[2] + '/' + m[1]; }
+}
+
+/* cartão do release na grade de Notícias, no formato dos cartões do CMDDI */
+function inserirReleases(){
+  var grid = document.querySelector('.noticias-grid'); if (!grid) return;
+  grid.querySelectorAll('.nc-release').forEach(function(c){ c.remove(); });
+  var principal = grid.querySelector('.noticia-principal'), ref = principal ? principal.nextSibling : grid.firstChild;
+  Object.keys(REL).sort(function(a, b){ return (REL[a].data || '') < (REL[b].data || '') ? 1 : -1; }).forEach(function(k){
+    var it = REL[k], capa = urlSegura(it.capa), card = document.createElement('div'); var ext = (it.tipo === 'midia' && /^https?:/i.test(urlSegura(it.link))) ? urlSegura(it.link) : '';
+    card.className = 'noticia-sec nc-release';
+    card.innerHTML = (ext ? '<a class="noticia-thumb" href="' + esc(ext) + '" target="_blank" rel="noopener" style="display:block">' : '<div class="noticia-thumb">') + (capa ? '<img src="' + esc(capa) + '" alt="" style="width:100%;height:100%;object-fit:cover;display:block">' : '<div class="noticia-thumb-placeholder" style="font-size:2rem">📝</div>') + (ext ? '</a>' : '</div>') +
+      '<div class="noticia-body">' +
+      (ext ? '<div class="nc-selo-rel">📺 ' + esc(u('selo_midia', {v: it.veiculo || ''})) + '</div>' : '<div class="nc-selo-rel">📝 ' + esc(u('selo_release')) + '</div>') +
+      '<div class="noticia-t">' + (ext ? '<a href="' + esc(ext) + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">' + esc(tx(it.titulo)) + '</a>' : esc(tx(it.titulo))) + '</div>' +
+      '<div class="noticia-resumo" style="text-align:justify">' + esc(tx(it.fina) || tx(it.resumo)) + '</div>' +
+      '<div class="noticia-data">📅 ' + esc(dataFmt(it.data)) + (it.assinatura ? ' · ' + esc(u('texto_por')) + ': ' + esc(it.assinatura) : '') + (ext ? ' · ' + esc(it.veiculo || '') : '') + '</div>' +
+      '<div style="margin-top:.6rem">' + (ext ? '<a class="nc-ler-btn" href="' + esc(ext) + '" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">📰 ' + esc(u('ler_midia', {v: it.veiculo || ''})) + ' ↗</a>' : '<button type="button" class="nc-ler-btn" data-nt-rel="' + esc(k) + '">📰 ' + esc(u('ler')) + '</button>') + '</div>' +
+      '</div>';
+    grid.insertBefore(card, ref);
+  });
+}
+
+function abrirModal(h){
+  $('nt-art').innerHTML = '<button type="button" class="nt-fechar" id="nt-fechar" aria-label="' + esc(u('fechar')) + '">&times;</button>' + h;
+  var m = $('nt-modal'); m.hidden = false; m.scrollTop = 0;
+  document.documentElement.style.overflow = 'hidden';
+  $('nt-fechar').focus();
+}
+var _aberto = null;
+function abrirRelease(k){
+  var it = REL[k]; if (!it) return; _aberto = k;
+  var capa = urlSegura(it.capa), h = '<span class="nt-selo nt-selo-release">📝 ' + esc(u('selo_release')) + '</span>';
+  h += '<h3>' + esc(tx(it.titulo)) + '</h3>';
+  if (tx(it.fina)) h += '<p class="nt-art-fina">' + esc(tx(it.fina)) + '</p>';
+  h += '<div class="nt-art-meta"><span>' + esc(tx(it.local) || dataFmt(it.data)) + '</span>' + (it.assinatura ? '<span><strong>' + esc(u('texto_por')) + ':</strong> ' + esc(it.assinatura) + '</span>' : '') + '</div>';
+  if (capa) h += '<figure class="nt-art-capa"><img src="' + esc(capa) + '" alt="' + esc(tx(it.capaLeg)) + '" data-nt-zoom="1">' + (tx(it.capaLeg) ? '<figcaption>' + esc(tx(it.capaLeg)) + '</figcaption>' : '') + '</figure>';
+  var t = tx(it.texto); t = Array.isArray(t) ? t : String(t || '').split(/\n\s*\n/);
+  h += '<div class="nt-art-texto">' + t.filter(Boolean).map(function(p){ return '<p>' + esc(p) + '</p>'; }).join('') + '</div>';
+  var fotos = (it.fotos || []).filter(function(f){ return urlSegura(f && f.src); });
+  if (fotos.length) h += '<h4 class="nt-art-fotos-h">' + esc(u('fotos')) + '</h4><div class="nt-art-fotos">' + fotos.map(function(f){
+    return '<figure><img src="' + esc(urlSegura(f.src)) + '" alt="' + esc(tx(f.leg)) + '" loading="lazy" data-nt-zoom="1"><figcaption>' + esc(tx(f.leg)) + '</figcaption></figure>';
+  }).join('') + '</div>';
+  if (it.assinatura){ var logo = urlSegura(it.assinaturaLogo); h += '<div class="nt-art-assina">' + (logo ? '<img src="' + esc(logo) + '" alt="' + esc(it.assinatura) + '">' : '') + '<span>' + esc(u('texto_por')) + ': ' + esc(it.assinatura) + '</span></div>'; }
+  h += '<p class="nt-art-aviso">📝 ' + esc(u('aviso_release')) + '</p>';
+  abrirModal(h);
+}
+function abrirMidia(id){
+  var n = MIDIA[id]; if (!n) return;
+  var fonte = n.fonte || '', link = urlSegura(n.link);
+  var h = '<span class="nt-selo nt-selo-midia">📺 ' + esc(u('selo_midia', {v: fonte})) + '</span>';
+  h += '<h3>' + esc(pick(n, 'titulo')) + '</h3>';
+  h += '<div class="nt-art-meta">' + (n.data ? '<span><strong>' + esc(u('publicado')) + '</strong> ' + esc(n.data) + '</span>' : '') + (fonte ? '<span><strong>' + esc(u('veiculo')) + ':</strong> ' + esc(fonte) + '</span>' : '') + (pick(n, 'cat') ? '<span>' + esc(pick(n, 'cat')) + '</span>' : '') + '</div>';
+  var d = pick(n, 'desc');
+  if (d) h += '<div class="nt-art-texto">' + String(d).split(/\n\s*\n/).filter(Boolean).map(function(p){ return '<p>' + esc(p.trim()) + '</p>'; }).join('') + '</div>';
+  if (fonte) h += '<p class="nt-art-aviso">📺 ' + esc(u('aviso_midia', {v: fonte})) + '</p>';
+  if (link && /^https?:/i.test(link)) h += '<div class="nt-art-link"><a class="nt-btn" href="' + esc(link) + '" target="_blank" rel="noopener noreferrer">↗ ' + esc(u('ler_midia', {v: fonte})) + '</a></div>';
+  abrirModal(h);
+}
+function fechar(){ _aberto = null; $('nt-modal').hidden = true; document.documentElement.style.overflow = ''; }
+function zoom(img){
+  $('nt-lb-img').src = img.src; $('nt-lb-img').alt = img.alt || '';
+  var fig = img.closest('figure'), leg = fig ? fig.querySelector('figcaption') : null;
+  $('nt-lb-leg').textContent = leg ? leg.textContent : (img.alt || '');
+  $('nt-lb').hidden = false;
+}
+function fecharZoom(){ $('nt-lb').hidden = true; $('nt-lb-img').removeAttribute('src'); }
+
+document.addEventListener('click', function(e){
+  var b = e.target.closest && e.target.closest('[data-nt-rel],[data-nt-midia]');
+  if (!b) return;
+  if (b.hasAttribute('data-nt-rel')) abrirRelease(b.getAttribute('data-nt-rel'));
+  else abrirMidia(b.getAttribute('data-nt-midia'));
+});
+$('nt-modal').addEventListener('click', function(e){
+  if (e.target.id === 'nt-modal' || e.target.closest('#nt-fechar')) fechar();
+  else if (e.target.closest('[data-nt-zoom]')) zoom(e.target.closest('[data-nt-zoom]'));
+});
+$('nt-lb').addEventListener('click', function(e){ if (e.target.id !== 'nt-lb-img') fecharZoom(); });
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Escape') return;
+  if (!$('nt-lb').hidden) fecharZoom(); else if (!$('nt-modal').hidden) fechar();
+});
+inserirReleases();
+/* o CMDDI encaixa as notícias do painel logo após o destaque quando elas carregam;
+   o release, que é a mais recente, volta para essa posição */
+(function(){
+  var grid = document.querySelector('.noticias-grid'); if (!grid || !window.MutationObserver) return;
+  new MutationObserver(function(){
+    var rels = grid.querySelectorAll('.nc-release'); if (!rels.length) return;
+    var p = grid.querySelector('.noticia-principal'), alvo = p ? p.nextElementSibling : grid.firstElementChild;
+    if (alvo !== rels[0]) for (var i = rels.length - 1; i >= 0; i--) grid.insertBefore(rels[i], p ? p.nextElementSibling : grid.firstElementChild);
+  }).observe(grid, {childList:true});
+})();
+/* acompanha a troca de idioma do site (que altera o atributo lang do <html>) */
+if (window.MutationObserver) new MutationObserver(function(){ inserirReleases(); if (!$('nt-modal').hidden && _aberto) abrirRelease(_aberto); }).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+})();
+</script>
+<script type="application/json" id="i18n-dic">{"versao": 1, "textos": {"Apreciar e recomendar convênios, acordos e contratos realizados pelo Município em matéria de interesse indígena.": {"en": "Review and make recommendations on agreements, arrangements and contracts entered into by the Municipality on matters of Indigenous interest.", "es": "Analizar y recomendar convenios, acuerdos y contratos celebrados por el Municipio en materia de interés indígena.", "fr": "Examiner et formuler des recommandations sur les conventions, accords et contrats conclus par la Municipalité dans les domaines d'intérêt autochtone."}, "E-mail": {"en": "Email", "es": "Correo electrónico", "fr": "E-mail"}, "Segunda quinta-feira de cada mês · 14h<0/>Local definido pela Mesa Diretora": {"en": "Second Thursday of every month · 2 p.m.<0/>Venue set by the Board", "es": "Segundo jueves de cada mes · 14 h<0/>Lugar definido por la Mesa Directiva", "fr": "Deuxième jeudi de chaque mois · 14 h<0/>Lieu fixé par le Bureau"}, "⬇ Abrir / Baixar foto original": {"en": "⬇ Open / Download original photo", "es": "⬇ Abrir / Descargar foto original", "fr": "⬇ Ouvrir / Télécharger la photo originale"}, "📁 Álbum do CMDDI": {"en": "📁 CMDDI album", "es": "📁 Álbum del CMDDI", "fr": "📁 Album du CMDDI"}, "🔗 Fonte original ↗": {"en": "🔗 Original source ↗", "es": "🔗 Fuente original ↗", "fr": "🔗 Source originale ↗"}, "📎 Anexo": {"en": "📎 Attachment", "es": "📎 Adjunto", "fr": "📎 Pièce jointe"}, "CMDDI — Logomarca oficial": {"en": "CMDDI — Official logo", "es": "CMDDI — Logotipo oficial", "fr": "CMDDI — Logo officiel"}, "CMDDI — Logomarca histórica": {"en": "CMDDI — Historical logo", "es": "CMDDI — Logotipo histórico", "fr": "CMDDI — Logo historique"}, "Logomarca histórica do CMDDI": {"en": "Historical CMDDI logo", "es": "Logotipo histórico del CMDDI", "fr": "Logo historique du CMDDI"}, "CMDDI — Logomarca": {"en": "CMDDI — Logo", "es": "CMDDI — Logotipo", "fr": "CMDDI — Logo"}, "CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas": {"en": "CMDDI — Municipal Council for the Rights and Defense of Indigenous Peoples", "es": "CMDDI — Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas", "fr": "CMDDI — Conseil municipal des droits et de la défense des peuples autochtones"}, "CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas · Campo Grande, MS": {"en": "CMDDI — Municipal Council for the Rights and Defense of Indigenous Peoples · Campo Grande, MS", "es": "CMDDI — Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas · Campo Grande, MS", "fr": "CMDDI — Conseil municipal des droits et de la défense des peuples autochtones · Campo Grande, MS"}, "CMDDI — Conselho Municipal dos Direitos e Defesa dos Povos Indígenas de Campo Grande, MS. Criado em 2005, pela Lei nº 4.277.": {"en": "CMDDI — Municipal Council for the Rights and Defense of Indigenous Peoples of Campo Grande, MS. Created in 2005 by Law No. 4,277.", "es": "CMDDI — Consejo Municipal de los Derechos y Defensa de los Pueblos Indígenas de Campo Grande, MS. Creado en 2005 por la Ley n.º 4.277.", "fr": "CMDDI — Conseil municipal des droits et de la défense des peuples autochtones de Campo Grande, MS. Créé en 2005 par la loi n° 4.277."}, "Fechar": {"en": "Close", "es": "Cerrar", "fr": "Fermer"}}}</script>
+<script>
+/* Motor de tradução da página: cobre o que o sistema de idiomas do site (data-i18n) não alcança,
+   traduz datas, título da aba e descrição, detecta o idioma do navegador e aceita ?lang=en.
+   Usa o seletor de idiomas do próprio site. */
+window.I18N_SITE_CFG = {
+  chave: 'cmddi_lang',
+  seletorProprio: true,
+  definirNoSite: function(l){ window.setLang(l); },
+  ignorar: '[data-i18n],[data-i18n-html],.lang-switch,.adm-panel,#adm-modal,.adm-modal,#nt-modal,#nt-lb,#si-preview-modal,#si-tipo-modal,#cd-assinado-modal,#modal-editar-leg,.fixa-del'
+};
+</script>
+<script>
+/* ===== Tradução do site: português, inglês, espanhol e francês =====
+   Percorre a página inteira e traduz cada frase visível (com negritos e links
+   preservados dentro dela), além de legendas de imagem, dicas e campos.
+   As traduções ficam no dicionário #i18n-dic (revisado à mão, com glossário).
+   O conteúdo publicado pelo ADM já vem traduzido pelos próprios módulos.
+   Configuração em window.I18N_SITE_CFG. */
+(function(){
+var CFG = window.I18N_SITE_CFG || {};
+var IDIOMAS = ['pt', 'en', 'es', 'fr'];
+var ROTULOS = {pt: 'PT', en: 'EN', es: 'ES', fr: 'FR'};
+var NOMES = {pt: 'Português', en: 'English', es: 'Español', fr: 'Français'};
+var HTML_LANG = {pt: 'pt-BR', en: 'en', es: 'es', fr: 'fr'};
+var CHAVE = CFG.chave || 'site_lang';
+var INLINE = {A:1, ABBR:1, B:1, BDI:1, BDO:1, BR:1, CITE:1, DFN:1, EM:1, I:1, KBD:1, MARK:1, Q:1, S:1, SMALL:1, SPAN:1, STRONG:1, SUB:1, SUP:1, TIME:1, U:1, WBR:1};
+var PULAR = 'script,style,noscript,template,textarea,code,pre,svg,math,iframe,[translate="no"],.notranslate,[data-i18n-ignorar],.i18n-seletor' + (CFG.ignorar ? ',' + CFG.ignorar : '');
+var ATRS = ['alt', 'title', 'placeholder', 'aria-label'];
+var LETRA = /[A-Za-zÀ-ÿ]/;
+var DIC = {};
+try{ DIC = JSON.parse(document.getElementById('i18n-dic').textContent).textos || {}; }catch(e){}
+
+var atual = 'pt', aplicando = false;
+var unidades = [];            // {tipo:'el'|'txt', no, orig, chave, els}
+var regEl = new WeakMap(), regTxt = new WeakMap(), regAtr = new WeakMap();
+var meta = null;
+
+function norm(s){ return String(s).replace(/\s+/g, ' ').trim(); }
+function esc(s){ return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function desesc(s){ return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'); }
+function pular(el){ return !el || (el.closest && el.closest(PULAR)); }
+function temLetra(el){ return LETRA.test(el.textContent || ''); }
+
+/* elemento cujo conteúdo é só texto e elementos de linha (negrito, link...) */
+function soLinha(el){
+  for (var c = el.firstChild; c; c = c.nextSibling){
+    if (c.nodeType === 1){ if (!INLINE[c.tagName] || c.matches(PULAR) || !soLinha(c)) return false; }
+  }
+  return true;
+}
+function temTextoDireto(el){
+  for (var c = el.firstChild; c; c = c.nextSibling) if (c.nodeType === 3 && LETRA.test(c.nodeValue)) return true;
+  return false;
+}
+/* molde da frase: texto com marcadores <0>..</0> no lugar dos elementos de linha */
+function molde(el, els){
+  var out = '';
+  for (var c = el.firstChild; c; c = c.nextSibling){
+    if (c.nodeType === 3) out += esc(c.nodeValue);
+    else if (c.nodeType === 1){
+      var i = els.length; els.push(c);
+      if (!c.firstChild || c.tagName === 'BR' || c.tagName === 'WBR' || !LETRA.test(c.textContent)) out += '<' + i + '/>';
+      else out += '<' + i + '>' + molde(c, els) + '</' + i + '>';
+    }
+  }
+  return out;
+}
+function montar(trad, els){
+  var frag = document.createDocumentFragment(), pilha = [frag], m, re = /<(\d+)\/>|<(\d+)>|<\/(\d+)>|([^<]+)/g;
+  while ((m = re.exec(trad))){
+    var topo = pilha[pilha.length - 1];
+    if (m[1] != null){ if (!els[+m[1]]) return null; topo.appendChild(els[+m[1]].cloneNode(true)); }
+    else if (m[2] != null){ if (!els[+m[2]]) return null; var n = els[+m[2]].cloneNode(false); topo.appendChild(n); pilha.push(n); }
+    else if (m[3] != null){ if (pilha.length < 2) return null; pilha.pop(); }
+    else topo.appendChild(document.createTextNode(desesc(m[4])));
+  }
+  return pilha.length === 1 ? frag : null;
+}
+
+/* ---------- registro das frases da página ---------- */
+function registrarEl(el){
+  var els = [], ch = norm(molde(el, els));
+  var u = {tipo: 'el', no: el, orig: Array.prototype.slice.call(el.childNodes), chave: ch, els: els, estado: 'pt'};
+  regEl.set(el, u); unidades.push(u); return u;
+}
+function registrarTxt(t){
+  var u = {tipo: 'txt', no: t, orig: t.nodeValue, chave: norm(t.nodeValue), estado: 'pt'};
+  regTxt.set(t, u); unidades.push(u); return u;
+}
+function registrarAtrs(el){
+  var r = regAtr.get(el) || {};
+  ATRS.forEach(function(a){ var v = el.getAttribute(a); if (v && LETRA.test(v) && !(a in r)) r[a] = v; });
+  regAtr.set(el, r);
+}
+function varrer(raiz){
+  var novas = [];
+  (function andar(el){
+    if (el.nodeType !== 1 || pular(el)) return;
+    if (el.hasAttribute && ATRS.some(function(a){ return el.hasAttribute(a); })) registrarAtrs(el);
+    if (temTextoDireto(el) && soLinha(el) && el !== document.body){
+      if (!regEl.has(el)) novas.push(registrarEl(el));
+      el.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(registrarAtrs);
+      return;
+    }
+    for (var c = el.firstChild; c; c = c.nextSibling){
+      if (c.nodeType === 3 && LETRA.test(c.nodeValue) && !regTxt.has(c)) novas.push(registrarTxt(c));
+      else if (c.nodeType === 1) andar(c);
+    }
+  })(raiz);
+  return novas;
+}
+
+/* ---------- datas: meses e dias da semana em português -> idioma escolhido ---------- */
+var MESES = {
+  pt: ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
+  en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+  fr: ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']
+};
+var MESES_ABR = {
+  pt: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
+  en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  es: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+  fr: ['janv','févr','mars','avr','mai','juin','juil','août','sept','oct','nov','déc']
+};
+var DIAS_ABR = {
+  pt: ['dom','seg','ter','qua','qui','sex','sáb'],
+  en: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+  es: ['dom','lun','mar','mié','jue','vie','sáb'],
+  fr: ['dim','lun','mar','mer','jeu','ven','sam']
+};
+function semAcento(s){ return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s; }
+function capitalizar(modelo, s){ return /^[A-ZÀ-Ý]/.test(modelo) ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+function traduzirData(t, l){
+  if (l === 'pt' || t.length > 80 || /[<>]/.test(t)) return null;
+  var partes = t.split(/(\s+|[·,\/()\-–])/), achou = false, out = [];
+  for (var i = 0; i < partes.length; i++){
+    var p = partes[i]; if (!p) continue;
+    if (/^(\s+|[·,\/()\-–])$/.test(p) || /^\d+(º|ª)?\.?$/.test(p)){ out.push(p); continue; }
+    var base = semAcento(p.toLowerCase()), ponto = /\.$/.test(base); base = base.replace(/\.$/, '');
+    var m = MESES.pt.map(semAcento).indexOf(base), a = MESES_ABR.pt.indexOf(base), d = DIAS_ABR.pt.map(semAcento).indexOf(base);
+    if (m > -1){ out.push(capitalizar(p, MESES[l][m])); achou = true; }
+    else if (a > -1){ var ab = MESES_ABR[l][a]; out.push(capitalizar(p, (ponto && MESES[l][a] !== ab ? ab + '.' : ab))); achou = true; }
+    else if (d > -1){ out.push(capitalizar(p, DIAS_ABR[l][d]) + (ponto ? '.' : '')); achou = true; }
+    else if (base === 'de'){ if (l === 'es') out.push(p); else { if (out.length && /^\s+$/.test(out[out.length - 1])) out.pop(); } }
+    else return null;                                   // não é uma data
+  }
+  return achou ? out.join('').replace(/\s{2,}/g, ' ').trim() : null;
+}
+
+/* ---------- aplicar um idioma ---------- */
+function traduzirChave(ch, l){
+  var e = DIC[ch]; if (e && e[l]) return e[l];
+  return CFG.datas === false ? null : traduzirData(ch, l);
+}
+function aplicarUnidade(u, l){
+  if (!u.no.isConnected || u.estado === l) return;
+  u.estado = l;
+  // sem tradução no dicionário: só desfaz o que o próprio motor traduziu (o site pode ter traduzido por conta própria)
+  if (u.tipo === 'txt'){
+    var t = l === 'pt' ? null : traduzirChave(u.chave, l);
+    var base = u.orig, ini = base.match(/^\s*/)[0], fim = base.match(/\s*$/)[0];
+    if (t){ var novo = ini + t + fim; if (u.no.nodeValue !== novo) u.no.nodeValue = novo; u.aplicado = true; }
+    else if (u.aplicado){ u.no.nodeValue = base; u.aplicado = false; }
+    return;
+  }
+  var el = u.no, tr = l === 'pt' ? null : traduzirChave(u.chave, l), frag = tr ? montar(tr, u.els) : null;
+  if (frag){ while (el.firstChild) el.removeChild(el.firstChild); el.appendChild(frag); u.aplicado = true; }
+  else if (u.aplicado){ while (el.firstChild) el.removeChild(el.firstChild); u.orig.forEach(function(n){ el.appendChild(n); }); u.aplicado = false; }
+}
+function aplicarAtrs(el, l){
+  var r = regAtr.get(el); if (!r) return;
+  Object.keys(r).forEach(function(a){ var t = l === 'pt' ? null : traduzirChave(norm(r[a]), l); el.setAttribute(a, t || r[a]); });
+}
+function aplicarMeta(l){
+  if (!meta){
+    meta = {titulo: document.title, itens: []};
+    document.querySelectorAll('meta[name="description"],meta[property="og:title"],meta[property="og:description"],meta[name="twitter:title"],meta[name="twitter:description"]').forEach(function(m){ meta.itens.push({m: m, v: m.getAttribute('content') || ''}); });
+  }
+  document.title = (l !== 'pt' && traduzirChave(norm(meta.titulo), l)) || meta.titulo;
+  meta.itens.forEach(function(x){ x.m.setAttribute('content', (l !== 'pt' && traduzirChave(norm(x.v), l)) || x.v); });
+  var og = document.querySelector('meta[property="og:locale"]');
+  if (og) og.setAttribute('content', {pt: 'pt_BR', en: 'en_US', es: 'es_ES', fr: 'fr_FR'}[l]);
+}
+function aplicarTudo(l){
+  tratar(obs.takeRecords()); if (pendente.length) processarPendentes();
+  aplicando = true;
+  try{
+    unidades = unidades.filter(function(u){ return u.no.isConnected; });
+    unidades.forEach(function(u){ aplicarUnidade(u, l); });
+    document.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(function(el){ aplicarAtrs(el, l); });
+    aplicarMeta(l);
+  } finally { obs.takeRecords(); aplicando = false; }
+}
+
+/* ---------- conteúdo que entra depois (módulos, janelas, listas) ---------- */
+var pendente = [], agendado = false;
+function processarPendentes(){
+  agendado = false; var lista = pendente; pendente = [];
+  aplicando = true;
+  try{
+    lista.forEach(function(item){
+      if (item.tipo === 'reg'){                       // uma frase registrada mudou por fora
+        var u = item.u; if (!u.no.isConnected) return;
+        u.estado = null; u.aplicado = false;
+        if (u.tipo === 'txt'){ u.orig = u.no.nodeValue; u.chave = norm(u.orig); }
+        else { var els = []; u.chave = norm(molde(u.no, els)); u.els = els; u.orig = Array.prototype.slice.call(u.no.childNodes); }
+        if (atual !== 'pt') aplicarUnidade(u, atual);
+      } else if (item.no.isConnected){
+        var novas = varrer(item.no.nodeType === 3 ? item.no.parentElement : item.no);
+        if (atual !== 'pt') novas.forEach(function(u){ aplicarUnidade(u, atual); });
+        var raiz = item.no.nodeType === 1 ? item.no : item.no.parentElement;
+        if (raiz && atual !== 'pt'){ aplicarAtrs(raiz, atual); raiz.querySelectorAll && raiz.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(function(el){ aplicarAtrs(el, atual); }); }
+      }
+    });
+  } finally { obs.takeRecords(); aplicando = false; }
+}
+function agendar(item){ pendente.push(item); if (!agendado){ agendado = true; (window.queueMicrotask || setTimeout)(processarPendentes); } }
+function unidadeDe(no){
+  for (var n = no; n && n !== document.body; n = n.parentNode){
+    if (n.nodeType === 3 && regTxt.has(n)) return regTxt.get(n);
+    if (n.nodeType === 1 && regEl.has(n)) return regEl.get(n);
+  }
+  return null;
+}
+function tratar(muts){
+  if (aplicando || !muts) return;
+  muts.forEach(function(m){
+    if (m.type === 'attributes'){
+      var r = regAtr.get(m.target) || {}, v = m.target.getAttribute(m.attributeName);
+      if (v && LETRA.test(v)){ r[m.attributeName] = v; regAtr.set(m.target, r); if (atual !== 'pt') agendar({tipo: 'atr', no: m.target}); }
+      return;
+    }
+    var alvo = m.type === 'characterData' ? m.target : m.target;
+    if (pular(alvo.nodeType === 3 ? alvo.parentElement : alvo)) return;
+    var u = unidadeDe(alvo);
+    if (u){ agendar({tipo: 'reg', u: u}); return; }
+    if (m.type === 'childList') m.addedNodes.forEach(function(n){ if (n.nodeType === 1 || n.nodeType === 3) agendar({tipo: 'novo', no: n}); });
+  });
+}
+var obs = new MutationObserver(tratar);
+
+/* ---------- escolha do idioma ---------- */
+function idiomaInicial(){
+  try{ var q = new URLSearchParams(location.search).get('lang'); if (q && IDIOMAS.indexOf(q) > -1) return q; }catch(e){}
+  try{ var s = localStorage.getItem(CHAVE); if (s && IDIOMAS.indexOf(s) > -1) return s; }catch(e){}
+  var nav = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'pt']);
+  for (var i = 0; i < nav.length; i++){ var c = String(nav[i]).slice(0, 2).toLowerCase(); if (c === 'pt') return 'pt'; if (IDIOMAS.indexOf(c) > -1) return c; }
+  return 'pt';
+}
+function definir(l, opcoes){
+  if (IDIOMAS.indexOf(l) < 0) l = 'pt';
+  atual = l;
+  try{ localStorage.setItem(CHAVE, l); }catch(e){}
+  sincronizando = true;
+  if (!(opcoes && opcoes.doSite) && idiomaDoHtml() !== l) document.documentElement.setAttribute('lang', HTML_LANG[l]);
+  setTimeout(function(){ sincronizando = false; }, 0);
+  aplicarTudo(l);
+  document.querySelectorAll('.i18n-seletor button').forEach(function(b){ var on = b.getAttribute('data-lang') === l; b.setAttribute('aria-pressed', on); b.classList.toggle('on', on); });
+  if (!(opcoes && opcoes.inicial)){
+    try{ var u = new URL(location.href); if (l === 'pt') u.searchParams.delete('lang'); else u.searchParams.set('lang', l); history.replaceState(history.state, '', u); }catch(e){}
+  }
+  if (CFG.seletorProprio && !(opcoes && (opcoes.doSite || opcoes.inicial))) pedirAoSite(l);
+  if (typeof CFG.aoTrocar === 'function'){ try{ CFG.aoTrocar(l); }catch(e){ console.warn(e); } }
+  try{ document.dispatchEvent(new CustomEvent('i18n:idioma', {detail: {idioma: l}})); }catch(e){}
+}
+function montarSeletor(){
+  if (CFG.seletorProprio || document.querySelector('.i18n-seletor')) return;
+  var box = document.createElement('div');
+  box.className = 'i18n-seletor' + (CFG.seletorFixo === false ? '' : ' i18n-fixo');
+  box.setAttribute('role', 'group'); box.setAttribute('aria-label', 'Idioma · Language · Idioma · Langue');
+  IDIOMAS.forEach(function(l){
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-lang', l); b.setAttribute('lang', HTML_LANG[l]);
+    b.title = NOMES[l]; b.setAttribute('aria-label', NOMES[l]); b.textContent = ROTULOS[l];
+    b.addEventListener('click', function(){ definir(l); });
+    box.appendChild(b);
+  });
+  var alvo = CFG.seletorEm ? document.querySelector(CFG.seletorEm) : null;
+  (alvo || document.body).appendChild(box);
+}
+
+/* o seletor do próprio site muda o atributo lang do <html>: o motor acompanha */
+function idiomaDoHtml(){ var v = String(document.documentElement.getAttribute('lang') || 'pt').slice(0, 2).toLowerCase(); return IDIOMAS.indexOf(v) > -1 ? v : 'pt'; }
+var sincronizando = false;
+function acompanharSite(){
+  new MutationObserver(function(){
+    if (sincronizando) return;
+    var l = idiomaDoHtml(); if (l !== atual) definir(l, {doSite: true});
+  }).observe(document.documentElement, {attributes: true, attributeFilter: ['lang']});
+}
+function pedirAoSite(l, tentativas){
+  if (typeof CFG.definirNoSite !== 'function') return;
+  try{ CFG.definirNoSite(l); }catch(e){ if ((tentativas || 0) < 10) setTimeout(function(){ pedirAoSite(l, (tentativas || 0) + 1); }, 300); }
+}
+function iniciar(){
+  montarSeletor();
+  varrer(document.body);
+  obs.observe(document.body, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATRS});
+  var l = idiomaInicial();
+  if (CFG.seletorProprio){
+    acompanharSite();
+    if (l !== idiomaDoHtml()) pedirAoSite(l);          // ?lang= ou idioma do navegador: o site troca e o motor acompanha
+  }
+  definir(l, {inicial: true});
+}
+
+window.I18N_SITE = {
+  idioma: function(){ return atual; },
+  definir: definir,
+  /* frases da página que ainda não têm tradução (manutenção) */
+  faltando: function(l){
+    l = l || (atual === 'pt' ? 'en' : atual); var s = {};
+    unidades.forEach(function(u){ if (u.no.isConnected && u.chave && LETRA.test(u.chave) && !traduzirChave(u.chave, l)) s[u.chave] = 1; });
+    document.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(function(el){ var r = regAtr.get(el); if (r) Object.keys(r).forEach(function(a){ var k = norm(r[a]); if (!traduzirChave(k, l)) s[k] = 1; }); });
+    return Object.keys(s);
+  },
+  /* todas as frases e atributos da página, no formato das chaves do dicionário */
+  coletar: function(){
+    var s = {};
+    unidades.forEach(function(u){ if (u.no.isConnected && u.chave && LETRA.test(u.chave)) s[u.chave] = 1; });
+    document.querySelectorAll('[alt],[title],[placeholder],[aria-label]').forEach(function(el){ var r = regAtr.get(el); if (r) Object.keys(r).forEach(function(a){ s[norm(r[a])] = 1; }); });
+    if (meta){ s[norm(meta.titulo)] = 1; meta.itens.forEach(function(x){ if (x.v) s[norm(x.v)] = 1; }); }
+    return Object.keys(s);
+  },
+  varrer: function(){ varrer(document.body); if (atual !== 'pt') aplicarTudo(atual); }
+};
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(iniciar, 0); });
+else setTimeout(iniciar, 0);
 })();
 </script>
 </body>

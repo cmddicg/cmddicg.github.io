@@ -2359,6 +2359,12 @@ nav a:hover{animation:fxVento 1.6s ease-in-out infinite}
 .lang-switch button{background:transparent;border:1px solid rgba(212,149,74,.35);color:var(--cr,#f9f5ed);font-size:.7rem;font-weight:700;padding:4px 8px;border-radius:5px;cursor:pointer;font-family:inherit;transition:.2s;letter-spacing:.03em}
 .lang-switch button:hover{border-color:var(--am,#D4954A);color:var(--am,#D4954A)}
 .lang-switch button.lang-on{background:var(--am,#D4954A);color:#1a1a1a;border-color:var(--am,#D4954A)}
+
+/* celular: contato e grade de notícias sem estourar a largura da tela */
+.contato-grid > *, .contato-info, .contato-item, .contato-item > div, .noticias-grid > *{min-width:0}
+.contato-txt-v, .contato-txt-t, .noticia-t, .noticia-resumo{overflow-wrap:anywhere}
+
+@media (max-width:420px){ .doc-item{flex-wrap:wrap} .doc-item > div{min-width:0} .doc-nome,.doc-meta{overflow-wrap:anywhere} .doc-dl{margin-left:auto} }
 </style>
 <style>.fixa-del{display:none;align-items:center;gap:.3rem;background:rgba(248,113,113,.15);color:#c0392b;border:1px solid rgba(248,113,113,.4);border-radius:6px;padding:.25rem .6rem;font-size:.72rem;cursor:pointer;margin-top:.5rem}body.adm-ok .fixa-del{display:inline-flex}</style>
 <style id="nt-estilo">
@@ -2460,6 +2466,10 @@ textarea.nt-in{resize:vertical;line-height:1.55}
 .nt-so-release,.nt-so-midia{}
 .nt-form[data-tipo="midia"] .nt-so-release{display:none}
 .nt-form[data-tipo="release"] .nt-so-midia{display:none}
+
+/* notícia aberta no celular: botão fechar não cobre o selo e controles flutuantes saem da frente */
+#nt-art > .nt-selo{display:inline-block; max-width:calc(100% - 58px)}
+body:has(#nt-modal:not([hidden])) #lang-switch, body:has(#nt-modal:not([hidden])) .fab-stack, body:has(#nt-modal:not([hidden])) .adm-fab{display:none !important}
 </style>
 <script>
 /* ===== Tradução automática (português -> inglês, espanhol e francês) =====

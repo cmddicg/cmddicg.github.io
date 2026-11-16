@@ -110,9 +110,11 @@
     hero.addEventListener('mouseleave', function(){ mouse = [-9999, -9999]; });
     addEventListener('resize', medir);
     addEventListener('scroll', function(){ scat = Math.min(1, Math.max(0, scrollY / (hero.offsetHeight * .9))); }, {passive:true});
-    new IntersectionObserver(function(es){ vis = es[0].isIntersecting; if(vis) requestAnimationFrame(frame); }).observe(hero);
+    var espera = !!document.getElementById('cm-ab');
+    new IntersectionObserver(function(es){ if(espera) return; vis = es[0].isIntersecting; if(vis) requestAnimationFrame(frame); }).observe(hero);
 
     var DUR = 3600;
+    if(espera){ vis = false; addEventListener('abertura-fim', function(){ setTimeout(function(){ espera = false; t0 = performance.now(); vis = true; requestAnimationFrame(frame); }, 350); }, {once:true}); }
     function frame(now){
       if(!vis) return;
       var el = now - t0, prog = Math.min(1, el / DUR);
@@ -124,7 +126,7 @@
       gl.drawArrays(gl.POINTS, 0, N);
       requestAnimationFrame(frame);
     }
-    requestAnimationFrame(frame);
+    if(vis) requestAnimationFrame(frame);
   };
   img.src = esc.getAttribute('src');
 })();

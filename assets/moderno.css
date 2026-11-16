@@ -94,4 +94,4 @@ html,body{overflow-x:clip}
   .m-povo{scroll-snap-align:center;width:78vw;height:440px}
   .m-povo:nth-child(even){margin-top:0}
 }
-.m-banda-img img[src*="ancia"]{object-position:50% 40%}
+.m-banda-img img[src*="ancia"]{object-position:50% 40%}.m-banda-img img[src*="penas"]{object-position:50% 30%}

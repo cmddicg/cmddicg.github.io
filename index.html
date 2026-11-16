@@ -2723,6 +2723,8 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 @media (prefers-reduced-motion:reduce){.am-giro{animation:none}.am-los{animation:none;stroke-dashoffset:0}}
 @media(max-width:860px){.ti-autoria .aut-med2.m,.cons-autoria .aut-med2.m{display:none}}
 </style>
+<link rel="stylesheet" href="assets/moderno.css?v=20261116">
+<link rel="preload" as="image" href="assets/foto/hero-campo.webp">
 </head>
 <body>
 
@@ -2761,6 +2763,7 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 
 <!-- HERO -->
 <section id="hero">
+  <div class="m-hero-foto" aria-hidden="true"><img src="assets/foto/hero-campo.webp" alt="" fetchpriority="high" decoding="async"></div>
   <svg class="hero-grafismo" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
     <polygon points="0,0 280,0 0,280" fill="#2A4A1C" opacity=".18"/>
     <polygon points="1200,0 920,0 1200,280" fill="#4A2810" opacity=".15"/>
@@ -2802,7 +2805,7 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
       </figure>
     </div>
   </div>
-  <div style="position:absolute;bottom:.7rem;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:0 1rem;pointer-events:none">
+  <div class="m-criado" style="position:absolute;bottom:.7rem;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:0 1rem;pointer-events:none">
     <div style="font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(212,149,74,.6)" data-i18n="hero.criadoPor">Criado por</div>
     <div style="display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:center;pointer-events:auto">
       <a href="https://vertticonsultoria.com.br" target="_blank" rel="noopener" title="VERTTI Consulting" style="display:inline-flex;align-items:center;background:#fff;border-radius:8px;padding:.32rem .75rem;box-shadow:0 2px 12px rgba(0,0,0,.35)"><img src="assets/img/credito-vertti.png" alt="VERTTI Consulting" style="height:20px;width:auto;display:block"></a>
@@ -2815,6 +2818,17 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 </section>
 
 <!-- HISTÓRIA -->
+<section class="m-banda" aria-label="Território e memória">
+  <div class="m-banda-img" aria-hidden="true"><img src="assets/foto/banda-terra.webp" alt="" loading="lazy" decoding="async"></div>
+  <div class="m-banda-w"><div class="m-banda-txt">
+    <div class="eyb m-rev" data-i18n="mb1.eyb">Território e memória</div>
+    <h2 class="m-rev" data-i18n="mb1.h" data-i18n-html="1">Na cidade ou na aldeia, <em>a origem não se perde</em></h2>
+    <p class="m-rev" data-i18n="mb1.p">O CMDDI defende os direitos dos povos indígenas que vivem no contexto urbano de Campo Grande, com respeito à cultura, à língua e aos saberes de cada povo.</p>
+    <span class="m-linha m-rev"></span>
+  </div></div>
+  <span class="m-credito">Foto: Unsplash</span>
+</section>
+
 <section id="historia" class="sec sec-dark bg-pattern2">
   <div class="sec-w">
     <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
@@ -2919,6 +2933,17 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 </section>
 
 <!-- AGENDA -->
+<section class="m-banda dir" aria-label="Participação">
+  <div class="m-banda-img" aria-hidden="true"><img src="assets/foto/banda-povos.webp" alt="" loading="lazy" decoding="async"></div>
+  <div class="m-banda-w"><div class="m-banda-txt">
+    <div class="eyb m-rev" data-i18n="mb2.eyb">Participação</div>
+    <h2 class="m-rev" data-i18n="mb2.h" data-i18n-html="1">Cada povo tem voz. <em>Cada voz tem assento.</em></h2>
+    <p class="m-rev" data-i18n="mb2.p">Terena, Guarani-Kaiowá, Kadiwéu, Guató, Ofaié, Kinikinawa, Atikum, Laiana e outros povos deliberam juntos, no Conselho, sobre as políticas públicas que afetam suas vidas.</p>
+    <span class="m-linha m-rev"></span>
+  </div></div>
+  <span class="m-credito">Foto: Unsplash</span>
+</section>
+
 <section id="agenda" class="sec sec-dark2">
   <div class="sec-w">
     <div class="eyb" data-i18n="agenda.proximos">Próximos encontros</div>
@@ -3975,6 +4000,7 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 
 <!-- ARTIGOS CIENTÍFICOS -->
 <section id="artigos" class="sec sec-dark2 bg-pattern2">
+  <div class="m-fundo" aria-hidden="true"><img src="assets/foto/saberes-ceramica.webp" alt="" loading="lazy" decoding="async"></div>
   <div class="sec-w">
     <div class="eyb eyb-verde" data-i18n="eyb.academica">Produção acadêmica</div>
     <h2 class="sec-h2" data-i18n="art.titulo">Artigos Científicos e Publicações</h2>
@@ -4076,6 +4102,17 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 </section>
 
 <!-- DOCUMENTOS OFICIAIS -->
+<section class="m-banda" aria-label="Direitos">
+  <div class="m-banda-img" aria-hidden="true"><img src="assets/foto/banda-justica.webp" alt="" loading="lazy" decoding="async"></div>
+  <div class="m-banda-w"><div class="m-banda-txt">
+    <div class="eyb m-rev" data-i18n="mb3.eyb">Direitos</div>
+    <h2 class="m-rev" data-i18n="mb3.h" data-i18n-html="1">Direitos indígenas <em>escritos, públicos e defendidos</em></h2>
+    <p class="m-rev" data-i18n="mb3.p">Leis, resoluções e documentos oficiais reunidos para consulta pública, da Constituição de 1988 à Convenção 169 da OIT e à Declaração da ONU sobre os Direitos dos Povos Indígenas.</p>
+    <span class="m-linha m-rev"></span>
+  </div></div>
+  <span class="m-credito">Foto: Unsplash</span>
+</section>
+
 <section id="resolucoes-portarias" class="sec sec-mid">
   <div class="sec-w">
     <div class="eyb" data-i18n="eyb.acervo">Acervo documental</div>
@@ -4714,6 +4751,7 @@ window.TRAD_AUTO = {traduzir: traduzir, traduzirCampos: traduzirCampos, pendente
 
 <!-- CTA -->
 <section id="cta">
+  <div class="m-fundo" aria-hidden="true"><img src="assets/foto/cta-maos.webp" alt="" loading="lazy" decoding="async"></div>
   <div style="position:relative;z-index:1">
     <div class="sec-w" style="text-align:center">
       <h2 class="sec-h2" data-i18n="cta.titulo">Sua voz importa. Sua etnia tem representação.</h2>
@@ -9893,6 +9931,15 @@ document.addEventListener('keydown', function(e) {
 // ===== Dicionário i18n CMDDI — PT, EN, ES, FR =====
 // Terminologia oficial de direitos dos povos indígenas. Nomes de etnias preservados (nomes próprios).
 const I18N = {
+  "mb1.eyb": {"pt": "Território e memória", "en": "Territory and memory", "es": "Territorio y memoria", "fr": "Territoire et mémoire"},
+  "mb1.h": {"pt": "Na cidade ou na aldeia, <em>a origem não se perde</em>", "en": "In the city or in the village, <em>origin is never lost</em>", "es": "En la ciudad o en la aldea, <em>el origen no se pierde</em>", "fr": "En ville ou au village, <em>l’origine ne se perd pas</em>"},
+  "mb1.p": {"pt": "O CMDDI defende os direitos dos povos indígenas que vivem no contexto urbano de Campo Grande, com respeito à cultura, à língua e aos saberes de cada povo.", "en": "CMDDI defends the rights of the Indigenous peoples living in the urban context of Campo Grande, respecting the culture, language and knowledge of each people.", "es": "El CMDDI defiende los derechos de los pueblos indígenas que viven en el contexto urbano de Campo Grande, con respeto a la cultura, la lengua y los saberes de cada pueblo.", "fr": "Le CMDDI défend les droits des peuples autochtones qui vivent dans le contexte urbain de Campo Grande, dans le respect de la culture, de la langue et des savoirs de chaque peuple."},
+  "mb2.eyb": {"pt": "Participação", "en": "Participation", "es": "Participación", "fr": "Participation"},
+  "mb2.h": {"pt": "Cada povo tem voz. <em>Cada voz tem assento.</em>", "en": "Every people has a voice. <em>Every voice has a seat.</em>", "es": "Cada pueblo tiene voz. <em>Cada voz tiene asiento.</em>", "fr": "Chaque peuple a une voix. <em>Chaque voix a un siège.</em>"},
+  "mb2.p": {"pt": "Terena, Guarani-Kaiowá, Kadiwéu, Guató, Ofaié, Kinikinawa, Atikum, Laiana e outros povos deliberam juntos, no Conselho, sobre as políticas públicas que afetam suas vidas.", "en": "Terena, Guarani-Kaiowá, Kadiwéu, Guató, Ofaié, Kinikinawa, Atikum, Laiana and other peoples deliberate together, in the Council, on the public policies that affect their lives.", "es": "Terena, Guaraní-Kaiowá, Kadiwéu, Guató, Ofaié, Kinikinawa, Atikum, Laiana y otros pueblos deliberan juntos, en el Consejo, sobre las políticas públicas que afectan sus vidas.", "fr": "Terena, Guarani-Kaiowá, Kadiwéu, Guató, Ofaié, Kinikinawa, Atikum, Laiana et d’autres peuples délibèrent ensemble, au sein du Conseil, sur les politiques publiques qui touchent leur vie."},
+  "mb3.eyb": {"pt": "Direitos", "en": "Rights", "es": "Derechos", "fr": "Droits"},
+  "mb3.h": {"pt": "Direitos indígenas <em>escritos, públicos e defendidos</em>", "en": "Indigenous rights, <em>written, public and defended</em>", "es": "Derechos indígenas <em>escritos, públicos y defendidos</em>", "fr": "Droits autochtones <em>écrits, publics et défendus</em>"},
+  "mb3.p": {"pt": "Leis, resoluções e documentos oficiais reunidos para consulta pública, da Constituição de 1988 à Convenção 169 da OIT e à Declaração da ONU sobre os Direitos dos Povos Indígenas.", "en": "Laws, resolutions and official documents gathered for public consultation, from the 1988 Constitution to ILO Convention 169 and the UN Declaration on the Rights of Indigenous Peoples.", "es": "Leyes, resoluciones y documentos oficiales reunidos para consulta pública, desde la Constitución de 1988 hasta el Convenio 169 de la OIT y la Declaración de la ONU sobre los Derechos de los Pueblos Indígenas.", "fr": "Lois, résolutions et documents officiels réunis pour consultation publique, de la Constitution de 1988 à la Convention 169 de l’OIT et à la Déclaration des Nations unies sur les droits des peuples autochtones."},
   // ===== NAV =====
   "ti.eyb": {"pt": "Trabalho técnico entregue pelo ICET", "en": "Technical work delivered by ICET", "es": "Trabajo técnico entregado por el ICET", "fr": "Travail technique livré par l’ICET"},
   "ti.h_focams": {"pt": "Os planos que o FOCAMS e o CMDDI pediram, entregues pelo ICET", "en": "The plans requested by FOCAMS and CMDDI, delivered by ICET", "es": "Los planes que pidieron el FOCAMS y el CMDDI, entregados por el ICET", "fr": "Les plans demandés par le FOCAMS et le CMDDI, livrés par l’ICET"},
@@ -11027,6 +11074,9 @@ else setTimeout(iniciar, 0);
 /* medalhões GC e MA acendem alternadamente, como no motor da Editora */
 (function(){ document.querySelectorAll('.cons-autoria,.ti-autoria').forEach(function(box){ var ms=box.querySelectorAll('.aut-med2'); if(ms.length<2||matchMedia('(prefers-reduced-motion: reduce)').matches) return; var k=0; setInterval(function(){ ms.forEach(function(m){ m.classList.remove('on'); }); ms[k++%ms.length].classList.add('on'); },1800); }); })();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="assets/moderno.js?v=20261116" defer></script>
 </body>
 </html>
 
